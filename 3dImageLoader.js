@@ -193,9 +193,7 @@ trimWhiteSpace(canvas);
                     nonWhiteCount++;
                 }
             }
-console.log(nonWhiteCount / width );
             if (nonWhiteCount / width > 0.25) {
-console.log('true');			
                 top = y;
                 break;
             }
