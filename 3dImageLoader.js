@@ -53,11 +53,11 @@
         const textureLoader = new THREE.TextureLoader();
         const texture1 = textureLoader.load('https://uniqtribe.github.io/hand.jpg'); // Example texture 1
 
-	const canvas = document.getElementById('canvas');
-	const texture2 = new THREE.CanvasTexture(canvas);
+	//const canvas = document.getElementById('canvas');
+	//const texture2 = new THREE.CanvasTexture(canvas);
 
 		
-        //const texture2 = textureLoader.load('https://uniqtribe.github.io/texture.png'); // Example texture 2
+        const texture2 = textureLoader.load('https://uniqtribe.github.io/texture.png'); // Example texture 2
 
         let object; // To store the loaded GLTF object
 
