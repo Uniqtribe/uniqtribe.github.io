@@ -195,95 +195,519 @@ paletteToggle.addEventListener('change', () => {
         const colors = [{
                 "name": "Black",
                 "hex": "#000000"
-            }
+            }, {
+                "name": "DarkSlateGray",
+                "hex": "#2f4f4f"
+            }, {
+                "name": "SlateGray",
+                "hex": "#708090"
+            }, {
+                "name": "LightSlateGray",
+                "hex": "#778899"
+            }, {
+                "name": "Gray",
+                "hex": "#808080"
+            }, {
+                "name": "DimGray",
+                "hex": "#696969"
+            }, {
+                "name": "DarkGray",
+                "hex": "#a9a9a9"
+            }, {
+                "name": "Silver",
+                "hex": "#c0c0c0"
+            }, {
+                "name": "LightGray",
+                "hex": "#d3d3d3"
+            }, {
+                "name": "Gainsboro",
+                "hex": "#dcdcdc"
+            },
+
+            {
+                "name": "MistyRose",
+                "hex": "#ffe4e1"
+            }, {
+                "name": "LavenderBlush",
+                "hex": "#fff0f5"
+            }, {
+                "name": "Linen",
+                "hex": "#faf0e6"
+            }, {
+                "name": "AntiqueWhite",
+                "hex": "#faebd7"
+            }, {
+                "name": "Ivory",
+                "hex": "#fffff0"
+            }, {
+                "name": "FloralWhite",
+                "hex": "#fffaf0"
+            }, {
+                "name": "OldLace",
+                "hex": "#fdf5e6"
+            }, {
+                "name": "Beige",
+                "hex": "#f5f5dc"
+            }, {
+                "name": "Seashell",
+                "hex": "#fff5ee"
+            }, {
+                "name": "WhiteSmoke",
+                "hex": "#f5f5f5"
+            }, {
+                "name": "GhostWhite",
+                "hex": "#f8f8ff"
+            }, {
+                "name": "AliceBlue",
+                "hex": "#f0f8ff"
+            }, {
+                "name": "Azure",
+                "hex": "#f0ffff"
+            }, {
+                "name": "MintCream",
+                "hex": "#f5fffa"
+            }, {
+                "name": "Honeydew",
+                "hex": "#f0fff0"
+            }, {
+                "name": "Snow",
+                "hex": "#fffafa"
+            }, {
+                "name": "White",
+                "hex": "#ffffff"
+            },
+
+            {
+                "name": "Maroon",
+                "hex": "#800000"
+            }, {
+                "name": "Brown",
+                "hex": "#a52a2a"
+            }, {
+                "name": "Sienna",
+                "hex": "#a0522d"
+            }, {
+                "name": "SaddleBrown",
+                "hex": "#8b4513"
+            }, {
+                "name": "Olive",
+                "hex": "#808000"
+            }, {
+                "name": "Chocolate",
+                "hex": "#d2691e"
+            }, {
+                "name": "Peru",
+                "hex": "#cd853f"
+            }, {
+                "name": "DarkGoldenrod",
+                "hex": "#b8860b"
+            }, {
+                "name": "Goldenrod",
+                "hex": "#daa520"
+            }, {
+                "name": "SandyBrown",
+                "hex": "#f4a460"
+            }, {
+                "name": "RosyBrown",
+                "hex": "#bc8f8f"
+            }, {
+                "name": "Tan",
+                "hex": "#d2b48c"
+            }, {
+                "name": "Burlywood",
+                "hex": "#deb887"
+            }, {
+                "name": "Wheat",
+                "hex": "#f5deb3"
+            }, {
+                "name": "NavajoWhite",
+                "hex": "#ffdead"
+            }, {
+                "name": "Bisque",
+                "hex": "#ffe4c4"
+            }, {
+                "name": "BlanchedAlmond",
+                "hex": "#ffebcd"
+            }, {
+                "name": "CornSilk",
+                "hex": "#fff8dc"
+            },
+
+
+            {
+                "name": "MidnightBlue",
+                "hex": "#191970"
+            }, {
+                "name": "Navy",
+                "hex": "#000080"
+            }, {
+                "name": "DarkBlue",
+                "hex": "#00008b"
+            }, {
+                "name": "MediumBlue",
+                "hex": "#0000cd"
+            }, {
+                "name": "Blue",
+                "hex": "#0000FF"
+            }, {
+                "name": "RoyalBlue",
+                "hex": "#4169e1"
+            }, {
+                "name": "DodgerBlue",
+                "hex": "#1e90ff"
+            }, {
+                "name": "DeepSkyBlue",
+                "hex": "#00bfff"
+            }, {
+                "name": "CornFlowerBlue",
+                "hex": "#6495ed"
+            }, {
+                "name": "SkyBlue",
+                "hex": "#87ceeb"
+            }, {
+                "name": "LightSkyBlue",
+                "hex": "#87cefa"
+            }, {
+                "name": "PowderBlue",
+                "hex": "#b0e0e6"
+            }, {
+                "name": "LightBlue",
+                "hex": "#add8e6"
+            }, {
+                "name": "LightSteelBlue",
+                "hex": "#b0c4de"
+            }, {
+                "name": "SteelBlue",
+                "hex": "#4682b4"
+            }, {
+                "name": "CadetBlue",
+                "hex": "#5f9ea0"
+            },
+
+            {
+                "name": "DarkTurquoise",
+                "hex": "#00ced1"
+            }, {
+                "name": "MediumTurquoise",
+                "hex": "#48d1cc"
+            }, {
+                "name": "Turquoise",
+                "hex": "#40e0d0"
+            }, {
+                "name": "Aquamarine",
+                "hex": "#7fffd4"
+            }, {
+                "name": "PaleTurquoise",
+                "hex": "#afeeee"
+            }, {
+                "name": "LightCyan",
+                "hex": "#e0ffff"
+            }, {
+                "name": "Aqua",
+                "hex": "#00ffff"
+            },
+
+            {
+                "name": "Teal",
+                "hex": "#008080"
+            }, {
+                "name": "DarkCyan",
+                "hex": "#008b8b"
+            }, {
+                "name": "LightSeaGreen",
+                "hex": "#20b2aa"
+            }, {
+                "name": "DarkSeaGreen",
+                "hex": "#8fbc8f"
+            }, {
+                "name": "MediumAquamarine",
+                "hex": "#66cdaa"
+            }, {
+                "name": "DarkOliveGreen",
+                "hex": "#556b2f"
+            }, {
+                "name": "OliveDrab",
+                "hex": "#6b8e23"
+            }, {
+                "name": "YellowGreen",
+                "hex": "#9acd32"
+            }, {
+                "name": "DarkGreen",
+                "hex": "#006400"
+            }, {
+                "name": "Green",
+                "hex": "#008000"
+            }, {
+                "name": "ForestGreen",
+                "hex": "#228b22"
+            }, {
+                "name": "SeaGreen",
+                "hex": "#2e8b57"
+            }, {
+                "name": "MediumSeaGreen",
+                "hex": "#3cb371"
+            }, {
+                "name": "SpringGreen",
+                "hex": "#00ff7f"
+            }, {
+                "name": "MediumSpringGreen",
+                "hex": "#00fa9a"
+            }, {
+                "name": "LightGreen",
+                "hex": "#90ee90"
+            }, {
+                "name": "PaleGreen",
+                "hex": "#98fb98"
+            }, {
+                "name": "LimeGreen",
+                "hex": "#32cd32"
+            }, {
+                "name": "Lime",
+                "hex": "#00FF00"
+            }, {
+                "name": "Lawngreen",
+                "hex": "#7cfc00"
+            }, {
+                "name": "Chartreuse",
+                "hex": "#7fff00"
+            }, {
+                "name": "GreenYellow",
+                "hex": "#adff2f"
+            },
+
+            {
+                "name": "DarkKhaki",
+                "hex": "#bdb76b"
+            }, {
+                "name": "Khaki",
+                "hex": "#f0e68c"
+            }, {
+                "name": "PaleGoldenRod",
+                "hex": "#eee8aa"
+            }, {
+                "name": "PeachPuff",
+                "hex": "#ffdab9"
+            }, {
+                "name": "Moccasin",
+                "hex": "#ffe4b5"
+            }, {
+                "name": "PapayaWhip",
+                "hex": "#ffefd5"
+            }, {
+                "name": "LightGoldenrodYellow",
+                "hex": "#fafad2"
+            }, {
+                "name": "LemonChiffon",
+                "hex": "#fffacd"
+            }, {
+                "name": "LightYellow",
+                "hex": "#ffffe0"
+            }, {
+                "name": "Yellow",
+                "hex": "#ffff00"
+            }, {
+                "name": "Gold",
+                "hex": "#ffd700"
+            },
+
+            {
+                "name": "OrangeRed",
+                "hex": "#ff4500"
+            }, {
+                "name": "Tomato",
+                "hex": "#ff6347"
+            }, {
+                "name": "Coral",
+                "hex": "#ff7f50"
+            }, {
+                "name": "DarkOrange",
+                "hex": "#ff8c00"
+            }, {
+                "name": "Orange",
+                "hex": "#ffa500"
+            },
+
+            {
+                "name": "DarkRed",
+                "hex": "#8b0000"
+            }, {
+                "name": "Firebrick",
+                "hex": "#b22222"
+            }, {
+                "name": "Red",
+                "hex": "#ff0000"
+            }, {
+                "name": "Crimson",
+                "hex": "#dc143c"
+            }, {
+                "name": "IndianRed",
+                "hex": "#cd5c5c"
+            }, {
+                "name": "LightCoral",
+                "hex": "#f08080"
+            }, {
+                "name": "DarkSalmon",
+                "hex": "#e9967a"
+            }, {
+                "name": "Salmon",
+                "hex": "#fa8072"
+            }, {
+                "name": "LightSalmon",
+                "hex": "#ffa07a"
+            },
+
+            {
+                "name": "Indigo",
+                "hex": "#4b0082"
+            }, {
+                "name": "DarkSlateBlue",
+                "hex": "#483d8b"
+            }, {
+                "name": "SlateBlue",
+                "hex": "#6a5acd"
+            }, {
+                "name": "MediumSlateBlue",
+                "hex": "#7b68ee"
+            }, {
+                "name": "MediumPurple",
+                "hex": "#9370db"
+            }, {
+                "name": "Purple",
+                "hex": "#800080"
+            }, {
+                "name": "DarkMagenta",
+                "hex": "#8b008b"
+            }, {
+                "name": "BlueViolet",
+                "hex": "#8a2be2"
+            }, {
+                "name": "DarkViolet",
+                "hex": "#9400d3"
+            }, {
+                "name": "DarkOrchid",
+                "hex": "#9932cc"
+            }, {
+                "name": "MediumOrchid",
+                "hex": "#ba55d3"
+            }, {
+                "name": "Fuchsia",
+                "hex": "#FF00FF"
+            }, {
+                "name": "Violet",
+                "hex": "#ee82ee"
+            }, {
+                "name": "Orchid",
+                "hex": "#da70d6"
+            }, {
+                "name": "Plum",
+                "hex": "#dda0dd"
+            }, {
+                "name": "Thistle",
+                "hex": "#d8bfd8"
+            }, {
+                "name": "Lavender",
+                "hex": "#e6e6fa"
+            },
+
+            {
+                "name": "MediumVioletRed",
+                "hex": "#c71585"
+            }, {
+                "name": "PaleVioletRed",
+                "hex": "#db7093"
+            }, {
+                "name": "DeepPink",
+                "hex": "#ff1493"
+            }, {
+                "name": "HotPink",
+                "hex": "#ff69b4"
+            }, {
+                "name": "LightPink",
+                "hex": "#ffb6c1"
+            }, {
+                "name": "Pink",
+                "hex": "#ffc0cb"
+            },
         ]
+
 
         let paletteContainer = document.getElementById('palette');
         let selectedSwatch = null;
         let swatchOrder = [];
+function populatePalette() {
+    const fragment = document.createDocumentFragment(); // Use a document fragment to batch DOM updates
 
-        function populatePalette() {
+    // Populate dominant colors
+    configObject.dominantColors.forEach((color, index) => {
+        const sectionDiv = document.createElement('div');
 
-            for (let i = 0; i < configObject.dominantColors.length; i++) {
+        const colorDiv = document.createElement('div');
+        colorDiv.style.backgroundColor = color;
+        colorDiv.style.width = '25px';
+        colorDiv.style.height = '25px';
+        colorDiv.className = index === 0 ? 'custom-selected-color selected' : 'custom-selected-color';
 
-                const sectionDiv = document.createElement('div');
+        sectionDiv.appendChild(colorDiv);
+        fragment.appendChild(sectionDiv);
 
-
-
-                const colorDiv = document.createElement('div');
-                colorDiv.style.backgroundColor = configObject.dominantColors[i];
-                colorDiv.style.width = '25px';
-                colorDiv.style.height = '25px';
-                if (i == 0) {
-                    colorDiv.className = 'custom-selected-color selected';
-                } else {
-                    colorDiv.className = 'custom-selected-color';
-                }
-                sectionDiv.appendChild(colorDiv);
-                sectionSelector.appendChild(sectionDiv);
-
-                colorDiv.addEventListener('click', function() {
-
-                    const currentlySelected = document.querySelector('.custom-selected-color.selected');
-                    if (currentlySelected) {
-                        currentlySelected.classList.remove('selected');
-                    }
-
-                    colorDiv.classList.add('selected');
-
-                    document.querySelectorAll('.color-swatch').forEach((swatchColor) => {
-                        if (colorDiv.style.backgroundColor === swatchColor.style.backgroundColor) {
-                            swatchColor.className = 'color-swatch active';
-                            swatchColor.querySelector('.color-name').style.display = 'block';
-
-                        } else {
-                            swatchColor.className = 'color-swatch';
-                            swatchColor.querySelector('.color-name').style.display = 'none';
-                        }
-                    })
-
-                    selectColor(colorDiv.style.backgroundColor);
-
-
-                });
-
-
+        colorDiv.addEventListener('click', function () {
+            const currentlySelected = document.querySelector('.custom-selected-color.selected');
+            if (currentlySelected && currentlySelected !== colorDiv) {
+                currentlySelected.classList.remove('selected');
             }
+            colorDiv.classList.add('selected');
 
-            colors.forEach((color) => {
-                const swatch = document.createElement('div');
-                swatch.className = 'color-swatch';
-                swatch.style.backgroundColor = color.hex;
-                swatch.dataset.colorName = color.name;
-
-                const nameSpan = document.createElement('div');
-                nameSpan.className = 'color-name';
-                nameSpan.textContent = color.name;
-
-                swatch.appendChild(nameSpan);
-                swatch.addEventListener('click', () => handleColorClick(swatch));
-
-                paletteContainer.appendChild(swatch);
-
-                swatchOrder.push(swatch);
+            document.querySelectorAll('.color-swatch').forEach((swatchColor) => {
+                const isActive = colorDiv.style.backgroundColor === swatchColor.style.backgroundColor;
+                swatchColor.className = isActive ? 'color-swatch active' : 'color-swatch';
+                swatchColor.querySelector('.color-name').style.display = isActive ? 'block' : 'none';
             });
 
+            selectColor(colorDiv.style.backgroundColor);
+        });
+    });
 
-            const colorpicker = document.createElement('div');
-            colorpicker.className = 'color-swatch custom-colors';
-            colorpicker.onclick = function() {
-                openColorPicker();
-            };
-            const nameSpan = document.createElement('div');
-            nameSpan.className = 'color-name';
-            nameSpan.textContent = 'custom';
-            colorpicker.appendChild(nameSpan);
-            colorpicker.addEventListener('click', () => handleColorClick(colorpicker));
+    sectionSelector.appendChild(fragment); // Append all elements in one go
 
-            paletteContainer.appendChild(colorpicker);
-            swatchOrder.push(paletteContainer);
+    const swatchFragment = document.createDocumentFragment(); // Another fragment for swatches
 
-        }
+    // Populate swatches
+    colors.forEach((color) => {
+        const swatch = document.createElement('div');
+        swatch.className = 'color-swatch';
+        swatch.style.backgroundColor = color.hex;
+        swatch.dataset.colorName = color.name;
+
+        const nameSpan = document.createElement('div');
+        nameSpan.className = 'color-name';
+        nameSpan.textContent = color.name;
+
+        swatch.appendChild(nameSpan);
+        swatch.addEventListener('click', () => handleColorClick(swatch));
+
+        swatchFragment.appendChild(swatch);
+        swatchOrder.push(swatch);
+    });
+
+    // Add the color picker swatch
+    const colorpicker = document.createElement('div');
+    colorpicker.className = 'color-swatch custom-colors';
+
+    const nameSpan = document.createElement('div');
+    nameSpan.className = 'color-name';
+    nameSpan.textContent = 'custom';
+    colorpicker.appendChild(nameSpan);
+
+    colorpicker.addEventListener('click', () => {
+        handleColorClick(colorpicker);
+        openColorPicker();
+    });
+
+    swatchFragment.appendChild(colorpicker);
+    swatchOrder.push(colorpicker);
+
+    paletteContainer.appendChild(swatchFragment); // Append swatches in one go
+}
 
 
       function createColorPicker() {
@@ -683,59 +1107,68 @@ paletteToggle.addEventListener('change', () => {
                 throw new Error('Invalid RGB string format');
             }
         }
+function changeColor(changeColorArray) {
+    if (!originalImage) return;
 
-        function changeColor(changeColorArray) {
+    // Draw the original image on the canvas
+    ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imgData.data;
 
-            if (!originalImage) return;
-            ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+    // Precompute the parsed dominant colors and their RGB values
+    const dominantColors = configObject.dominantColors.map(parseColor);
 
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // Precompute the color hex map and the RGB differences for each color
+    const colorHexMap = configObject.dominantColors.map(color => color.toLowerCase());
+    const colorDiffMap = dominantColors.map(color => ({
+        r: Math.abs(255 - color.r),
+        g: Math.abs(255 - color.g),
+        b: Math.abs(255 - color.b)
+    }));
 
-            for (let i = 0; i < imgData.data.length; i += 4) {
-                const r = imgData.data[i];
-                const g = imgData.data[i + 1];
-                const b = imgData.data[i + 2];
+    const dataLength = data.length;
 
-                let closestColor = null;
-                let smallestDiff = Infinity;
+    for (let i = 0; i < dataLength; i += 4) {
+        const r = data[i], g = data[i + 1], b = data[i + 2];
 
-                for (let colorObj of configObject.dominantColors) {
-                    const fromColor = parseColor(colorObj);
+        let closestColorIndex = -1;
+        let smallestDiff = Infinity;
 
-                    const diff = Math.abs(r - fromColor.r) + Math.abs(g - fromColor.g) + Math.abs(b - fromColor.b);
+        // Use a more efficient loop to find the closest color
+        for (let j = 0; j < dominantColors.length; j++) {
+            const diff = Math.abs(r - dominantColors[j].r) +
+                         Math.abs(g - dominantColors[j].g) +
+                         Math.abs(b - dominantColors[j].b);
 
-                    if (diff < smallestDiff) {
-                        smallestDiff = diff;
-                        closestColor = fromColor;
-                    }
-                }
-
-                if (closestColor) {
-                    const closestColorHex = rgbToHex(closestColor).toLowerCase();
-                    const colorObj = configObject.dominantColors.find(colorObj => colorObj.toLowerCase() === closestColorHex);
-
-                    if (colorObj) {
-                        const toColorIndex = configObject.dominantColors.indexOf(colorObj);
-
-                        const toColor = rgbStringToObject(changeColorArray[toColorIndex]);
-                        const direction = {
-                            r: r - closestColor.r,
-                            g: g - closestColor.g,
-                            b: b - closestColor.b,
-                        };
-                        const newColor = applyDirectionToColor(toColor, direction);
-                        imgData.data[i] = newColor.r;
-                        imgData.data[i + 1] = newColor.g;
-                        imgData.data[i + 2] = newColor.b;
-                    }
-                } else if (smoothEdges) {
-                    smoothImageEdges(imgData, edgeRadius);
-                }
+            if (diff < smallestDiff) {
+                smallestDiff = diff;
+                closestColorIndex = j;
             }
-
-            ctx.putImageData(imgData, 0, 0);
-            textureChange();
         }
+
+        if (closestColorIndex !== -1) {
+            const closestColorHex = colorHexMap[closestColorIndex];
+            const toColor = rgbStringToObject(changeColorArray[closestColorIndex]);
+
+            // Calculate the color direction once
+            const direction = {
+                r: r - dominantColors[closestColorIndex].r,
+                g: g - dominantColors[closestColorIndex].g,
+                b: b - dominantColors[closestColorIndex].b,
+            };
+
+            // Apply the direction to the new color
+            const newColor = applyDirectionToColor(toColor, direction);
+            data[i] = newColor.r;
+            data[i + 1] = newColor.g;
+            data[i + 2] = newColor.b;
+        }
+    }
+
+    // Apply the updated image data back to the canvas
+    ctx.putImageData(imgData, 0, 0);
+    textureChange();
+}
 
         function colorMatches(currentColor, closestColor) {
             return currentColor.r === closestColor.r &&
@@ -1053,95 +1486,62 @@ row.querySelector('.theme-custom-field-input').value = hexColorString ;
 }
         }
 
-        function trimWhiteSpace(canvas) {
-            const context = canvas.getContext('2d', {
-                willReadFrequently: true
-            });
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
 
-            const width = canvas.width;
-            const height = canvas.height;
+function trimWhiteSpace(canvas) {
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    const width = canvas.width;
+    const height = canvas.height;
+    const imageData = context.getImageData(0, 0, width, height);
+    const data = imageData.data;
 
-            let top = 0;
-            let bottom = height;
-            let left = 0;
-            let right = width;
+    let top = height, bottom = 0, left = width, right = 0;
 
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const index = (y * width + x) * 4;
+            const r = data[index], g = data[index + 1], b = data[index + 2], alpha = data[index + 3];
 
-
-            for (let x = 0; x < width; x++) {
-
-                let nonWhiteCount = 0;
-                for (let y = 0; y < height; y++) {
-                    const index = (y * width + x) * 4;
-                    const r = data[index];
-                    const g = data[index + 1];
-                    const b = data[index + 2];
-                    const alpha = data[index + 3];
-
-                    if (r < 255 || g < 255 || b < 255 || alpha < 255) {
-                        nonWhiteCount++;
-                    }
-                }
-                if (nonWhiteCount / height > 0.05) {
-
-                    left = x;
-                    break;
-                }
+            // Check for non-white pixels
+            if (r < 255 || g < 255 || b < 255 || alpha < 255) {
+                if (x < left) left = x;
+                if (x > right) right = x;
+                if (y < top) top = y;
+                if (y > bottom) bottom = y;
             }
-
-            for (let x = width - 1; x >= 0; x--) {
-                let nonWhiteCount = 0;
-                for (let y = 0; y < height; y++) {
-                    const index = (y * width + x) * 4;
-                    const r = data[index];
-                    const g = data[index + 1];
-                    const b = data[index + 2];
-                    const alpha = data[index + 3];
-
-                    if (r < 255 || g < 255 || b < 255 || alpha < 255) {
-                        nonWhiteCount++;
-                    }
-                }
-                if (nonWhiteCount / height > 0.05) {
-                    right = x + 1;
-                    break;
-                }
-            }
-
-            const newWidth = right - left;
-            const newHeight = bottom - top;
-            const can2 = document.createElement('canvas');
-            can2.width = newWidth;
-            can2.height = newHeight;
-            const trimmedImageData = context.getImageData(left, top, newWidth, newHeight);
-            const context2 = can2.getContext('2d', {
-                willReadFrequently: true
-            });
-            context2.putImageData(trimmedImageData, 0, 0);
-
-           // const canvasContainer = document.createElement('div');
-           // canvasContainer.id = "canvas-container";
-
-
-            const can3 = document.createElement('canvas');
-            can3.width = newWidth / 1.5;
-            can3.height = newHeight / 1.5;
-
-            let existingCanvas = document.getElementById('textureHand');
-            if (existingCanvas) {
-                existingCanvas.remove();
-            }
-
-            const context3 = can3.getContext('2d', {
-                willReadFrequently: true
-            });
-            context3.drawImage(can2, 0, 0, newWidth / 1.5, newHeight / 1.5);
-            can3.setAttribute('id', 'textureHand');
-            canvasContainer.appendChild(can3);
-            //document.querySelector('.theme-product-detail-image').appendChild(canvasContainer);
         }
+    }
+
+    // No trimming needed if the image is entirely white
+    if (top === height || bottom === 0 || left === width || right === 0) return;
+
+    // Calculate the new dimensions
+    const newWidth = right - left + 1;
+    const newHeight = bottom - top + 1;
+
+    // Create a new canvas to hold the trimmed image
+    const can2 = document.createElement('canvas');
+    can2.width = newWidth;
+    can2.height = newHeight;
+    const context2 = can2.getContext('2d', { willReadFrequently: true });
+
+    // Copy the trimmed image data
+    context2.putImageData(context.getImageData(left, top, newWidth, newHeight), 0, 0);
+
+    // Scale down the image to the desired size
+    const can3 = document.createElement('canvas');
+    can3.width = newWidth / 1.5;
+    can3.height = newHeight / 1.5;
+    const context3 = can3.getContext('2d', { willReadFrequently: true });
+    context3.drawImage(can2, 0, 0, can3.width, can3.height);
+
+    // Remove the existing canvas if present
+    const existingCanvas = document.getElementById('textureHand');
+    if (existingCanvas) existingCanvas.remove();
+
+    // Append the new canvas to the container
+    can3.setAttribute('id', 'textureHand');
+    canvasContainer.appendChild(can3);
+}
 
         function handleTextureUpload(event) {
             const file = event.target.files[0];
