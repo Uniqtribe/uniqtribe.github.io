@@ -4,7 +4,7 @@ let patternSelection;
 let productVariantId;
 let swatches = [];
 let selectedSwatch;
-
+console.log("JS LOADED");
 function loadPage() {
 
     let varientContainer = document.querySelector('.theme-product-detail-varients-container');
