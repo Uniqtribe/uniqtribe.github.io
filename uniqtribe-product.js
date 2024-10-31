@@ -1028,7 +1028,13 @@ function addToCart(qty) {
         }
         if (label?.textContent.replace("*", "").trim() === 'source') {
             source = row.querySelector('input')
-            //              row.style.display = 'none';
+            let obj = {};
+            source = row.querySelector('input')
+            obj['customfield_id'] = target.getAttribute("data-custom-field-id");
+            obj['label'] = 'source';
+            obj['data_type'] = 'string';
+            obj['value'] = source.value;
+            custom_field_list.push(obj);
         }
         if (label?.textContent.replace("*", "").trim() === 'target') {
             let obj = {};
