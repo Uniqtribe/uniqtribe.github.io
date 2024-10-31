@@ -7,7 +7,7 @@ let selectedSwatch;
 
 
     let varientContainer = document.querySelector('.theme-product-detail-varients-container');
-console.log("Varient Exist");
+
     if (varientContainer) {
         let varientContainerRows = document.createElement('div')
         varientContainerRows.className = 'theme-product-varients-row';
@@ -181,13 +181,6 @@ console.log("Varient Exist");
                         </div>
                         <div id="color-display" style='display:none'>Selected Color: None</div>
                     </div>
-                </div>
-            </div>
-            <div class="overlay" id="overlay">
-                <div class="loader">
-                    <div class="bounce"></div>
-                    <div class="bounce"></div>
-                    <div class="bounce"></div>
                 </div>
             </div>
         `);
