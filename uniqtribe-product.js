@@ -5,7 +5,6 @@ let productVariantId;
 let swatches = [];
 let selectedSwatch;
 
-function loadPage() {
 
     let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 console.log("Varient Exist");
@@ -382,7 +381,7 @@ console.log("Varient Exist");
         });
         createColorPicker();
     }
-}
+
 
 function updateTargetValue(newValue) {
     if (target.value) {
