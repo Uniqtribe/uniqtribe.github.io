@@ -227,6 +227,18 @@
      z-index: 100;
      max-width: 300px;
 }
+.custom-select {
+  display: flex;
+  flex-wrap: wrap;
+}
+.custom-select div {
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
  .custom-select div.selected {
      background-color: #007bff;
      color: white;
@@ -236,7 +248,33 @@
      background-color: #007bff;
      color: white;
 }
- .hidden {
+select {
+  display: none; /* Hide the original select element */
+}
+.theme-custom-field-select-container {
+  width: 100% !important;
+}
+.theme-custom-field-label {
+  width: 100% !important;
+}
+.theme-custom-field-select-container::after {
+  display: none;
+}
+.customColorPickerPalette {
+  margin-block-end: 15px;
+}
+#image-gallery {
+  display: flex; /* Flexbox layout */
+  flex-wrap: wrap;
+  justify-content: center; /* Align items to the start of the row */
+  gap: 10px; /* Optional: space between images */
+}
+#image-gallery img {
+  width: 100px; /* Adjust the size of images as needed */
+  height: auto;
+  border: 1px solid #ccc; /* Optional: Add a border around images */
+}
+.hidden {
      display: none !important;
 }
  .loader {
