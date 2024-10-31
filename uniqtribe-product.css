@@ -1,0 +1,346 @@
+ .theme-product-detail-image-inner{
+     display:none !important 
+}
+ .switch {
+     position: relative;
+     display: inline-block;
+     width: 60px;
+     height: 34px;
+}
+ .switch input {
+     opacity: 0;
+     width: 0;
+     height: 0;
+}
+ .slider {
+     position: absolute;
+     cursor: pointer;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background-color: #ccc;
+     transition: .4s;
+     border-radius: 34px;
+}
+ .slider:before {
+     position: absolute;
+     content: "";
+     height: 26px;
+     width: 26px;
+     left: 4px;
+     bottom: 4px;
+     background-color: white;
+     transition: .4s;
+     border-radius: 50%;
+}
+ input:checked + .slider {
+     background-color: #2196F3;
+}
+ input:checked + .slider:before {
+     transform: translateX(26px);
+}
+/* Container for palette swatches */
+ .palette {
+     display: flex;
+     flex-wrap: wrap;
+     align-items: flex-start;
+    /* Align items to the start */
+     gap: 0px;
+     padding: 10px;
+}
+/* Styles for individual color swatches in the palette */
+ .color-swatch {
+     flex: 0 0 15px;
+    /* Width of swatches */
+     height: 50px;
+    /* Height of swatches */
+     box-sizing: border-box;
+     background-size: cover;
+     transition: transform 0.3s ease, margin 0.3s ease;
+    /* Smooth transition effects */
+     flex-shrink: 0;
+     border: 0px solid #d3d3d3;
+    /* Border color */
+}
+/* Add space to the left of the first sibling after active swatch */
+ .color-swatch.active + .color-swatch {
+     margin-left: 25px;
+}
+/* Custom colors background with rainbow gradient */
+ .custom-colors {
+     background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+}
+/* Enlarge swatch on hover */
+ .color-swatch:hover {
+     transform: scaleX(1.5) scaleY(1.5);
+    /* Enlarge swatch by 50% */
+     z-index: 20;
+    /* Ensure it stays on top */
+}
+/* Styles for active (selected) swatch */
+ .color-swatch.active {
+     transform: scaleX(1.5) scaleY(1.5);
+     flex: 0 0 100px;
+    /* Larger width for selected item */
+     z-index: 10;
+     margin-left: 25px;
+}
+/* Style for color name label */
+ .color-name {
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+     background: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent black background */
+     color: #fff;
+     text-align: center;
+     padding: 5px;
+     box-sizing: border-box;
+     font-size: 8px;
+     white-space: normal;
+    /* Allow wrapping */
+     overflow: hidden;
+     text-overflow: clip;
+    /* Clip text without adding ellipsis */
+     display: none;
+    /* Hide by default */
+}
+/* Show color name on hover */
+ .color-swatch:hover .color-name {
+     display: block;
+    /* Show on hover */
+}
+/* Container for color picker */
+ .color-picker-container {
+     margin: 20px 0;
+}
+/* Style for color picker input */
+ .color-picker-container input {
+     width: 100%;
+     height: 40px;
+     border: 0px solid #ddd;
+     border-radius: 4px;
+     padding: 5px;
+     box-sizing: border-box;
+}
+/* Style for color display */
+ #color-display {
+     margin-top: 10px;
+     font-size: 18px;
+}
+/* Section selector for organizing color swatches */
+ .sectionSelector {
+     display: flex;
+     justify-content: center;
+    /* Center horizontally */
+     align-items: center;
+    /* Center vertically */
+     flex-wrap: wrap;
+    /* Wrap items if needed */
+}
+/* Style for individual section within selector */
+ .sectionSelector > div {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin: 5px;
+    /* Adds spacing between items */
+}
+/* Style for individual section content */
+ .sectionSelector > div > div {
+     width: 25px;
+     height: 25px;
+}
+/* Highlight selected section */
+ .sectionSelector > div > .selected {
+     border: 1px solid black;
+}
+ #canvas{
+     display:none
+}
+ .controls {
+     position: absolute;
+     top: 10px;
+     left: 10px;
+     background: rgba(255, 255, 255, 0.8);
+     padding: 15px;
+     border-radius: 8px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+     font-family: Arial, sans-serif;
+     font-size: 14px;
+     z-index: 1;
+}
+ .controls label {
+     display: block;
+     margin: 10px 0;
+}
+ .controls input[type="number"], .controls input[type="range"] {
+     width: 100%;
+     padding: 5px;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     font-size: 14px;
+}
+ #captureButton {
+     margin-top: 10px;
+     padding: 10px 20px;
+     background-color: #007bff;
+     color: white;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+}
+ #captureButton:hover {
+     background-color: #0056b3;
+}
+ #screenshot {
+     position: absolute;
+     top: 50px;
+     left: 10px;
+     z-index: 100;
+     max-width: 300px;
+}
+ .custom-select div.selected {
+     background-color: #007bff;
+     color: white;
+     border-color: #007bff;
+}
+ .custom-select div:hover {
+     background-color: #007bff;
+     color: white;
+}
+ .hidden {
+     display: none !important;
+}
+ .loader {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     width: 60px;
+}
+ .bounce {
+     width: 20px;
+     height: 20px;
+     background-color: #3498db;
+     border-radius: 50%;
+     animation: bounce 0.6s infinite alternate;
+}
+ .bounce:nth-child(2) {
+     animation-delay: 0.2s;
+}
+ .bounce:nth-child(3) {
+     animation-delay: 0.4s;
+}
+ @keyframes bounce {
+     to {
+         transform: translateY(-100%);
+    }
+}
+/* Example content */
+ .content {
+     padding: 20px;
+}
+ button {
+     margin-top: 20px;
+     padding: 10px 20px;
+     font-size: 16px;
+}
+ .default-overlay-image {
+     position: absolute;
+     bottom: -0.5rem;
+     left: -0.5rem;
+     width: 3rem;
+     height: 1.2rem;
+     z-index: 10;
+}
+ #textureHand{
+     width:100%;
+     height:auto;
+     max-width: 100%;
+}
+ #canvas-container{
+     width: 100%;
+     height: auto;
+     max-width: 100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+ #rgbColorPicker{
+     width:100% 
+}
+ .zpcontainer-fluid .zpelem-col{
+     padding-inline-start:0px !important;
+     padding-inline-end:0px !important;
+}
+ .parent-div {
+     width: 100%;
+     padding: 10px;
+     border: 2px solid black;
+}
+/* Each row will be displayed as a block (default), so rows are stacked vertically */
+ .row-div {
+     display: flex;
+    /* Use flexbox to arrange columns inside rows */
+     margin-bottom: 10px;
+    /* Space between rows */
+}
+/* Each column in the row */
+ .column-div {
+     flex: 1;
+    /* Ensure each column div gets equal width */
+     border: 1px solid grey;
+     height: 100px;
+    /* Height for the columns */
+     margin-right: 10px;
+    /* Space between columns */
+}
+/* Remove margin for the last column */
+ .column-div:last-child {
+     margin-right: 0;
+}
+ .remove-button {
+     position: absolute;
+    /* Position relative to .column */
+     top: 5px;
+    /* Adjust as needed */
+     right: 5px;
+    /* Adjust as needed */
+     z-index: 10;
+    /* Ensure it’s above other elements */
+}
+ .remove-button{
+     margin-top:0px !important;
+}
+/* Responsive styling */
+ @media (max-width: 768px) {
+     .narrowColumn{
+         display:block;
+    }
+     .wideColumn{
+         display:none;
+    }
+     .row {
+         flex-direction: column;
+        /* Stack columns vertically */
+    }
+    /* Canvas column settings in mobile view */
+     .canvas-column {
+         width: 150px;
+        /* Keep canvas column fixed */
+         margin: 0 auto;
+        /* Center the canvas in the column */
+    }
+    /* Ensure shape and quantity columns take full width */
+     .shape-column, .quantity-column {
+         width: 100%;
+        /* Full width for stacked columns */
+         margin: 5px 0;
+        /* Space between stacked columns */
+         flex: 0 0 auto;
+        /* Prevent them from growing too large */
+    }
+}
+ 
