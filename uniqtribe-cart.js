@@ -1,7 +1,7 @@
     const cartItemElements = document.querySelectorAll('[data-cart-item]');
     if (cartItemElements) {
         cartItemElements.forEach(cartItem => {
-            const liElements = document.querySelectorAll("li");
+            const liElements = cartItem.querySelectorAll("li");
             liElements.forEach(li => {
                 if (li.textContent.trim().startsWith("source:")) {
                     cartItem.querySelector('ul').style.display = 'none';
