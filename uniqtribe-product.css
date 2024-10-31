@@ -40,6 +40,31 @@
  input:checked + .slider:before {
      transform: translateX(26px);
 }
+
+/* Styles for color swatches */
+.colorSwatches {
+  width: 3rem; /* Adjust width as needed */
+  height: 3rem; /* Adjust height as needed */
+  margin: 0.5rem;
+  display: inline-block;
+  border-radius: 5px; /* Set to 0 for rectangular swatches */
+  background-size: cover;
+  cursor: pointer;
+}
+
+/* Container for "To Color" swatches */
+#toColorSwatches {
+  /*display: flex;*/
+  align-items: center;
+  gap: 10px; /* Space between swatches */
+}
+
+/* Style for selected swatch */
+.colorSwatches.selected {
+  border: 3px solid #007bff; /* Highlight border for selected swatch */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Optional shadow for emphasis */
+  transform: scale(1.05); /* Slightly enlarge the selected swatch */
+}
 /* Container for palette swatches */
  .palette {
      display: flex;
