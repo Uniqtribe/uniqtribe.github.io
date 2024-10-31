@@ -1,7 +1,6 @@
     const cartItemElements = document.querySelectorAll('[data-cart-item]');
     if (cartItemElements) {
         cartItemElements.forEach(cartItem => {
-            let
             const liElements = document.querySelectorAll("li");
             liElements.forEach(li => {
                 if (li.textContent.trim().startsWith("source:")) {
