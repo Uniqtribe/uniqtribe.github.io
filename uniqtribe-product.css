@@ -318,6 +318,22 @@ select {
      height: 1.2rem;
      z-index: 10;
 }
+.theme-product-details-style-07
+  .theme-product-detail-container
+  .theme-product-detail-image-container
+  .theme-product-detail-image {
+  height: auto !important;
+}
+.theme-product-details-style-07
+  .theme-product-detail-container
+  .theme-product-detail-column.theme-product-detail-varients-container,
+.theme-product-details-style-07
+  .theme-product-detail-container
+  .theme-product-detail-image-container
+  .theme-product-detail-image {
+  display: block !important; /* Stack child elements vertically */
+  width: 100%; /* Full width to match previous layout */
+}
  #textureHand{
      width:100%;
      height:auto;
@@ -333,6 +349,18 @@ select {
 }
  #rgbColorPicker{
      width:100% 
+}
+#image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+#image-gallery img {
+  width: 100px; /* Adjust this value as needed */
+  height: 100px; /* Match the width to create a square */
+  object-fit: cover; /* Ensures the image covers the entire square without distortion */
+  border-radius: 5px; /* Optional: Add rounded corners */
 }
  .zpcontainer-fluid .zpelem-col{
      padding-inline-start:0px !important;
