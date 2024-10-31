@@ -1,4 +1,3 @@
-<script>
 let isDragging = false;
 let selection = [];
 let patternSelection;
@@ -1476,4 +1475,3 @@ function updateSwatches(selectedColor) {
         swatchColor.querySelector('.color-name').style.display = isActive ? 'block' : 'none';
     });
 }
-</script>
