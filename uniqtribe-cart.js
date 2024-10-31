@@ -5,6 +5,6 @@
             cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
                 item.disabled = true;
             });
-            document.querySelector('[data-zs-quantity]').disabled = true;
+            cartItem.querySelector('[data-zs-quantity]').disabled = true;
         })
     }
