@@ -1581,6 +1581,8 @@ function updateSwatches(selectedColor) {
     function calculateColorFrequency(image, palette) {
       const canvas = document.getElementById('imageCanvas');
       const ctx = canvas.getContext('2d');
+        ctx.willReadFrequently = true;
+
       canvas.width = image.width;
       canvas.height = image.height;
       ctx.putImageData(image, 0, 0);
