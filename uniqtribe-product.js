@@ -337,7 +337,7 @@ if (varientContainer) {
 
     // Cluster the palette
     const { averagedColors, clusterVariances } = simpleClusterColors(palette, pixels);
-    const colorFrequency = calculateColorFrequency(image, averagedColors);
+    const colorFrequency = calculateColorFrequency(imageData, averagedColors);
 
     const normalize = (value, min, max) => (value - min) / (max - min);
 
