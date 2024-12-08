@@ -364,7 +364,7 @@ if (varientContainer) {
     recommendedPaletteCount = filteredColors.length;
 const colorThief = new ColorThief();
     for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
-        palette = colorThief.getPalette(image, i); // Extract 10 dominant colors
+        palette = colorThief.getPalette(imageData, i); // Extract 10 dominant colors
 
         const schemes = generatePalettes(palette);
         generatePaletteStructure(palette);
