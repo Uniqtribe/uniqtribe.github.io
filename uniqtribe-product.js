@@ -4,7 +4,7 @@ let patternSelection;
 let productVariantId;
 let swatches = [];
 let selectedSwatch;
-
+const colorThief = new ColorThief();
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
