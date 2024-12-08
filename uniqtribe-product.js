@@ -183,6 +183,7 @@ if (varientContainer) {
                     </div>
                 </div>
             </div>
+              <canvas id="imageCanvas" style="display: none;"></canvas>
         `);
 
     paletteToggle = document.getElementById('paletteToggle');
