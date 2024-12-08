@@ -4,7 +4,7 @@ let patternSelection;
 let productVariantId;
 let swatches = [];
 let selectedSwatch;
-const colorThief = new ColorThief();
+
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
@@ -362,7 +362,7 @@ if (varientContainer) {
     });
     maxPaletteCount = averagedColors.length;
     recommendedPaletteCount = filteredColors.length;
-
+const colorThief = new ColorThief();
     for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
         palette = colorThief.getPalette(image, i); // Extract 10 dominant colors
 
