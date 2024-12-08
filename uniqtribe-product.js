@@ -316,7 +316,98 @@ if (varientContainer) {
             renderer.render(scene, camera);
         };
         animate();
-alert("AB");
+        
+    const img = document.querySelector('img[alt="base-image"]');
+    const canvas = document.getElementById('imageCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Draw the image onto the canvas
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = [];
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const r = imageData.data[i];
+        const g = imageData.data[i + 1];
+        const b = imageData.data[i + 2];
+        pixels.push([r, g, b]);
+    }
+
+    // Cluster the palette
+    const { averagedColors, clusterVariances } = simpleClusterColors(palette, pixels);
+    const colorFrequency = calculateColorFrequency(image, averagedColors);
+
+    const normalize = (value, min, max) => (value - min) / (max - min);
+
+    // Find min/max for frequency and variance
+    const minFrequency = Math.min(...colorFrequency.map(c => c.frequency));
+    const maxFrequency = Math.max(...colorFrequency.map(c => c.frequency));
+    const minVariance = Math.min(...clusterVariances);
+    const maxVariance = Math.max(...clusterVariances);
+
+    const minFrequencyThreshold = 0.90; // Set threshold for high frequency (can be adjusted)
+    const maxVarianceThreshold = 0.10;  // Set threshold for low variance (can be adjusted)
+
+    const filteredColors = averagedColors.filter((color, index) => {
+
+        const normalizedFrequency = normalize(colorFrequency[index].frequency, minFrequency, maxFrequency);
+        const normalizedVariance = normalize(clusterVariances[index], minVariance, maxVariance);
+
+        return normalizedFrequency >= minFrequencyThreshold || normalizedVariance <= maxVarianceThreshold;
+    });
+    maxPaletteCount = averagedColors.length;
+    recommendedPaletteCount = filteredColors.length;
+
+    for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
+        palette = colorThief.getPalette(image, i); // Extract 10 dominant colors
+
+        const schemes = generatePalettes(palette);
+        generatePaletteStructure(palette);
+
+        /*                palette.forEach((color, index) => {
+                            const colorDiv = document.createElement('div');
+                            colorDiv.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+                            colorDiv.textContent = `RGB(${color[0]}, ${color[1]}, ${color[2]}) - Variance: ${clusterVariances[index]} - Frequency: ${colorFrequency[index].frequency}` ;
+        
+                            colorDiv.style.padding = '10px';
+                            colorDiv.style.margin = '5px';
+                            document.body.appendChild(colorDiv);
+                        });
+        */
+
+
+        const paletteValues = Object.values(schemes);  // Get only the color arrays (values)
+
+        const uniquePalettes = [];
+        const removedPalettes = [];
+
+        paletteValues.forEach((currentPalette, index) => {
+            // Check if this palette is similar to any existing ones
+            const isSimilar = uniquePalettes.some(existingPalette =>
+                arePalettesSimilar(existingPalette, currentPalette)
+            );
+
+            if (!isSimilar) {
+                uniquePalettes.push(currentPalette);
+            } else {
+                // Log the removed palette
+                const paletteName = Object.keys(palette)[index];
+                removedPalettes.push({ [paletteName]: currentPalette });
+            }
+        });
+
+        // Now uniquePalettes contains only non-similar palettes
+        console.log("Unique Palettes:");
+        console.log(uniquePalettes);
+        const { uniqueColoredPalettes, removedColoredPalettes } = removePalettesWithSimilarColors(uniquePalettes)
+        console.log("Removed Palettes:");
+        console.log(uniqueColoredPalettes);
+        for (let i = 0; i < uniqueColoredPalettes.length; i++) {
+            generatePaletteStructure(uniqueColoredPalettes[i]);
+        }
+
+    }
     }, undefined, function (error) {
         console.error('An error occurred while loading the model:', error);
     });
@@ -1395,102 +1486,7 @@ function handleColorClick(swatch) {
     }
 
     updateCustomColor();
-    alert("A");
-    const img = document.querySelector('img[alt="base-image"]');
-    const canvas = document.getElementById('imageCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    // Draw the image onto the canvas
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const pixels = [];
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        const r = imageData.data[i];
-        const g = imageData.data[i + 1];
-        const b = imageData.data[i + 2];
-        pixels.push([r, g, b]);
-    }
-
-    // Cluster the palette
-    const { averagedColors, clusterVariances } = simpleClusterColors(palette, pixels);
-    const colorFrequency = calculateColorFrequency(image, averagedColors);
-
-    const normalize = (value, min, max) => (value - min) / (max - min);
-
-    // Find min/max for frequency and variance
-    const minFrequency = Math.min(...colorFrequency.map(c => c.frequency));
-    const maxFrequency = Math.max(...colorFrequency.map(c => c.frequency));
-    const minVariance = Math.min(...clusterVariances);
-    const maxVariance = Math.max(...clusterVariances);
-
-    const minFrequencyThreshold = 0.90; // Set threshold for high frequency (can be adjusted)
-    const maxVarianceThreshold = 0.10;  // Set threshold for low variance (can be adjusted)
-
-    const filteredColors = averagedColors.filter((color, index) => {
-
-        const normalizedFrequency = normalize(colorFrequency[index].frequency, minFrequency, maxFrequency);
-        const normalizedVariance = normalize(clusterVariances[index], minVariance, maxVariance);
-
-        return normalizedFrequency >= minFrequencyThreshold || normalizedVariance <= maxVarianceThreshold;
-    });
-    maxPaletteCount = averagedColors.length;
-    recommendedPaletteCount = filteredColors.length;
-
-    for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
-        palette = colorThief.getPalette(image, i); // Extract 10 dominant colors
-
-        const schemes = generatePalettes(palette);
-        generatePaletteStructure(palette);
-
-        /*                palette.forEach((color, index) => {
-                            const colorDiv = document.createElement('div');
-                            colorDiv.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-                            colorDiv.textContent = `RGB(${color[0]}, ${color[1]}, ${color[2]}) - Variance: ${clusterVariances[index]} - Frequency: ${colorFrequency[index].frequency}` ;
-        
-                            colorDiv.style.padding = '10px';
-                            colorDiv.style.margin = '5px';
-                            document.body.appendChild(colorDiv);
-                        });
-        */
-
-
-        const paletteValues = Object.values(schemes);  // Get only the color arrays (values)
-
-        const uniquePalettes = [];
-        const removedPalettes = [];
-
-        paletteValues.forEach((currentPalette, index) => {
-            // Check if this palette is similar to any existing ones
-            const isSimilar = uniquePalettes.some(existingPalette =>
-                arePalettesSimilar(existingPalette, currentPalette)
-            );
-
-            if (!isSimilar) {
-                uniquePalettes.push(currentPalette);
-            } else {
-                // Log the removed palette
-                const paletteName = Object.keys(palette)[index];
-                removedPalettes.push({ [paletteName]: currentPalette });
-            }
-        });
-
-        // Now uniquePalettes contains only non-similar palettes
-        console.log("Unique Palettes:");
-        console.log(uniquePalettes);
-        const { uniqueColoredPalettes, removedColoredPalettes } = removePalettesWithSimilarColors(uniquePalettes)
-        console.log("Removed Palettes:");
-        console.log(uniqueColoredPalettes);
-        for (let i = 0; i < uniqueColoredPalettes.length; i++) {
-            generatePaletteStructure(uniqueColoredPalettes[i]);
-        }
-
-
-
-    }
-
-
+    
     selectedSwatch = swatch;
 };
 
