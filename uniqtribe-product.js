@@ -1583,8 +1583,9 @@ function updateSwatches(selectedColor) {
       const ctx = canvas.getContext('2d');
       canvas.width = image.width;
       canvas.height = image.height;
-      ctx.drawImage(image, 0, 0);
-
+      console.log("Image 123", image);
+        ctx.drawImage(image, 0, 0);
+     
       const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 
       // Initialize an array to track pixel counts for each color in the palette
