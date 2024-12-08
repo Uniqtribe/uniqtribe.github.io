@@ -1734,7 +1734,7 @@ function calculateClusterVariance(cluster) {
 }
 
 
-    function generateVerticalGradient(colors, isCustom = false) {
+    function generateVerticalGradientPalette(colors, isCustom = false) {
     const segmentSize = 100 / colors.length;
     console.log("segmentSize",segmentSize);
 
@@ -2362,7 +2362,7 @@ function generatePaletteStructure(palette){
     const colorDiv = document.createElement('div');
                     // Construct the gradient string with the colors and positions
                     colorDiv.className = 'colorSwatches';
-                    colorDiv.style.backgroundImage =generateVerticalGradient(palette);
+                    colorDiv.style.backgroundImage =generateVerticalGradientPalette(palette);
                     colorDiv.style.padding = '10px';
                     colorDiv.style.margin = '5px';
                     colorDiv.style.height = '50px'; // Adjust the height as needed for visual appeal
