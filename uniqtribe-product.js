@@ -1587,8 +1587,8 @@ function updateSwatches(selectedColor) {
       canvas.height = image.height;
       ctx.putImageData(image, 0, 0);
      
-      const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
+      const pixel = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixelData = pixel.data;
       // Initialize an array to track pixel counts for each color in the palette
       let colorFrequency = new Array(palette.length).fill(0);
 
