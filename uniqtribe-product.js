@@ -6,160 +6,160 @@ let swatches = [];
 let selectedSwatch;
 
 
-    let varientContainer = document.querySelector('.theme-product-detail-varients-container');
+let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
-    if (varientContainer) {
-        let varientContainerRows = document.createElement('div')
-        varientContainerRows.className = 'theme-product-varients-row';
-        let cartContainer = document.createElement('div');
-        cartContainer.id = 'cartContainer';
-        cartContainer.className = 'theme-product-variant';
-        let cartLabelContainer = document.createElement('div');
-        cartLabelContainer.id = 'cartLabelContainer';
-        cartLabelContainer.className = 'theme-product-variant-label';
-        cartLabelContainer.innerHTML = 'Patterns in Cart'
-        let cartPatternContainer = document.createElement('div');
-        cartPatternContainer.id = 'cartPatternContainer';
-        cartPatternContainer.className = 'theme-product-variant-pattern';
-        cartContainer.appendChild(cartLabelContainer);
-        cartContainer.appendChild(cartPatternContainer);
-        varientContainerRows.append(cartContainer);
-        varientContainer.append(varientContainerRows);
-        imgElement = document.querySelector('img[alt="base-image"]');
+if (varientContainer) {
+    let varientContainerRows = document.createElement('div')
+    varientContainerRows.className = 'theme-product-varients-row';
+    let cartContainer = document.createElement('div');
+    cartContainer.id = 'cartContainer';
+    cartContainer.className = 'theme-product-variant';
+    let cartLabelContainer = document.createElement('div');
+    cartLabelContainer.id = 'cartLabelContainer';
+    cartLabelContainer.className = 'theme-product-variant-label';
+    cartLabelContainer.innerHTML = 'Patterns in Cart'
+    let cartPatternContainer = document.createElement('div');
+    cartPatternContainer.id = 'cartPatternContainer';
+    cartPatternContainer.className = 'theme-product-variant-pattern';
+    cartContainer.appendChild(cartLabelContainer);
+    cartContainer.appendChild(cartPatternContainer);
+    varientContainerRows.append(cartContainer);
+    varientContainer.append(varientContainerRows);
+    imgElement = document.querySelector('img[alt="base-image"]');
 
-        (function() {
-            const originalFetch = window.fetch;
-            window.fetch = function(...args) {
-                const fetchPromise = originalFetch.apply(this, args);
-                const url = typeof args[0] === 'string' ? args[0] : args[0]?.url;
-                if (url && url.includes('/cart')) {
-                    return fetchPromise.then(response => {
-                        const clonedResponse = response.clone();
-                        clonedResponse.json().then(data => {
-                            document.dispatchEvent(new CustomEvent("cartUpdated", {
-                                detail: data
-                            }));
-                        }).catch(err => {
-                            console.error("Failed to parse cart response:", err);
-                        });
-                        return response; // Return the original response
+    (function () {
+        const originalFetch = window.fetch;
+        window.fetch = function (...args) {
+            const fetchPromise = originalFetch.apply(this, args);
+            const url = typeof args[0] === 'string' ? args[0] : args[0]?.url;
+            if (url && url.includes('/cart')) {
+                return fetchPromise.then(response => {
+                    const clonedResponse = response.clone();
+                    clonedResponse.json().then(data => {
+                        document.dispatchEvent(new CustomEvent("cartUpdated", {
+                            detail: data
+                        }));
+                    }).catch(err => {
+                        console.error("Failed to parse cart response:", err);
                     });
-                }
-                return fetchPromise;
-            };
-        })();
-
-        (function() {
-            const originalXHR = window.XMLHttpRequest;
-
-            function newXHR() {
-                const realXHR = new originalXHR();
-
-                // Declare requestMethod here
-                let requestMethod = '';
-
-                // Override the original open method to capture the method and URL
-                const originalOpen = realXHR.open;
-                realXHR.open = function(method, url) {
-                    requestMethod = method; // Save the method
-                    return originalOpen.apply(this, arguments);
-                };
-
-                realXHR.addEventListener('readystatechange', function() {
-                    if (realXHR.readyState === 4 && realXHR.status === 200) {
-                        const url = realXHR.responseURL;
-                        if (url.includes('/cart') && (requestMethod === 'GET' || requestMethod === 'POST')) {
-                            const data = JSON.parse(realXHR.responseText);
-                            document.dispatchEvent(new CustomEvent("cartUpdated", {
-                                detail: data
-                            }));
-                        }
-                        if (url.includes('/cart') && requestMethod === 'DELETE') {
-                            const data = JSON.parse(realXHR.responseText);
-                            document.dispatchEvent(new CustomEvent("cartDeleted", {
-                                detail: data
-                            }));
-                        }
-                    }
+                    return response; // Return the original response
                 });
-                return realXHR;
             }
-            window.XMLHttpRequest = newXHR; // Override the global XMLHttpRequest
-        })();
+            return fetchPromise;
+        };
+    })();
 
-        document.addEventListener("cartUpdated", function(event) {
-            cartData = event.detail.payload;
-            setTimeout(() => {
-                console.log("CART UPDATED");
-                updateFields();
-            }, 100); // Delay time (ms) can be adjusted
-        });
+    (function () {
+        const originalXHR = window.XMLHttpRequest;
 
-        fetch('/storefront/api/v1/cart')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+        function newXHR() {
+            const realXHR = new originalXHR();
+
+            // Declare requestMethod here
+            let requestMethod = '';
+
+            // Override the original open method to capture the method and URL
+            const originalOpen = realXHR.open;
+            realXHR.open = function (method, url) {
+                requestMethod = method; // Save the method
+                return originalOpen.apply(this, arguments);
+            };
+
+            realXHR.addEventListener('readystatechange', function () {
+                if (realXHR.readyState === 4 && realXHR.status === 200) {
+                    const url = realXHR.responseURL;
+                    if (url.includes('/cart') && (requestMethod === 'GET' || requestMethod === 'POST')) {
+                        const data = JSON.parse(realXHR.responseText);
+                        document.dispatchEvent(new CustomEvent("cartUpdated", {
+                            detail: data
+                        }));
+                    }
+                    if (url.includes('/cart') && requestMethod === 'DELETE') {
+                        const data = JSON.parse(realXHR.responseText);
+                        document.dispatchEvent(new CustomEvent("cartDeleted", {
+                            detail: data
+                        }));
+                    }
                 }
-                return response.json(); // Parse the JSON response
-            })
+            });
+            return realXHR;
+        }
+        window.XMLHttpRequest = newXHR; // Override the global XMLHttpRequest
+    })();
 
-        variantRows = document.querySelectorAll('.theme-product-varients-row');
-        let i = 0;
-        patternSelection = [];
-        variantRows.forEach(row => {
-            let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-            if (label?.textContent.replace("*", "").trim() === 'source') {
-                source = row.querySelector('input')
-                row.style.display = 'none';
+    document.addEventListener("cartUpdated", function (event) {
+        cartData = event.detail.payload;
+        setTimeout(() => {
+            console.log("CART UPDATED");
+            updateFields();
+        }, 100); // Delay time (ms) can be adjusted
+    });
+
+    fetch('/storefront/api/v1/cart')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-            if (label?.textContent.replace("*", "").trim() === 'target') {
-                target = row.querySelector('input')
-                row.style.display = 'none';
-            }
-            if (label?.textContent.replace("*", "").trim() === 'Config') {
-                config = row.querySelector('span');
-                configObject = JSON.parse(config.textContent.trim());
-                row.style.display = 'none';
-            }
-            if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
-                selection[i] = row.querySelector('input');
-                let obj = {};
-                obj['value'] = row.querySelector('input').value;
-                obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
-                patternSelection[i] = JSON.stringify(obj);
-                i++;
-                row.style.display = 'none';
-            }
+            return response.json(); // Parse the JSON response
         })
 
-        const inputElement = document.querySelector('[name="qty"]');
-        inputElement.disabled = true;
-        if (inputElement) {
-            inputElement.addEventListener('input', () => {
-                console.log('Value changed by user to:', inputElement.value);
-            });
-            let originalValue = inputElement.value;
-            Object.defineProperty(inputElement, 'value', {
-                get() {
-                    return originalValue;
-                },
-                set(newValue) {
-                    originalValue = newValue;
-                    console.log('Value changed programmatically to:', newValue);
-                    this.setAttribute('value', newValue); // Update attribute if needed
-                    updateTargetValue(newValue);
-                },
-                configurable: true
-            });
+    variantRows = document.querySelectorAll('.theme-product-varients-row');
+    let i = 0;
+    patternSelection = [];
+    variantRows.forEach(row => {
+        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+        if (label?.textContent.replace("*", "").trim() === 'source') {
+            source = row.querySelector('input')
+            row.style.display = 'none';
         }
+        if (label?.textContent.replace("*", "").trim() === 'target') {
+            target = row.querySelector('input')
+            row.style.display = 'none';
+        }
+        if (label?.textContent.replace("*", "").trim() === 'Config') {
+            config = row.querySelector('span');
+            configObject = JSON.parse(config.textContent.trim());
+            row.style.display = 'none';
+        }
+        if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
+            selection[i] = row.querySelector('input');
+            let obj = {};
+            obj['value'] = row.querySelector('input').value;
+            obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
+            patternSelection[i] = JSON.stringify(obj);
+            i++;
+            row.style.display = 'none';
+        }
+    })
 
-        productVariantId = extractIdFromUrl(window.location.href);
-        quantityInput = document.querySelector('[title="quantity"]');
+    const inputElement = document.querySelector('[name="qty"]');
+    inputElement.disabled = true;
+    if (inputElement) {
+        inputElement.addEventListener('input', () => {
+            console.log('Value changed by user to:', inputElement.value);
+        });
+        let originalValue = inputElement.value;
+        Object.defineProperty(inputElement, 'value', {
+            get() {
+                return originalValue;
+            },
+            set(newValue) {
+                originalValue = newValue;
+                console.log('Value changed programmatically to:', newValue);
+                this.setAttribute('value', newValue); // Update attribute if needed
+                updateTargetValue(newValue);
+            },
+            configurable: true
+        });
+    }
 
-        addLightboxEventListener();
+    productVariantId = extractIdFromUrl(window.location.href);
+    quantityInput = document.querySelector('[title="quantity"]');
 
-        const container = document.querySelector('.theme-custom-field-main-container');
-        container.insertAdjacentHTML('afterbegin', `
+    addLightboxEventListener();
+
+    const container = document.querySelector('.theme-custom-field-main-container');
+    container.insertAdjacentHTML('afterbegin', `
             <div class="customColorPickerPalette">
                 <div class="theme-product-variant-label theme-custom-field-label customColorPickerPalette" data-zs-customfield-label=""> 
                     Color
@@ -185,195 +185,195 @@ let selectedSwatch;
             </div>
         `);
 
-        paletteToggle = document.getElementById('paletteToggle');
-        palette1 = document.getElementById('palette');
-        palette2 = document.getElementById('palette2');
-        selectedColorDiv = document.getElementById('selectedColor');
-        colorCodeText = document.getElementById('colorCode');
-        colorControlsContainer = document.getElementById('colorControls');
-        toColorSwatchesContainer = document.getElementById('toColorSwatches');
-        customColorPicker = document.getElementById('customColorPicker');
-        paletteContainer = document.getElementById('palette')
+    paletteToggle = document.getElementById('paletteToggle');
+    palette1 = document.getElementById('palette');
+    palette2 = document.getElementById('palette2');
+    selectedColorDiv = document.getElementById('selectedColor');
+    colorCodeText = document.getElementById('colorCode');
+    colorControlsContainer = document.getElementById('colorControls');
+    toColorSwatchesContainer = document.getElementById('toColorSwatches');
+    customColorPicker = document.getElementById('customColorPicker');
+    paletteContainer = document.getElementById('palette')
 
-        const productImage = document.querySelector(".theme-product-detail-image");
-        designCanvas = document.createElement('canvas')
-        designCanvas.id = 'designCanvas';
-        designCanvas.width = 800;
-        designCanvas.height = 800;
-        designCanvas.style.display = 'none';
-        designCanvasCtx = designCanvas.getContext('2d');
-        imgElement.onload = () => {
-            designCanvasCtx.drawImage(imgElement, 0, 0);
-        };
-        if (imgElement.complete) {
-            imgElement.onload();
-        }
-
-        // Initialize Three.js renderer, camera, and scene
-        const renderer = new THREE.WebGLRenderer({
-            alpha: true,
-            antialias: true
-        });
-        renderer.domElement.id = 'renderedImage';
-        productImage.appendChild(renderer.domElement);
-        productImage.appendChild(designCanvas);
-        const dpr = window.devicePixelRatio || 1;
-
-        renderer.setSize(productImage.clientWidth * dpr, productImage.clientWidth * dpr);
-        renderer.domElement.style.width = productImage.clientWidth + 'px';
-        renderer.domElement.style.height = productImage.clientWidth + 'px';
-
-        renderer.setClearColor(0xffffff);
-        renderedImage = document.querySelector('#renderedImage');
-
-
-        const cameraWidth = 10; // Width of the camera view
-        const cameraHeight = 10; // Height of the camera view
-
-        const camera = new THREE.OrthographicCamera(
-            -cameraWidth / 2, cameraWidth / 2,
-            cameraHeight / 2, -cameraHeight / 2,
-            0.1, 1000
-        );
-
-        const scene = new THREE.Scene();
-        scene.add(new THREE.AmbientLight(0x404040));
-        let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(50, 5, 150).normalize();
-        scene.add(directionalLight);
-
-        scene.add(new THREE.AmbientLight(0x404040));
-        let directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight1.position.set(0, 0, 0).normalize();
-        scene.add(directionalLight1);
-
-        const loader = new THREE.GLTFLoader();
-
-        loader.load(configObject.imageInfo.objectPath, function(gltf) {
-            object = gltf.scene;
-            scene.add(object);
-            object.scale.set(0.1, 0.1, 0.1);
-            const box = new THREE.Box3().setFromObject(object);
-            const center = box.getCenter(new THREE.Vector3());
-            object.position.set(center.x + 1.25, center.y - 0.125, 0);
-            textureLoader = new THREE.TextureLoader();
-
-            textures = configObject.imageInfo.textures.map(textureInfo => {
-                const texture = textureLoader.load(textureInfo.texturePath);
-                texture.generateMipmaps = true;
-                texture.minFilter = THREE.LinearMipmapLinearFilter; // Use linear mipmaps for better quality during downscaling
-                return {
-                    texture: texture,
-                    objects: textureInfo.objects,
-                    transparent: textureInfo.transparent
-                };
-            });
-            const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
-                function(texture) {
-                    texture.wrapS = THREE.RepeatWrapping;
-                    texture.wrapT = THREE.RepeatWrapping;
-                    texture.repeat.set(1, 1);
-
-                    object.traverse(function(child) {
-                        if (child.isMesh) {
-                            if (child.name === configObject.imageInfo.backgroundPattern) {
-                                child.material = new THREE.MeshStandardMaterial({
-                                    map: texture,
-                                    transparent: true,
-                                    opacity: 1,
-                                    depthWrite: false,
-                                    emissive: new THREE.Color(0xffffff),
-                                    emissiveIntensity: 0.3,
-                                    color: new THREE.Color(0xffffff)
-                                });
-                            } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
-                                child.material = new THREE.MeshStandardMaterial({
-                                    map: texture,
-                                    transparent: true,
-                                    opacity: 1,
-                                    depthWrite: false
-                                });
-                            }
-
-                            const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-                            if (textureInfo) {
-                                child.material = new THREE.MeshStandardMaterial({
-                                    map: textureInfo.texture,
-                                    transparent: textureInfo.transparent
-                                });
-                            }
-
-                            child.material.needsUpdate = true;
-                        }
-                    });
-                });
-
-            camera.position.set(center.x, center.y, 10);
-            camera.lookAt(center);
-
-            const animate = function() {
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
-            };
-            animate();
-
-        }, undefined, function(error) {
-            console.error('An error occurred while loading the model:', error);
-        });
-
-        const handleImageClick = (imgElement, imageUrl) => {
-            imgElement.addEventListener('click', () => {
-                // Hide canvas container and remove all images in the display div
-                document.querySelector('#renderedImage').style.display = 'none';
-                productImage.querySelectorAll('img').forEach(img => img.remove());
-                // Create and append the new image
-                const displayImgElement = document.createElement('img');
-                displayImgElement.src = imageUrl;
-                displayImgElement.alt = "Selected Image";
-                displayImgElement.style.width = productImage.clientWidth + 'px'; // width in pixels
-                displayImgElement.style.height = productImage.clientWidth + 'px'; // height in pixels
-                productImage.append(displayImgElement);
-            });
-        };
-
-        const imageGallery = document.createElement('div');
-        imageGallery.id = 'image-gallery';
-        document.querySelector(".theme-product-detail-image-container").appendChild(imageGallery);
-
-        // Handle base image element
-        const baseImgElement = document.querySelector('img[alt="base-image"]');
-        imageGallery.append(baseImgElement);
-
-        baseImgElement.addEventListener('click', () => {
-            // Remove all images and show the canvas container
-            productImage.querySelectorAll('img').forEach(img => img.remove());
-            renderedImage.style.display = 'block';
-        });
-
-        configObject.commonImages.forEach(imageUrl => {
-            const imgElement = document.createElement('img');
-            imgElement.src = imageUrl;
-            imgElement.alt = "Common Image";
-
-            const imgWrapper = document.createElement('div');
-            imgWrapper.classList.add('image-wrapper')
-            // Append the image element to the gallery
-            imgWrapper.appendChild(imgElement);
-            imageGallery.append(imgWrapper);
-
-            // Attach the click handler
-            handleImageClick(imgWrapper, imageUrl);
-        });
-        populatePalette();
-        generateControls();
-        generateCustomSelect();
-        paletteToggle.addEventListener('change', () => {
-            const showPalette2 = paletteToggle.checked;
-            palette1.style.display = showPalette2 ? 'none' : 'flex';
-            palette2.style.display = showPalette2 ? 'flex' : 'none';
-        });
-        createColorPicker();
+    const productImage = document.querySelector(".theme-product-detail-image");
+    designCanvas = document.createElement('canvas')
+    designCanvas.id = 'designCanvas';
+    designCanvas.width = 800;
+    designCanvas.height = 800;
+    designCanvas.style.display = 'none';
+    designCanvasCtx = designCanvas.getContext('2d');
+    imgElement.onload = () => {
+        designCanvasCtx.drawImage(imgElement, 0, 0);
+    };
+    if (imgElement.complete) {
+        imgElement.onload();
     }
+
+    // Initialize Three.js renderer, camera, and scene
+    const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+    });
+    renderer.domElement.id = 'renderedImage';
+    productImage.appendChild(renderer.domElement);
+    productImage.appendChild(designCanvas);
+    const dpr = window.devicePixelRatio || 1;
+
+    renderer.setSize(productImage.clientWidth * dpr, productImage.clientWidth * dpr);
+    renderer.domElement.style.width = productImage.clientWidth + 'px';
+    renderer.domElement.style.height = productImage.clientWidth + 'px';
+
+    renderer.setClearColor(0xffffff);
+    renderedImage = document.querySelector('#renderedImage');
+
+
+    const cameraWidth = 10; // Width of the camera view
+    const cameraHeight = 10; // Height of the camera view
+
+    const camera = new THREE.OrthographicCamera(
+        -cameraWidth / 2, cameraWidth / 2,
+        cameraHeight / 2, -cameraHeight / 2,
+        0.1, 1000
+    );
+
+    const scene = new THREE.Scene();
+    scene.add(new THREE.AmbientLight(0x404040));
+    let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(50, 5, 150).normalize();
+    scene.add(directionalLight);
+
+    scene.add(new THREE.AmbientLight(0x404040));
+    let directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight1.position.set(0, 0, 0).normalize();
+    scene.add(directionalLight1);
+
+    const loader = new THREE.GLTFLoader();
+
+    loader.load(configObject.imageInfo.objectPath, function (gltf) {
+        object = gltf.scene;
+        scene.add(object);
+        object.scale.set(0.1, 0.1, 0.1);
+        const box = new THREE.Box3().setFromObject(object);
+        const center = box.getCenter(new THREE.Vector3());
+        object.position.set(center.x + 1.25, center.y - 0.125, 0);
+        textureLoader = new THREE.TextureLoader();
+
+        textures = configObject.imageInfo.textures.map(textureInfo => {
+            const texture = textureLoader.load(textureInfo.texturePath);
+            texture.generateMipmaps = true;
+            texture.minFilter = THREE.LinearMipmapLinearFilter; // Use linear mipmaps for better quality during downscaling
+            return {
+                texture: texture,
+                objects: textureInfo.objects,
+                transparent: textureInfo.transparent
+            };
+        });
+        const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
+            function (texture) {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+
+                object.traverse(function (child) {
+                    if (child.isMesh) {
+                        if (child.name === configObject.imageInfo.backgroundPattern) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                map: texture,
+                                transparent: true,
+                                opacity: 1,
+                                depthWrite: false,
+                                emissive: new THREE.Color(0xffffff),
+                                emissiveIntensity: 0.3,
+                                color: new THREE.Color(0xffffff)
+                            });
+                        } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                map: texture,
+                                transparent: true,
+                                opacity: 1,
+                                depthWrite: false
+                            });
+                        }
+
+                        const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+                        if (textureInfo) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                map: textureInfo.texture,
+                                transparent: textureInfo.transparent
+                            });
+                        }
+
+                        child.material.needsUpdate = true;
+                    }
+                });
+            });
+
+        camera.position.set(center.x, center.y, 10);
+        camera.lookAt(center);
+
+        const animate = function () {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        };
+        animate();
+
+    }, undefined, function (error) {
+        console.error('An error occurred while loading the model:', error);
+    });
+
+    const handleImageClick = (imgElement, imageUrl) => {
+        imgElement.addEventListener('click', () => {
+            // Hide canvas container and remove all images in the display div
+            document.querySelector('#renderedImage').style.display = 'none';
+            productImage.querySelectorAll('img').forEach(img => img.remove());
+            // Create and append the new image
+            const displayImgElement = document.createElement('img');
+            displayImgElement.src = imageUrl;
+            displayImgElement.alt = "Selected Image";
+            displayImgElement.style.width = productImage.clientWidth + 'px'; // width in pixels
+            displayImgElement.style.height = productImage.clientWidth + 'px'; // height in pixels
+            productImage.append(displayImgElement);
+        });
+    };
+
+    const imageGallery = document.createElement('div');
+    imageGallery.id = 'image-gallery';
+    document.querySelector(".theme-product-detail-image-container").appendChild(imageGallery);
+
+    // Handle base image element
+    const baseImgElement = document.querySelector('img[alt="base-image"]');
+    imageGallery.append(baseImgElement);
+
+    baseImgElement.addEventListener('click', () => {
+        // Remove all images and show the canvas container
+        productImage.querySelectorAll('img').forEach(img => img.remove());
+        renderedImage.style.display = 'block';
+    });
+
+    configObject.commonImages.forEach(imageUrl => {
+        const imgElement = document.createElement('img');
+        imgElement.src = imageUrl;
+        imgElement.alt = "Common Image";
+
+        const imgWrapper = document.createElement('div');
+        imgWrapper.classList.add('image-wrapper')
+        // Append the image element to the gallery
+        imgWrapper.appendChild(imgElement);
+        imageGallery.append(imgWrapper);
+
+        // Attach the click handler
+        handleImageClick(imgWrapper, imageUrl);
+    });
+    populatePalette();
+    generateControls();
+    generateCustomSelect();
+    paletteToggle.addEventListener('change', () => {
+        const showPalette2 = paletteToggle.checked;
+        palette1.style.display = showPalette2 ? 'none' : 'flex';
+        palette2.style.display = showPalette2 ? 'flex' : 'none';
+    });
+    createColorPicker();
+}
 
 
 function updateTargetValue(newValue) {
@@ -392,7 +392,7 @@ function updateFields() {
         if (cartData.line_items[i].item_id === productVariantId) {
             for (let j = 0; j < cartData.line_items[i].item_custom_fields.length; j++) {
                 if ((cartData.line_items[i].item_custom_fields[j].label.startsWith('target') ||
-                        cartData.line_items[i].item_custom_fields[j].label.startsWith('selection')) && cartData.line_items[i].item_custom_fields[j].value_formatted != '') {
+                    cartData.line_items[i].item_custom_fields[j].label.startsWith('selection')) && cartData.line_items[i].item_custom_fields[j].value_formatted != '') {
                     selectionValue[x] = JSON.parse(cartData.line_items[i].item_custom_fields[j].value_formatted);
                     x++;
                 }
@@ -497,7 +497,7 @@ function attachQuantityEventListeners() {
     const removeButtons = cartContainer.querySelectorAll('.remove-button');
 
     decrementButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const quantityInput = this.nextElementSibling;
             quantityInput.value = parseInt(quantityInput.value) - 1;
             let customField = quantityInput.getAttribute("customField");
@@ -512,7 +512,7 @@ function attachQuantityEventListeners() {
     });
 
     incrementButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const quantityInput = this.previousElementSibling;
             quantityInput.value = parseInt(quantityInput.value) + 1;
             let customField = quantityInput.getAttribute("customField");
@@ -526,7 +526,7 @@ function attachQuantityEventListeners() {
     });
 
     removeButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const spinnerDiv = event.target.closest(".theme-product-quantity-spinner");
             const customFieldInput = spinnerDiv.querySelector("input[customfield]");
             let customField = customFieldInput.getAttribute("customField");
@@ -556,7 +556,7 @@ function addLightboxEventListener() {
     carousels.forEach(carousel => {
         const img = carousel.querySelector('img');
         if (img) {
-            img.addEventListener('click', function(event) {
+            img.addEventListener('click', function (event) {
                 if (this.closest('.no-lightbox')) {
                     event.stopPropagation(); // Prevent the event from bubbling up
                     event.preventDefault(); // Prevent the default action
@@ -614,7 +614,7 @@ function createCanvas(pattern) {
     canvas.height = 150;
     const img = new Image();
     img.src = document.querySelector('img[alt="base-image"]').src;
-    img.onload = function() {
+    img.onload = function () {
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
         processImageData(context, pattern);
     };
@@ -872,7 +872,7 @@ function addClickEventToSwatches() {
 
     swatchElements.forEach(swatch => {
 
-        swatch.addEventListener('click', function() {
+        swatch.addEventListener('click', function () {
             if (this.classList.contains('custom-color-selector')) {
                 customColorPicker.style.display = 'block';
             } else {
@@ -914,7 +914,7 @@ function generateCustomSelect() {
         customSelectContainer.innerHTML = '<div class="custom-select" id="customSelect">' + customSelectContent + '</div>';
         const customOptions = customSelectContainer.querySelectorAll('div[data-value]');
         customOptions.forEach(option => {
-            option.addEventListener('click', function() {
+            option.addEventListener('click', function () {
                 selectOption(this);
             });
         });
@@ -1082,10 +1082,10 @@ function addToCart(qty) {
 
     // Execute the POST request
     fetch(requestData.url, {
-            method: requestData.method,
-            headers: requestData.headers,
-            body: requestData.body
-        })
+        method: requestData.method,
+        headers: requestData.headers,
+        body: requestData.body
+    })
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
             // Check if items are present in response payload
@@ -1306,12 +1306,12 @@ function changeColor(changeColorArray) {
     }
     designCanvasCtx.putImageData(imgData, 0, 0);
     // Load uploaded texture
-    const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'), function(texture) {
+    const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'), function (texture) {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, 1);
 
-        object.traverse(function(child) {
+        object.traverse(function (child) {
             if (child.isMesh) {
                 if (child.name === configObject.imageInfo.backgroundPattern) {
                     child.material = new THREE.MeshStandardMaterial({
@@ -1370,7 +1370,7 @@ function rgbStringToObject(rgbString) {
 }
 
 function handleColorClick(swatch) {
-    if (selectedSwatch && selectedSwatch !== swatch) {}
+    if (selectedSwatch && selectedSwatch !== swatch) { }
 
     const allSwatches = document.querySelectorAll('.color-swatch');
     allSwatches.forEach(s => {
@@ -1395,8 +1395,104 @@ function handleColorClick(swatch) {
     }
 
     updateCustomColor();
+
+    const img = document.querySelector('img[alt="base-image"]');
+    const canvas = document.getElementById('imageCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Draw the image onto the canvas
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = [];
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const r = imageData.data[i];
+        const g = imageData.data[i + 1];
+        const b = imageData.data[i + 2];
+        pixels.push([r, g, b]);
+    }
+
+    // Cluster the palette
+    const { averagedColors, clusterVariances } = simpleClusterColors(palette, pixels);
+    const colorFrequency = calculateColorFrequency(image, averagedColors);
+
+    const normalize = (value, min, max) => (value - min) / (max - min);
+
+    // Find min/max for frequency and variance
+    const minFrequency = Math.min(...colorFrequency.map(c => c.frequency));
+    const maxFrequency = Math.max(...colorFrequency.map(c => c.frequency));
+    const minVariance = Math.min(...clusterVariances);
+    const maxVariance = Math.max(...clusterVariances);
+
+    const minFrequencyThreshold = 0.90; // Set threshold for high frequency (can be adjusted)
+    const maxVarianceThreshold = 0.10;  // Set threshold for low variance (can be adjusted)
+
+    const filteredColors = averagedColors.filter((color, index) => {
+
+        const normalizedFrequency = normalize(colorFrequency[index].frequency, minFrequency, maxFrequency);
+        const normalizedVariance = normalize(clusterVariances[index], minVariance, maxVariance);
+
+        return normalizedFrequency >= minFrequencyThreshold || normalizedVariance <= maxVarianceThreshold;
+    });
+    maxPaletteCount = averagedColors.length;
+    recommendedPaletteCount = filteredColors.length;
+
+    for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
+        palette = colorThief.getPalette(image, i); // Extract 10 dominant colors
+
+        const schemes = generatePalettes(palette);
+        generatePaletteStructure(palette);
+
+        /*                palette.forEach((color, index) => {
+                            const colorDiv = document.createElement('div');
+                            colorDiv.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+                            colorDiv.textContent = `RGB(${color[0]}, ${color[1]}, ${color[2]}) - Variance: ${clusterVariances[index]} - Frequency: ${colorFrequency[index].frequency}` ;
+        
+                            colorDiv.style.padding = '10px';
+                            colorDiv.style.margin = '5px';
+                            document.body.appendChild(colorDiv);
+                        });
+        */
+
+
+        const paletteValues = Object.values(schemes);  // Get only the color arrays (values)
+
+        const uniquePalettes = [];
+        const removedPalettes = [];
+
+        paletteValues.forEach((currentPalette, index) => {
+            // Check if this palette is similar to any existing ones
+            const isSimilar = uniquePalettes.some(existingPalette =>
+                arePalettesSimilar(existingPalette, currentPalette)
+            );
+
+            if (!isSimilar) {
+                uniquePalettes.push(currentPalette);
+            } else {
+                // Log the removed palette
+                const paletteName = Object.keys(palette)[index];
+                removedPalettes.push({ [paletteName]: currentPalette });
+            }
+        });
+
+        // Now uniquePalettes contains only non-similar palettes
+        console.log("Unique Palettes:");
+        console.log(uniquePalettes);
+        const { uniqueColoredPalettes, removedColoredPalettes } = removePalettesWithSimilarColors(uniquePalettes)
+        console.log("Removed Palettes:");
+        console.log(uniqueColoredPalettes);
+        for (let i = 0; i < uniqueColoredPalettes.length; i++) {
+            generatePaletteStructure(uniqueColoredPalettes[i]);
+        }
+
+
+
+    }
+
+
     selectedSwatch = swatch;
-}
+};
 
 document.addEventListener('DOMContentLoaded', loadPage);
 
