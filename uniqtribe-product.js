@@ -1579,7 +1579,7 @@ function updateSwatches(selectedColor) {
 
     // Function to calculate the frequency of colors in the image based on Color Thief's palette
     function calculateColorFrequency(image, palette) {
-      const canvas = document.getElementById('canvas');
+      const canvas = document.getElementById('imageCanvas');
       const ctx = canvas.getContext('2d');
       canvas.width = image.width;
       canvas.height = image.height;
