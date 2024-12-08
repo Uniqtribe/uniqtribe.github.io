@@ -316,7 +316,7 @@ if (varientContainer) {
             renderer.render(scene, camera);
         };
         animate();
-
+alert("AB");
     }, undefined, function (error) {
         console.error('An error occurred while loading the model:', error);
     });
