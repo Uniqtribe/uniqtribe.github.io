@@ -12,6 +12,9 @@ let selectedSwatch;
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
 if (varientContainer) {
+    console.log("Image is fully loaded. Running script...");
+    // Your script here
+	
     let varientContainerRows = document.createElement('div')
     varientContainerRows.className = 'theme-product-varients-row';
     let cartContainer = document.createElement('div');
@@ -468,6 +471,7 @@ const colorThief = new ColorThief();
         palette2.style.display = showPalette2 ? 'flex' : 'none';
     });
     createColorPicker();
+	});
 }
 
 
@@ -2401,6 +2405,17 @@ function areColorsSimilar(color1, color2, threshold = 10) {
   const distance = calculateEuclideanDistance(color1, color2);
   return distance <= threshold;
 }
+
+function waitForImageToLoad(altText, callback) {
+    var img = document.querySelector('img[alt="' + altText + '"]');
+
+    if (img.complete && img.naturalHeight !== 0) {
+        callback(); // Image is already loaded
+    } else {
+        img.onload = callback; // Wait for load
+    }
+}
+
 
 function removePalettesWithSimilarColors(palette) {
   const uniqueColoredPalettes = [];
