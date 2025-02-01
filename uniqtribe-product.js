@@ -464,10 +464,8 @@ const colorThief = new ColorThief();
         // Attach the click handler
         handleImageClick(imgWrapper, imageUrl);
     });
-    
-	});
-	populatePalette();
-    generateControls();
+    populatePalette();
+	generateControls();
     generateCustomSelect();
     paletteToggle.addEventListener('change', () => {
         const showPalette2 = paletteToggle.checked;
@@ -475,6 +473,9 @@ const colorThief = new ColorThief();
         palette2.style.display = showPalette2 ? 'flex' : 'none';
     });
     createColorPicker();
+	});
+	
+    
 }
 
 
