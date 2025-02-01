@@ -928,7 +928,7 @@ console.log("2");
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
 
-console.log("3");
+console.log("3",paletteColors);
     customContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     customContainer.style.border = '0.5px solid black';
     customContainer.style.position = 'relative';
