@@ -944,6 +944,7 @@ function generateControls() {
 }
 
 function generateVerticalGradient(colors, isCustom = false) {
+console.log("Colorsss", colors);
     const segmentSize = 100 / colors.length;
     const gradientSegments = colors.map((color, index) => {
         const startPercent = index * segmentSize;
