@@ -841,7 +841,7 @@ function applyDirectionToColor(toColor, direction) {
 }
 
 async function populatePalette() {
-console.log("AAAA", configObject);
+console.log("AAAA", basicColor);
     const colors = await fetchColors(); // Fetch colors from the endpoint
     const fragment = document.createDocumentFragment();
     const swatchFragment = document.createDocumentFragment();
