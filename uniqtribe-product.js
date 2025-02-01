@@ -528,7 +528,7 @@ console.log("XXXX", basicColor[0].baseColor)
     obj['shape'] = '';
     target.value = JSON.stringify(obj);
     let object = {};
-    object['source'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern));
+    object['source'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern);
     source.value = JSON.stringify(object);
 }
 
