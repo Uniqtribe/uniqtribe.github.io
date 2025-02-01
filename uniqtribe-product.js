@@ -1774,6 +1774,8 @@ console.log("50", color);
 
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
+console.log("51",`rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`);
+
         return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
 console.log("100");
