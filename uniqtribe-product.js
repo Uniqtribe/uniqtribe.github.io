@@ -1788,9 +1788,6 @@ console.log("6666", `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${en
 
         return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
-console.log("888", `linear-gradient(to right, ${gradientSegments})`)	;
-console.log("99", `linear-gradient(to right, ${gradientSegments})`)	;
-
 
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
 }
@@ -2413,7 +2410,7 @@ function generatePaletteStructure(palette){
                     colorDiv.style.padding = '10px';
                     colorDiv.style.margin = '5px';
                     colorDiv.style.height = '50px'; // Adjust the height as needed for visual appeal
-
+console.log("AAAABBBBCCCC");
                     // Append the colorDiv to the document body
                     document.body.appendChild(colorDiv);
 }
