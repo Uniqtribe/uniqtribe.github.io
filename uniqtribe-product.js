@@ -941,7 +941,7 @@ console.log("3",paletteColors);
     toColorSwatchesContainer.appendChild(customContainer);
 
     paletteColors.forEach((palette, index) => {
-        populateSwatchesForIndex(index, palette.colorCombination);
+        populateSwatchesForIndex(index, palette);
     });
 
     addClickEventToSwatches();
