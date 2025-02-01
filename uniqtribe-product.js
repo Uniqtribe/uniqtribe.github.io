@@ -468,7 +468,7 @@ console.log("N7");
         // Attach the click handler
         handleImageClick(imgWrapper, imageUrl);
     });
-	console.log("N8");
+	console.log("N8", configObject);
     populatePalette();
 	console.log("N9" , configObject);
 	generateControls();
@@ -833,7 +833,7 @@ function applyDirectionToColor(toColor, direction) {
 }
 
 async function populatePalette() {
-
+console.log("AAAA");
     const colors = await fetchColors(); // Fetch colors from the endpoint
     const fragment = document.createDocumentFragment();
     const swatchFragment = document.createDocumentFragment();
