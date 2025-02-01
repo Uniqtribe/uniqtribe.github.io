@@ -1775,9 +1775,11 @@ function calculateClusterVariance(cluster) {
     const segmentSize = 100 / colors.length;
     console.log("segmentSize",segmentSize);
 
-console.log("4", colors);
 
     const gradientSegments = colors.map((color, index) => {
+
+console.log("5", color);
+
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
         return `rgb(${color[0]},${color[1]},${color[2]}) ${startPercent}% ${endPercent}%`;
