@@ -931,6 +931,7 @@ console.log("18",swatches);
     toColorSwatchesContainer.appendChild(customContainer);
 console.log("19");
     paletteColors.forEach((palette, index) => {
+console.log("19.1", palette);
         populateSwatchesForIndex(index, palette.colorCombination);
 console.log("20");
     });
