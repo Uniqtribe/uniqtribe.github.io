@@ -842,7 +842,7 @@ console.log("3");
     basicColor[0].baseColor.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
-console.log("4");
+console.log("4", color);
         colorDiv.style.backgroundColor = color;
         colorDiv.style.width = '25px';
         colorDiv.style.height = '25px';
