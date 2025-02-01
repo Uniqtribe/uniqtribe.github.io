@@ -468,6 +468,7 @@ const colorThief = new ColorThief();
         // Attach the click handler
         handleImageClick(imgWrapper, imageUrl);
     });
+console.log("1");
     populatePalette();
     generateControls();
     generateCustomSelect();
@@ -831,16 +832,17 @@ function applyDirectionToColor(toColor, direction) {
 }
 
 async function populatePalette() {
-
+console.log("2");
     const colors = await fetchColors(); // Fetch colors from the endpoint
     const fragment = document.createDocumentFragment();
     const swatchFragment = document.createDocumentFragment();
 
     // Populate dominant colors
+console.log("3");
     basicColor[0].baseColor.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
-
+console.log("4");
         colorDiv.style.backgroundColor = color;
         colorDiv.style.width = '25px';
         colorDiv.style.height = '25px';
