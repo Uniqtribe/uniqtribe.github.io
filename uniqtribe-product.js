@@ -932,7 +932,7 @@ console.log("18",swatches);
 console.log("19");
     paletteColors.forEach((palette, index) => {
 console.log("19.1", palette);
-        populateSwatchesForIndex(index, palette.colorCombination);
+        populateSwatchesForIndex(index, palette);
 console.log("20");
     });
 console.log("21");
