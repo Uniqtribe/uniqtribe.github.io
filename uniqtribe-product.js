@@ -470,6 +470,7 @@ console.log("N7");
     });
 	console.log("N8");
     populatePalette();
+	console.log("N9" , configObject);
 	generateControls();
     generateCustomSelect();
     paletteToggle.addEventListener('change', () => {
