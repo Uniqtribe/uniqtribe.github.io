@@ -1775,13 +1775,13 @@ function calculateClusterVariance(cluster) {
     const segmentSize = 100 / colors.length;
     console.log("segmentSize",segmentSize);
 
+console.log("4", colors);
 
     const gradientSegments = colors.map((color, index) => {
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
         return `rgb(${color[0]},${color[1]},${color[2]}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
-
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
 }
 function generatePalettes(palette) {
