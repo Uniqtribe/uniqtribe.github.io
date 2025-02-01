@@ -10,7 +10,7 @@ let selectedSwatch;
     let maxPaletteCount = 0;
 
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
-
+addLightboxEventListener();
 if (varientContainer) {
 	waitForImageToLoad("base-image", function() {
 
