@@ -847,7 +847,7 @@ console.log("AAAA", basicColor);
     const swatchFragment = document.createDocumentFragment();
 
     // Populate dominant colors
-    basicColor.baseColor.forEach((color, index) => {
+    basicColor[0].baseColor.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
 
