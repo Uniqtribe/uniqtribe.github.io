@@ -522,6 +522,8 @@ function updateFields() {
 
 function loadBasicField() {
     let obj = {}
+console.log("XXXX", basicColor[0].baseColor)
+console.log("YYYY", parseColor)
     obj['selected'] = basicColor[0].baseColor.map(parseColor).map(rgb => rgbArrayToHex(rgb));
     obj['quantity'] = 1;
     obj['shape'] = '';
