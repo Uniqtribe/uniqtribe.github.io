@@ -352,7 +352,6 @@ if (varientContainer) {
 
     const minFrequencyThreshold = 0.90; // Set threshold for high frequency (can be adjusted)
     const maxVarianceThreshold = 0.10;  // Set threshold for low variance (can be adjusted)
-
     const filteredColors = averagedColors.filter((color, index) => {
 
         const normalizedFrequency = normalize(colorFrequency[index].frequency, minFrequency, maxFrequency);
@@ -360,6 +359,8 @@ if (varientContainer) {
 
         return normalizedFrequency >= minFrequencyThreshold || normalizedVariance <= maxVarianceThreshold;
     });
+console.log("filteredColors", filteredColors);
+
     maxPaletteCount = averagedColors.length;
     recommendedPaletteCount = filteredColors.length;
 console.log("recommendedPaletteCount", recommendedPaletteCount);
