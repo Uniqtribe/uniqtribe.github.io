@@ -850,11 +850,12 @@ console.log("4");
 
         sectionDiv.appendChild(colorDiv);
         fragment.appendChild(sectionDiv);
-
+console.log("5");
         colorDiv.addEventListener('click', () => {
             document.querySelector('.custom-selected-color.selected')?.classList.remove('selected');
             colorDiv.classList.add('selected');
             updateSwatches(colorDiv.style.backgroundColor);
+console.log("6");
         });
     });
     sectionSelector.appendChild(fragment);
@@ -1577,6 +1578,7 @@ function pickColor(x, y) {
 }
 
 function updateSwatches(selectedColor) {
+console.log("7");
     document.querySelectorAll('.color-swatch').forEach((swatchColor) => {
         const isActive = selectedColor === swatchColor.style.backgroundColor;
         swatchColor.className = isActive ? 'color-swatch active' : 'color-swatch';
