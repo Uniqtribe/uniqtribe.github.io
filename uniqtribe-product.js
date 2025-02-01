@@ -888,19 +888,20 @@ console.log("11");
 }
 
 function generateControls() {
-
+console.log("12");
     const sourceColors = basicColor[0].baseColor;
     const paletteColors = basicColor[0].alternativeColor;
-
+console.log("13");
     colorControlsContainer.innerHTML = '';
     toColorSwatchesContainer.innerHTML = '';
-
+console.log("14");
     const sourceContainer = document.createElement('div');
     sourceContainer.className = 'colorSwatches selected';
     sourceContainer.id = `swatches-0`;
 
     sourceContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     toColorSwatchesContainer.appendChild(sourceContainer);
+console.log("15", palette);
     paletteColors.forEach((palette, paletteIndex) => {
         const swatchContainer = document.createElement('div');
         swatchContainer.className = 'colorSwatches';
