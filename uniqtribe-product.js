@@ -1016,6 +1016,8 @@ console.log("hiddenSelect", hiddenSelect.options)
 
         customSelectContainer.innerHTML = '<div class="custom-select" id="customSelect">' + customSelectContent + '</div>';
         const customOptions = customSelectContainer.querySelectorAll('div[data-value]');
+console.log("customOptions", customOptions)
+
         customOptions.forEach(option => {
             option.addEventListener('click', function () {
                 selectOption(this);
