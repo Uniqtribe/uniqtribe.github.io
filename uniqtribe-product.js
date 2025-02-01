@@ -908,6 +908,7 @@ function generateControls() {
     const sourceContainer = document.createElement('div');
     sourceContainer.className = 'colorSwatches selected';
     sourceContainer.id = `swatches-0`;
+console.log("Colorzzz", sourceColors.map(colorObj => colorObj));
 
     sourceContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     toColorSwatchesContainer.appendChild(sourceContainer);
@@ -915,7 +916,7 @@ function generateControls() {
         const swatchContainer = document.createElement('div');
         swatchContainer.className = 'colorSwatches';
         swatchContainer.id = `swatches-${(paletteIndex + 1)}`;
-
+console.log("Colorzzz22", sourceColors.map(colorObj => colorObj.baseColor));
         swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj.baseColor));
         toColorSwatchesContainer.appendChild(swatchContainer);
 
