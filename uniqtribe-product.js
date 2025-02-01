@@ -362,6 +362,7 @@ if (varientContainer) {
     });
     maxPaletteCount = averagedColors.length;
     recommendedPaletteCount = filteredColors.length;
+console.log("recommendedPaletteCount", recommendedPaletteCount);
 /*
 const colorThief = new ColorThief();
     for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
