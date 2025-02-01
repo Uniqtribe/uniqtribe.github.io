@@ -837,17 +837,13 @@ function applyDirectionToColor(toColor, direction) {
 }
 
 async function populatePalette() {
-console.log("2");
     const colors = await fetchColors(); // Fetch colors from the endpoint
     const fragment = document.createDocumentFragment();
     const swatchFragment = document.createDocumentFragment();
 
-    // Populate dominant colors
-console.log("3");
     basicColor[0].baseColor.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
-console.log("4", color);
         colorDiv.style.backgroundColor = color;
         colorDiv.style.width = '25px';
         colorDiv.style.height = '25px';
@@ -855,21 +851,17 @@ console.log("4", color);
 
         sectionDiv.appendChild(colorDiv);
         fragment.appendChild(sectionDiv);
-console.log("5");
         colorDiv.addEventListener('click', () => {
             document.querySelector('.custom-selected-color.selected')?.classList.remove('selected');
             colorDiv.classList.add('selected');
             updateSwatches(colorDiv.style.backgroundColor);
-console.log("6");
         });
     });
-console.log("8");
 
     sectionSelector.appendChild(fragment);
 
     // Populate swatches
     colors.forEach((color) => {
-console.log("9", color);
         const swatch = document.createElement('div');
         swatch.className = 'color-swatch';
         swatch.style.backgroundColor = color.hex;
@@ -885,46 +877,34 @@ console.log("9", color);
     });
 
     // Add the color picker swatch
-console.log("10");
     const colorpicker = createColorPickerSwatch();
     swatchFragment.appendChild(colorpicker);
-console.log("11");
     paletteContainer.appendChild(swatchFragment);
 }
 
 function generateControls() {
-console.log("12");
     const sourceColors = basicColor[0].baseColor;
     const paletteColors = basicColor[0].alternativeColor;
-console.log("13");
     colorControlsContainer.innerHTML = '';
     toColorSwatchesContainer.innerHTML = '';
-console.log("14");
     const sourceContainer = document.createElement('div');
     sourceContainer.className = 'colorSwatches selected';
     sourceContainer.id = `swatches-0`;
-console.log("53", sourceColors);
     sourceContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors);
     toColorSwatchesContainer.appendChild(sourceContainer);
-console.log("15", palette);
-console.log("16", paletteColors);
     paletteColors.forEach((palette, paletteIndex) => {
         const swatchContainer = document.createElement('div');
         swatchContainer.className = 'colorSwatches';
         swatchContainer.id = `swatches-${(paletteIndex + 1)}`;
-console.log("54", sourceColors);
         swatchContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors);
         toColorSwatchesContainer.appendChild(swatchContainer);
-console.log("17");
 
         swatches.push(swatchContainer);
-console.log("18",swatches);
     });
 
     const customContainer = document.createElement('div');
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
-console.log("52", sourceColors);
     customContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors);
     customContainer.style.border = '0.5px solid black';
     customContainer.style.position = 'relative';
@@ -935,13 +915,9 @@ console.log("52", sourceColors);
     overlayImage.className = 'overlay-image';
     customContainer.appendChild(overlayImage);
     toColorSwatchesContainer.appendChild(customContainer);
-console.log("19");
     paletteColors.forEach((palette, index) => {
-console.log("19.1", palette);
         populateSwatchesForIndex(index, palette);
-console.log("20");
     });
-console.log("21");
     addClickEventToSwatches();
 }
 
@@ -1014,6 +990,7 @@ function addClickEventToSwatches() {
 }
 
 function generateCustomSelect() {
+console.log("aa");
     const hiddenSelect = document.querySelector('select[data-label="Shape"]');
     if (document.querySelector('#customSelectContainer')) {
         document.querySelector('#customSelectContainer').remove()
@@ -1327,7 +1304,6 @@ function updateCartSuccess(e) {
     var detail = e.detail;
     var variantId = e.productId;
     var lineItems = e.cart.payload.items
-    console.log("e", e);
     var currentLineItem;
 
     //resetSelect(targetContainer);
@@ -1598,7 +1574,6 @@ function pickColor(x, y) {
 }
 
 function updateSwatches(selectedColor) {
-console.log("7");
     document.querySelectorAll('.color-swatch').forEach((swatchColor) => {
         const isActive = selectedColor === swatchColor.style.backgroundColor;
         swatchColor.className = isActive ? 'color-swatch active' : 'color-swatch';
@@ -1773,21 +1748,13 @@ function calculateClusterVariance(cluster) {
 
 
     function generateVerticalGradientPalette(colors, isCustom = false) {
-console.log("23", colors);
     const segmentSize = 100 / colors.length;
-    console.log("segmentSize",segmentSize);
-
-
     const gradientSegments = colors.map((color, index) => {
-console.log("50", color);
-
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
-console.log("51",`rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`);
 
         return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
-console.log("100");
 
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
 }
