@@ -363,7 +363,7 @@ if (varientContainer) {
     maxPaletteCount = averagedColors.length;
     recommendedPaletteCount = filteredColors.length;
 console.log("recommendedPaletteCount", recommendedPaletteCount);
-/*
+
 const colorThief = new ColorThief();
     for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
         palette = colorThief.getPalette(imageData, i); // Extract 10 dominant colors
@@ -382,7 +382,7 @@ const colorThief = new ColorThief();
                         });
         */
 
-/*
+
         const paletteValues = Object.values(schemes);  // Get only the color arrays (values)
 
         const uniquePalettes = [];
@@ -414,7 +414,7 @@ const colorThief = new ColorThief();
     }, undefined, function (error) {
         console.error('An error occurred while loading the model:', error);
     });
-*/
+
     const handleImageClick = (imgElement, imageUrl) => {
         imgElement.addEventListener('click', () => {
             // Hide canvas container and remove all images in the display div
