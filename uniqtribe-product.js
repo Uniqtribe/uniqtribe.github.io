@@ -225,11 +225,13 @@ console.log("N");
         alpha: true,
         antialias: true
     });
+	
+	console.log("O");
     renderer.domElement.id = 'renderedImage';
     productImage.appendChild(renderer.domElement);
     productImage.appendChild(designCanvas);
     const dpr = window.devicePixelRatio || 1;
-
+console.log("N1");
     renderer.setSize(productImage.clientWidth * dpr, productImage.clientWidth * dpr);
     renderer.domElement.style.width = productImage.clientWidth + 'px';
     renderer.domElement.style.height = productImage.clientWidth + 'px';
@@ -237,7 +239,7 @@ console.log("N");
     renderer.setClearColor(0xffffff);
     renderedImage = document.querySelector('#renderedImage');
 
-
+console.log("N2");
     const cameraWidth = 10; // Width of the camera view
     const cameraHeight = 10; // Height of the camera view
 
@@ -246,7 +248,7 @@ console.log("N");
         cameraHeight / 2, -cameraHeight / 2,
         0.1, 1000
     );
-
+console.log("N3");
     const scene = new THREE.Scene();
     scene.add(new THREE.AmbientLight(0x404040));
     let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -259,7 +261,7 @@ console.log("N");
     scene.add(directionalLight1);
 
     const loader = new THREE.GLTFLoader();
-
+console.log("N4");
     loader.load(configObject.imageInfo.objectPath, function (gltf) {
         object = gltf.scene;
         scene.add(object);
@@ -437,7 +439,7 @@ const colorThief = new ColorThief();
             productImage.append(displayImgElement);
         });
     };
-
+console.log("N5");
     const imageGallery = document.createElement('div');
     imageGallery.id = 'image-gallery';
     document.querySelector(".theme-product-detail-image-container").appendChild(imageGallery);
@@ -451,7 +453,7 @@ const colorThief = new ColorThief();
         productImage.querySelectorAll('img').forEach(img => img.remove());
         renderedImage.style.display = 'block';
     });
-
+console.log("N6");
     configObject.commonImages.forEach(imageUrl => {
         const imgElement = document.createElement('img');
         imgElement.src = imageUrl;
@@ -462,10 +464,11 @@ const colorThief = new ColorThief();
         // Append the image element to the gallery
         imgWrapper.appendChild(imgElement);
         imageGallery.append(imgWrapper);
-
+console.log("N7");
         // Attach the click handler
         handleImageClick(imgWrapper, imageUrl);
     });
+	console.log("N8");
     populatePalette();
 	generateControls();
     generateCustomSelect();
