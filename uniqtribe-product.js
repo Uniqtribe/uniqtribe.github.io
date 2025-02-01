@@ -523,13 +523,12 @@ function updateFields() {
 function loadBasicField() {
     let obj = {}
 console.log("XXXX", basicColor[0].baseColor)
-console.log("YYYY", parseColor)
-    obj['selected'] = basicColor[0].baseColor.map(parseColor).map(rgb => rgbArrayToHex(rgb));
+    obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern).map(rgb => rgbArrayToHex(rgb));
     obj['quantity'] = 1;
     obj['shape'] = '';
     target.value = JSON.stringify(obj);
     let object = {};
-    object['source'] = basicColor[0].baseColor.map(parseColor).map(rgb => rgbArrayToHex(rgb));
+    object['source'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern).map(rgb => rgbArrayToHex(rgb));
     source.value = JSON.stringify(object);
 }
 
@@ -597,6 +596,10 @@ function rgbArrayToHex({
     // Convert each RGB component to hexadecimal and pad with zeroes if necessary
     const toHex = (component) => component.toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function rgbArrayToHexForColorPattern(rgb) {
+    return `#${((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1).toUpperCase()}`;
 }
 
 function printPattern(patternSelection) {
