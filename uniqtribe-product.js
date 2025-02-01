@@ -729,7 +729,7 @@ function createCanvas(pattern) {
 function processImageData(context, pattern) {
     const imgData = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
     const data = imgData.data;
-    const dominantColor = convertHexArrayToRgbArray(configObject.dominantColors);
+    const dominantColor = convertHexArrayToRgbArray(basicColor[0].baseColor);
     const changeColorArray = convertHexArrayToRgbArray(JSON.parse(JSON.parse(pattern).value).selected);
     for (let j = 0; j < data.length; j += 4) {
         const [r, g, b] = [data[j], data[j + 1], data[j + 2]];
@@ -881,8 +881,8 @@ async function populatePalette() {
 
 function generateControls() {
 
-    const sourceColors = configObject.dominantColors;
-    const paletteColors = configObject.suggestedColors;
+    const sourceColors = basicColor[0].baseColor;
+    const paletteColors = basicColor[0].alternativeColor;
 
     colorControlsContainer.innerHTML = '';
     toColorSwatchesContainer.innerHTML = '';
@@ -1361,8 +1361,8 @@ function changeColor(changeColorArray) {
     imgData = designCanvasCtx.getImageData(0, 0, 800, 800);
     data = imgData.data;
 
-    const dominantColors = configObject.dominantColors.map(parseColor);
-    const colorHexMap = configObject.dominantColors.map(color => color.toLowerCase());
+    const dominantColors = basicColor[0].baseColor.map(parseColor);
+    const colorHexMap = basicColor[0].baseColor.map(color => color.toLowerCase());
     const colorDiffMap = dominantColors.map(color => ({
         r: Math.abs(255 - color.r),
         g: Math.abs(255 - color.g),
