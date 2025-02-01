@@ -593,6 +593,7 @@ function rgbArrayToHex({
     g,
     b
 }) {
+console.log("component",component);
     // Convert each RGB component to hexadecimal and pad with zeroes if necessary
     const toHex = (component) => component.toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
