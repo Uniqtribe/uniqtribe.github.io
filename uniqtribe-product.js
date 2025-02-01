@@ -909,7 +909,7 @@ function generateControls() {
     sourceContainer.className = 'colorSwatches selected';
     sourceContainer.id = `swatches-0`;
 console.log("Colorzzz", sourceColors.map(colorObj => colorObj));
-
+console.log("1");
     sourceContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     toColorSwatchesContainer.appendChild(sourceContainer);
     paletteColors.forEach((palette, paletteIndex) => {
@@ -917,6 +917,7 @@ console.log("Colorzzz", sourceColors.map(colorObj => colorObj));
         swatchContainer.className = 'colorSwatches';
         swatchContainer.id = `swatches-${(paletteIndex + 1)}`;
 console.log("ColorzzzBBB", sourceColors);
+console.log("2");
         swatchContainer.style.backgroundImage = generateVerticalGradient(rgbArrayToHexForColorPattern(sourceColors));
         toColorSwatchesContainer.appendChild(swatchContainer);
 
@@ -926,6 +927,8 @@ console.log("ColorzzzBBB", sourceColors);
     const customContainer = document.createElement('div');
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
+
+console.log("3");
     customContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     customContainer.style.border = '0.5px solid black';
     customContainer.style.position = 'relative';
