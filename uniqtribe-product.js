@@ -523,12 +523,12 @@ function updateFields() {
 function loadBasicField() {
     let obj = {}
 console.log("XXXX", basicColor[0].baseColor)
-    obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern).map(rgb => rgbArrayToHex(rgb));
+    obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern);
     obj['quantity'] = 1;
     obj['shape'] = '';
     target.value = JSON.stringify(obj);
     let object = {};
-    object['source'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern).map(rgb => rgbArrayToHex(rgb));
+    object['source'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern));
     source.value = JSON.stringify(object);
 }
 
