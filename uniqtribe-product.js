@@ -980,6 +980,7 @@ function createColorPickerSwatch() {
 }
 
 function populateSwatchesForIndex(index, palette) {
+console.log("21", palette);
     const swatchContainer = swatches[index];
     swatchContainer.innerHTML = '';
     swatchContainer.style.backgroundImage = generateVerticalGradient(palette);
@@ -1761,6 +1762,7 @@ function calculateClusterVariance(cluster) {
 
 
     function generateVerticalGradientPalette(colors, isCustom = false) {
+console.log("23", colors);
     const segmentSize = 100 / colors.length;
     console.log("segmentSize",segmentSize);
 
