@@ -127,8 +127,8 @@ if (varientContainer) {
         }
 		
 		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
-            config = row.querySelector('span');
-            basicColor = JSON.parse(config.textContent.trim());
+            basicColorConfig = row.querySelector('span');
+            basicColor = JSON.parse(basicColorConfig.textContent.trim());
             row.style.display = 'none';
         }
 		
