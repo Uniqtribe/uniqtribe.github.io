@@ -940,13 +940,14 @@ console.log("21");
 }
 
 function generateVerticalGradient(colors, isCustom = false) {
+console.log("24");
     const segmentSize = 100 / colors.length;
     const gradientSegments = colors.map((color, index) => {
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
         return `${color} ${startPercent}% ${endPercent}%`;
     }).join(', ');
-
+console.log("25",gradientSegments);
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
 }
 
