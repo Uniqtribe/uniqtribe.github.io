@@ -510,15 +510,17 @@ function updateFields() {
 
 function loadBasicField() {
     let obj = {}
-    obj['selected'] = basicColor[0].baseColor.map(parseColor).map(rgb => rgbArrayToHex(rgb));
+    obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
     obj['quantity'] = 1;
     obj['shape'] = '';
     target.value = JSON.stringify(obj);
     let object = {};
-    object['source'] = basicColor[0].baseColor.map(parseColor).map(rgb => rgbArrayToHex(rgb));
+    object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
     source.value = JSON.stringify(object);
 }
-
+function rgbArrayToHexFromPattern(rgb) {
+    return `#${((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1).toUpperCase()}`;
+}
 function loadSelectionFieldsWithPattern() {
     patternSelection = [];
 
