@@ -993,20 +993,16 @@ function generateCustomSelect() {
     if (document.querySelector('#customSelectContainer')) {
         document.querySelector('#customSelectContainer').remove()
     }
-console.log("hiddenSelect", hiddenSelect)
     if (hiddenSelect) {
         const customSelectContainer = document.createElement('div');
         customSelectContainer.id = 'customSelectContainer';
         hiddenSelect.parentNode.insertBefore(customSelectContainer, hiddenSelect.nextSibling);
 
         let customSelectContent = '';
-console.log("hiddenSelect", hiddenSelect.options)
         Array.from(hiddenSelect.options).forEach((option, index) => {
             if (index === 0 && option.textContent.trim() === "Choose an option") {
                 return;
             }
-console.log("option", option)
-console.log("configObject.shapes", configObject.shapes)
             if (configObject.shapes.includes(option.value)||configObject.shapes.includes(option.value.toLowerCase())) {
                 customSelectContent += `
                     <div data-value="${option.value}">
@@ -1018,7 +1014,6 @@ console.log("configObject.shapes", configObject.shapes)
 
         customSelectContainer.innerHTML = '<div class="custom-select" id="customSelect">' + customSelectContent + '</div>';
         const customOptions = customSelectContainer.querySelectorAll('div[data-value]');
-console.log("customOptions", customOptions)
 
         customOptions.forEach(option => {
             option.addEventListener('click', function () {
@@ -1026,7 +1021,6 @@ console.log("customOptions", customOptions)
             });
         });
         const preselectedValue = hiddenSelect.value;
-        console.log("preselectedValue", preselectedValue)
         const initialOption = Array.from(customOptions).find(option => option.getAttribute('data-value') === preselectedValue);
         if (initialOption) {
             initialOption.classList.add('selected'); // Set initial visual selection
