@@ -1026,7 +1026,7 @@ console.log("hiddenSelect.value", hiddenSelect);
 //        const preselectedValue = hiddenSelect.value;
 //        const initialOption = Array.from(customOptions).find(option => option.getAttribute('data-value') === preselectedValue);
 //        if (initialOption) {
-            document.querySelector('select[data-label="Shape"]').querySelectorAll("option")[1].classList.add('selected'); // Set initial visual selection
+            document.querySelector('select[id="customSelect"]').querySelectorAll("option")[1].classList.add('selected'); // Set initial visual selection
 //        }
     } else {
         console.error('No select element found with data-label="Shape".');
