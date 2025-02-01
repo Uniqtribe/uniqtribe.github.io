@@ -893,8 +893,8 @@ console.log("AAAA", basicColor);
 
 function generateControls() {
 
-    const sourceColors = configObject.dominantColors;
-    const paletteColors = configObject.suggestedColors;
+    const sourceColors = basicColor[0].baseColor;
+    const paletteColors = basicColor[0].alternativeColor;
 
     colorControlsContainer.innerHTML = '';
     toColorSwatchesContainer.innerHTML = '';
