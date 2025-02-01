@@ -4,8 +4,7 @@ let patternSelection;
 let productVariantId;
 let swatches = [];
 let selectedSwatch;
-let configObject;
-let basicColor;
+
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
@@ -13,9 +12,8 @@ let basicColor;
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
 if (varientContainer) {
-	waitForImageToLoad("base-image", function() {
-
-   // Your script here
+    console.log("Image is fully loaded. Running script...");
+    // Your script here
 	
     let varientContainerRows = document.createElement('div')
     varientContainerRows.className = 'theme-product-varients-row';
@@ -34,6 +32,7 @@ if (varientContainer) {
     varientContainerRows.append(cartContainer);
     varientContainer.append(varientContainerRows);
     imgElement = document.querySelector('img[alt="base-image"]');
+
     (function () {
         const originalFetch = window.fetch;
         window.fetch = function (...args) {
@@ -93,6 +92,7 @@ if (varientContainer) {
         }
         window.XMLHttpRequest = newXHR; // Override the global XMLHttpRequest
     })();
+
     document.addEventListener("cartUpdated", function (event) {
         cartData = event.detail.payload;
         setTimeout(() => {
@@ -100,6 +100,7 @@ if (varientContainer) {
             updateFields();
         }, 100); // Delay time (ms) can be adjusted
     });
+
     fetch('/storefront/api/v1/cart')
         .then(response => {
             if (!response.ok) {
@@ -107,6 +108,7 @@ if (varientContainer) {
             }
             return response.json(); // Parse the JSON response
         })
+
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
@@ -125,13 +127,12 @@ if (varientContainer) {
             configObject = JSON.parse(config.textContent.trim());
             row.style.display = 'none';
         }
-		
 		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
             basicColorConfig = row.querySelector('span');
             basicColor = JSON.parse(basicColorConfig.textContent.trim());
             row.style.display = 'none';
         }
-		
+
         if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
             selection[i] = row.querySelector('input');
             let obj = {};
@@ -142,9 +143,9 @@ if (varientContainer) {
             row.style.display = 'none';
         }
     })
+
     const inputElement = document.querySelector('[name="qty"]');
     inputElement.disabled = true;
-	
     if (inputElement) {
         inputElement.addEventListener('input', () => {
             console.log('Value changed by user to:', inputElement.value);
@@ -163,9 +164,12 @@ if (varientContainer) {
             configurable: true
         });
     }
+
     productVariantId = extractIdFromUrl(window.location.href);
     quantityInput = document.querySelector('[title="quantity"]');
+
     addLightboxEventListener();
+
     const container = document.querySelector('.theme-custom-field-main-container');
     container.insertAdjacentHTML('afterbegin', `
             <div class="customColorPickerPalette">
@@ -193,6 +197,7 @@ if (varientContainer) {
             </div>
               <canvas id="imageCanvas" style="display: none;"></canvas>
         `);
+
     paletteToggle = document.getElementById('paletteToggle');
     palette1 = document.getElementById('palette');
     palette2 = document.getElementById('palette2');
@@ -202,6 +207,7 @@ if (varientContainer) {
     toColorSwatchesContainer = document.getElementById('toColorSwatches');
     customColorPicker = document.getElementById('customColorPicker');
     paletteContainer = document.getElementById('palette')
+
     const productImage = document.querySelector(".theme-product-detail-image");
     designCanvas = document.createElement('canvas')
     designCanvas.id = 'designCanvas';
@@ -215,23 +221,24 @@ if (varientContainer) {
     if (imgElement.complete) {
         imgElement.onload();
     }
+
     // Initialize Three.js renderer, camera, and scene
     const renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true
     });
-	
-	console.log("O");
     renderer.domElement.id = 'renderedImage';
     productImage.appendChild(renderer.domElement);
     productImage.appendChild(designCanvas);
     const dpr = window.devicePixelRatio || 1;
+
     renderer.setSize(productImage.clientWidth * dpr, productImage.clientWidth * dpr);
     renderer.domElement.style.width = productImage.clientWidth + 'px';
     renderer.domElement.style.height = productImage.clientWidth + 'px';
 
     renderer.setClearColor(0xffffff);
     renderedImage = document.querySelector('#renderedImage');
+
 
     const cameraWidth = 10; // Width of the camera view
     const cameraHeight = 10; // Height of the camera view
@@ -241,6 +248,7 @@ if (varientContainer) {
         cameraHeight / 2, -cameraHeight / 2,
         0.1, 1000
     );
+
     const scene = new THREE.Scene();
     scene.add(new THREE.AmbientLight(0x404040));
     let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -253,6 +261,7 @@ if (varientContainer) {
     scene.add(directionalLight1);
 
     const loader = new THREE.GLTFLoader();
+
     loader.load(configObject.imageInfo.objectPath, function (gltf) {
         object = gltf.scene;
         scene.add(object);
@@ -352,6 +361,7 @@ if (varientContainer) {
 
     const minFrequencyThreshold = 0.90; // Set threshold for high frequency (can be adjusted)
     const maxVarianceThreshold = 0.10;  // Set threshold for low variance (can be adjusted)
+
     const filteredColors = averagedColors.filter((color, index) => {
 
         const normalizedFrequency = normalize(colorFrequency[index].frequency, minFrequency, maxFrequency);
@@ -359,12 +369,8 @@ if (varientContainer) {
 
         return normalizedFrequency >= minFrequencyThreshold || normalizedVariance <= maxVarianceThreshold;
     });
-console.log("filteredColors", filteredColors);
-
     maxPaletteCount = averagedColors.length;
     recommendedPaletteCount = filteredColors.length;
-console.log("recommendedPaletteCount", recommendedPaletteCount);
-
 const colorThief = new ColorThief();
     for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
         palette = colorThief.getPalette(imageData, i); // Extract 10 dominant colors
@@ -405,10 +411,11 @@ const colorThief = new ColorThief();
         });
 
         // Now uniquePalettes contains only non-similar palettes
+        console.log("Unique Palettes:");
         console.log(uniquePalettes);
         const { uniqueColoredPalettes, removedColoredPalettes } = removePalettesWithSimilarColors(uniquePalettes)
-
-console.log("uniqueColoredPalettes", uniqueColoredPalettes)
+        console.log("Removed Palettes:");
+        console.log(uniqueColoredPalettes);
         for (let i = 0; i < uniqueColoredPalettes.length; i++) {
             generatePaletteStructure(uniqueColoredPalettes[i]);
         }
@@ -432,6 +439,7 @@ console.log("uniqueColoredPalettes", uniqueColoredPalettes)
             productImage.append(displayImgElement);
         });
     };
+
     const imageGallery = document.createElement('div');
     imageGallery.id = 'image-gallery';
     document.querySelector(".theme-product-detail-image-container").appendChild(imageGallery);
@@ -445,6 +453,7 @@ console.log("uniqueColoredPalettes", uniqueColoredPalettes)
         productImage.querySelectorAll('img').forEach(img => img.remove());
         renderedImage.style.display = 'block';
     });
+
     configObject.commonImages.forEach(imageUrl => {
         const imgElement = document.createElement('img');
         imgElement.src = imageUrl;
@@ -455,11 +464,12 @@ console.log("uniqueColoredPalettes", uniqueColoredPalettes)
         // Append the image element to the gallery
         imgWrapper.appendChild(imgElement);
         imageGallery.append(imgWrapper);
+
         // Attach the click handler
         handleImageClick(imgWrapper, imageUrl);
     });
     populatePalette();
-	generateControls();
+    generateControls();
     generateCustomSelect();
     paletteToggle.addEventListener('change', () => {
         const showPalette2 = paletteToggle.checked;
@@ -468,8 +478,6 @@ console.log("uniqueColoredPalettes", uniqueColoredPalettes)
     });
     createColorPicker();
 	});
-	
-    
 }
 
 
@@ -502,12 +510,12 @@ function updateFields() {
 
 function loadBasicField() {
     let obj = {}
-    obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern);
+    obj['selected'] = basicColor[0].baseColor.map(parseColor).map(rgb => rgbArrayToHex(rgb));
     obj['quantity'] = 1;
     obj['shape'] = '';
     target.value = JSON.stringify(obj);
     let object = {};
-    object['source'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern);
+    object['source'] = basicColor[0].baseColor.map(parseColor).map(rgb => rgbArrayToHex(rgb));
     source.value = JSON.stringify(object);
 }
 
@@ -517,6 +525,7 @@ function loadSelectionFieldsWithPattern() {
     for (let a = 0; a < selection.length; a++) {
         selection[a].value = '';
     }
+    console.log("Selection Value", selectionValue);
     for (let i = 0; i < selectionValue.length; i++) {
         for (let j = 0; j < selection.length; j++) {
             if (selection[j].value === '') {
@@ -551,6 +560,7 @@ function loadSelectionFieldsWithPattern() {
         })
 
     }
+    console.log("patternSelection", patternSelection)
     printPattern(patternSelection);
 }
 
@@ -573,10 +583,6 @@ function rgbArrayToHex({
     // Convert each RGB component to hexadecimal and pad with zeroes if necessary
     const toHex = (component) => component.toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-function rgbArrayToHexForColorPattern(rgb) {
-    return `#${((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1).toUpperCase()}`;
 }
 
 function printPattern(patternSelection) {
@@ -723,7 +729,7 @@ function createCanvas(pattern) {
 function processImageData(context, pattern) {
     const imgData = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
     const data = imgData.data;
-    const dominantColor = convertHexArrayToRgbArray(basicColor[0].baseColor);
+    const dominantColor = convertHexArrayToRgbArray(configObject.dominantColors);
     const changeColorArray = convertHexArrayToRgbArray(JSON.parse(JSON.parse(pattern).value).selected);
     for (let j = 0; j < data.length; j += 4) {
         const [r, g, b] = [data[j], data[j + 1], data[j + 2]];
@@ -823,12 +829,13 @@ function applyDirectionToColor(toColor, direction) {
 }
 
 async function populatePalette() {
+
     const colors = await fetchColors(); // Fetch colors from the endpoint
     const fragment = document.createDocumentFragment();
     const swatchFragment = document.createDocumentFragment();
 
     // Populate dominant colors
-    basicColor[0].baseColor.forEach((color, index) => {
+    configObject.dominantColors.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
 
@@ -874,8 +881,8 @@ async function populatePalette() {
 
 function generateControls() {
 
-    const sourceColors = basicColor[0].baseColor;
-    const paletteColors = basicColor[0].alternativeColor;
+    const sourceColors = configObject.dominantColors;
+    const paletteColors = configObject.suggestedColors;
 
     colorControlsContainer.innerHTML = '';
     toColorSwatchesContainer.innerHTML = '';
@@ -883,13 +890,15 @@ function generateControls() {
     const sourceContainer = document.createElement('div');
     sourceContainer.className = 'colorSwatches selected';
     sourceContainer.id = `swatches-0`;
+
     sourceContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     toColorSwatchesContainer.appendChild(sourceContainer);
     paletteColors.forEach((palette, paletteIndex) => {
         const swatchContainer = document.createElement('div');
         swatchContainer.className = 'colorSwatches';
         swatchContainer.id = `swatches-${(paletteIndex + 1)}`;
-       swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
+
+        swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj.baseColor));
         toColorSwatchesContainer.appendChild(swatchContainer);
 
         swatches.push(swatchContainer);
@@ -898,7 +907,6 @@ function generateControls() {
     const customContainer = document.createElement('div');
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
-
     customContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     customContainer.style.border = '0.5px solid black';
     customContainer.style.position = 'relative';
@@ -911,7 +919,7 @@ function generateControls() {
     toColorSwatchesContainer.appendChild(customContainer);
 
     paletteColors.forEach((palette, index) => {
-        populateSwatchesForIndex(index, palette);
+        populateSwatchesForIndex(index, palette.colorCombination);
     });
 
     addClickEventToSwatches();
@@ -961,8 +969,7 @@ function createColorPickerSwatch() {
 function populateSwatchesForIndex(index, palette) {
     const swatchContainer = swatches[index];
     swatchContainer.innerHTML = '';
-    swatchContainer.style.backgroundImage = generateVerticalGradientPalette(palette);
-
+    swatchContainer.style.backgroundImage = generateVerticalGradient(palette);
 }
 
 function addClickEventToSwatches() {
@@ -1017,6 +1024,7 @@ function generateCustomSelect() {
             });
         });
         const preselectedValue = hiddenSelect.value;
+        console.log("preselectedValue", preselectedValue)
         const initialOption = Array.from(customOptions).find(option => option.getAttribute('data-value') === preselectedValue);
         if (initialOption) {
             initialOption.classList.add('selected'); // Set initial visual selection
@@ -1157,6 +1165,8 @@ function addToCart(qty) {
             //row.style.display = 'none';        
         }
     })
+
+    console.log("custom_field_list ", custom_field_list);
 
     const productData = {
         product_variant_id: productVariantId,
@@ -1351,8 +1361,8 @@ function changeColor(changeColorArray) {
     imgData = designCanvasCtx.getImageData(0, 0, 800, 800);
     data = imgData.data;
 
-    const dominantColors = basicColor[0].baseColor.map(parseColor);
-    const colorHexMap = basicColor[0].alternativeColor.map(color => color.toLowerCase());
+    const dominantColors = configObject.dominantColors.map(parseColor);
+    const colorHexMap = configObject.dominantColors.map(color => color.toLowerCase());
     const colorDiffMap = dominantColors.map(color => ({
         r: Math.abs(255 - color.r),
         g: Math.abs(255 - color.g),
@@ -1738,13 +1748,13 @@ function calculateClusterVariance(cluster) {
 
     function generateVerticalGradientPalette(colors, isCustom = false) {
     const segmentSize = 100 / colors.length;
+    console.log("segmentSize",segmentSize);
+
 
     const gradientSegments = colors.map((color, index) => {
-
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
-
-        return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
+        return `rgb(${color[0]},${color[1]},${color[2]}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
 
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
@@ -2361,8 +2371,6 @@ function hsvToRgb(h, s, v) {
     ];
 }
 function generatePaletteStructure(palette){
-
-
     const colorDiv = document.createElement('div');
                     // Construct the gradient string with the colors and positions
                     colorDiv.className = 'colorSwatches';
@@ -2370,7 +2378,7 @@ function generatePaletteStructure(palette){
                     colorDiv.style.padding = '10px';
                     colorDiv.style.margin = '5px';
                     colorDiv.style.height = '50px'; // Adjust the height as needed for visual appeal
-console.log("AAAABBBBCCCC");
+
                     // Append the colorDiv to the document body
                     document.body.appendChild(colorDiv);
 }
@@ -2444,6 +2452,6 @@ function removePalettesWithSimilarColors(palette) {
         uniqueColoredPalettes.push(currentPalette);
     }
   });
+console.log("uniquePalettes123",uniqueColoredPalettes)
   return { uniqueColoredPalettes, removedColoredPalettes };
 }
-
