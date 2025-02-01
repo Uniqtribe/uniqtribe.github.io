@@ -902,6 +902,7 @@ console.log("14");
     sourceContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     toColorSwatchesContainer.appendChild(sourceContainer);
 console.log("15", palette);
+console.log("16", paletteColors);
     paletteColors.forEach((palette, paletteIndex) => {
         const swatchContainer = document.createElement('div');
         swatchContainer.className = 'colorSwatches';
