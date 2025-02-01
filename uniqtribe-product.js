@@ -5,6 +5,7 @@ let productVariantId;
 let swatches = [];
 let selectedSwatch;
 let configObject;
+let basicColor;
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
@@ -129,6 +130,13 @@ console.log("E");
             configObject = JSON.parse(config.textContent.trim());
             row.style.display = 'none';
         }
+		
+		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
+            config = row.querySelector('span');
+            basicColor = JSON.parse(config.textContent.trim());
+            row.style.display = 'none';
+        }
+		
         if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
             selection[i] = row.querySelector('input');
             let obj = {};
@@ -839,7 +847,7 @@ console.log("AAAA", configObject);
     const swatchFragment = document.createDocumentFragment();
 
     // Populate dominant colors
-    configObject.dominantColors.forEach((color, index) => {
+    basicColor.baseColor.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
 
