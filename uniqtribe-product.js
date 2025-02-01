@@ -1379,7 +1379,10 @@ function changeColor(changeColorArray) {
     data = imgData.data;
 
     const dominantColors = basicColor[0].baseColor;
-    const colorHexMap = basicColor[0].baseColor.map(color => color.toLowerCase());
+    const colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
+    `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
+);
+
     const colorDiffMap = dominantColors.map(color => ({
         r: Math.abs(255 - color.r),
         g: Math.abs(255 - color.g),
