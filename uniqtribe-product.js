@@ -880,10 +880,10 @@ console.log("9", color);
     });
 
     // Add the color picker swatch
-
+console.log("10");
     const colorpicker = createColorPickerSwatch();
     swatchFragment.appendChild(colorpicker);
-
+console.log("11");
     paletteContainer.appendChild(swatchFragment);
 }
 
