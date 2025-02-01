@@ -1005,6 +1005,8 @@ console.log("hiddenSelect", hiddenSelect.options)
             if (index === 0 && option.textContent.trim() === "Choose an option") {
                 return;
             }
+console.log("option", option)
+console.log("configObject.shapes", configObject.shapes)
             if (configObject.shapes.includes(option.value.toLowerCase())) {
                 customSelectContent += `
                     <div data-value="${option.value}">
