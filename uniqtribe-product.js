@@ -918,7 +918,7 @@ console.log("Colorzzz", sourceColors.map(colorObj => colorObj));
         swatchContainer.id = `swatches-${(paletteIndex + 1)}`;
 console.log("ColorzzzBBB", sourceColors);
 console.log("ColorzzzAAA", colorObj);
-        swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj.baseColor));
+        swatchContainer.style.backgroundImage = generateVerticalGradient(rgbArrayToHexForColorPattern(sourceColors));
         toColorSwatchesContainer.appendChild(swatchContainer);
 
         swatches.push(swatchContainer);
