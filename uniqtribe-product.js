@@ -993,7 +993,7 @@ function populateSwatchesForIndex(index, palette) {
     const swatchContainer = swatches[index];
     swatchContainer.innerHTML = '';
 console.log("1111", palette);
-    swatchContainer.style.backgroundImage = generateVerticalGradient(palette);
+    swatchContainer.style.backgroundImage = generateVerticalGradientPalette(palette);
 }
 
 function addClickEventToSwatches() {
