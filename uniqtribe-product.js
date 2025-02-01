@@ -920,7 +920,7 @@ console.log("18",swatches);
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
 console.log("52", sourceColors);
-    customContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors.map(colorObj => colorObj));
+    customContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors);
     customContainer.style.border = '0.5px solid black';
     customContainer.style.position = 'relative';
 
@@ -1378,7 +1378,7 @@ function changeColor(changeColorArray) {
     imgData = designCanvasCtx.getImageData(0, 0, 800, 800);
     data = imgData.data;
 
-    const dominantColors = basicColor[0].baseColor.map(parseColor);
+    const dominantColors = basicColor[0].baseColor;
     const colorHexMap = basicColor[0].baseColor.map(color => color.toLowerCase());
     const colorDiffMap = dominantColors.map(color => ({
         r: Math.abs(255 - color.r),
