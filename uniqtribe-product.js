@@ -910,8 +910,10 @@ console.log("16", paletteColors);
 
         swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj.baseColor));
         toColorSwatchesContainer.appendChild(swatchContainer);
+console.log("17");
 
         swatches.push(swatchContainer);
+console.log("18",swatches);
     });
 
     const customContainer = document.createElement('div');
@@ -927,11 +929,12 @@ console.log("16", paletteColors);
     overlayImage.className = 'overlay-image';
     customContainer.appendChild(overlayImage);
     toColorSwatchesContainer.appendChild(customContainer);
-
+console.log("19");
     paletteColors.forEach((palette, index) => {
         populateSwatchesForIndex(index, palette.colorCombination);
+console.log("20");
     });
-
+console.log("21");
     addClickEventToSwatches();
 }
 
