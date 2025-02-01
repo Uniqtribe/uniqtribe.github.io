@@ -132,6 +132,11 @@ if (varientContainer) {
             basicColor = JSON.parse(basicColorConfig.textContent.trim());
             row.style.display = 'none';
         }
+		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
+            alternateColorConfig = row.querySelector('span');
+            alternateColor = JSON.parse(basicColorConfig.textContent.trim());
+            row.style.display = 'none';
+        }
 
         if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
             selection[i] = row.querySelector('input');
