@@ -1772,7 +1772,7 @@ console.log("23", colors);
     const gradientSegments = colors.map((color, index) => {
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
-        return `rgb(${color[0]},${color[1]},${color[2]}) ${startPercent}% ${endPercent}%`;
+        return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
 
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
