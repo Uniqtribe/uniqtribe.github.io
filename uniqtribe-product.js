@@ -994,6 +994,8 @@ function populateSwatchesForIndex(index, palette) {
     swatchContainer.innerHTML = '';
 console.log("1111", palette);
     swatchContainer.style.backgroundImage = generateVerticalGradientPalette(palette);
+console.log("777", palette);
+
 }
 
 function addClickEventToSwatches() {
@@ -1784,6 +1786,8 @@ console.log("5", color);
         const endPercent = (index + 1) * segmentSize;
         return `rgb(${color[0]},${color[1]},${color[2]}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
+console.log("6666", palette);
+
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
 }
 function generatePalettes(palette) {
