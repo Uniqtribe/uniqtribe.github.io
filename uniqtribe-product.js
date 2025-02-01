@@ -908,7 +908,7 @@ console.log("16", paletteColors);
         swatchContainer.className = 'colorSwatches';
         swatchContainer.id = `swatches-${(paletteIndex + 1)}`;
 console.log("54", sourceColors);
-        swatchContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors.map(colorObj => colorObj.baseColor));
+        swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj.baseColor));
         toColorSwatchesContainer.appendChild(swatchContainer);
 console.log("17");
 
