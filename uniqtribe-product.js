@@ -1153,8 +1153,6 @@ function addToCart(qty) {
         }
     })
 
-    console.log("custom_field_list ", custom_field_list);
-
     const productData = {
         product_variant_id: productVariantId,
         quantity: totalQuantity,
@@ -1499,7 +1497,6 @@ function updateCustomColor() {
     customSelectedColorsElement.forEach(s => {
         customSelectedColorsArray.push(s.style.backgroundColor);
     });
-console.log("2222", customSelectedColorsArray);
 
     document.querySelector('.custom-color-selector').style.backgroundImage = generateVerticalGradient(customSelectedColorsArray.map(colorObj => colorObj));
 
@@ -1736,16 +1733,11 @@ function calculateClusterVariance(cluster) {
 
     function generateVerticalGradientPalette(colors, isCustom = false) {
     const segmentSize = 100 / colors.length;
-    console.log("segmentSize",segmentSize);
-
 
     const gradientSegments = colors.map((color, index) => {
 
-console.log("5", color);
-
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
-console.log("6666", `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`)	;
 
         return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
