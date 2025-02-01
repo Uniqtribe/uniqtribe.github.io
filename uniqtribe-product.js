@@ -110,7 +110,7 @@ console.log("D");
             }
             return response.json(); // Parse the JSON response
         })
-console.log("R");
+console.log("E");
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
@@ -142,6 +142,7 @@ console.log("R");
 console.log("F");
     const inputElement = document.querySelector('[name="qty"]');
     inputElement.disabled = true;
+	console.log("G");
     if (inputElement) {
         inputElement.addEventListener('input', () => {
             console.log('Value changed by user to:', inputElement.value);
@@ -160,12 +161,12 @@ console.log("F");
             configurable: true
         });
     }
-
+console.log("H");
     productVariantId = extractIdFromUrl(window.location.href);
     quantityInput = document.querySelector('[title="quantity"]');
-
+console.log("I");
     addLightboxEventListener();
-
+console.log("J");
     const container = document.querySelector('.theme-custom-field-main-container');
     container.insertAdjacentHTML('afterbegin', `
             <div class="customColorPickerPalette">
@@ -193,7 +194,7 @@ console.log("F");
             </div>
               <canvas id="imageCanvas" style="display: none;"></canvas>
         `);
-
+console.log("K");
     paletteToggle = document.getElementById('paletteToggle');
     palette1 = document.getElementById('palette');
     palette2 = document.getElementById('palette2');
@@ -203,7 +204,7 @@ console.log("F");
     toColorSwatchesContainer = document.getElementById('toColorSwatches');
     customColorPicker = document.getElementById('customColorPicker');
     paletteContainer = document.getElementById('palette')
-
+console.log("L");
     const productImage = document.querySelector(".theme-product-detail-image");
     designCanvas = document.createElement('canvas')
     designCanvas.id = 'designCanvas';
@@ -214,10 +215,11 @@ console.log("F");
     imgElement.onload = () => {
         designCanvasCtx.drawImage(imgElement, 0, 0);
     };
+	console.log("M");
     if (imgElement.complete) {
         imgElement.onload();
     }
-
+console.log("N");
     // Initialize Three.js renderer, camera, and scene
     const renderer = new THREE.WebGLRenderer({
         alpha: true,
