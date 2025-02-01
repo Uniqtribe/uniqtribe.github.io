@@ -34,7 +34,7 @@ if (varientContainer) {
     varientContainerRows.append(cartContainer);
     varientContainer.append(varientContainerRows);
     imgElement = document.querySelector('img[alt="base-image"]');
-
+console.log("A");
     (function () {
         const originalFetch = window.fetch;
         window.fetch = function (...args) {
@@ -56,7 +56,7 @@ if (varientContainer) {
             return fetchPromise;
         };
     })();
-
+console.log("B");
     (function () {
         const originalXHR = window.XMLHttpRequest;
 
@@ -94,7 +94,7 @@ if (varientContainer) {
         }
         window.XMLHttpRequest = newXHR; // Override the global XMLHttpRequest
     })();
-
+console.log("C");
     document.addEventListener("cartUpdated", function (event) {
         cartData = event.detail.payload;
         setTimeout(() => {
@@ -102,7 +102,7 @@ if (varientContainer) {
             updateFields();
         }, 100); // Delay time (ms) can be adjusted
     });
-
+console.log("D");
     fetch('/storefront/api/v1/cart')
         .then(response => {
             if (!response.ok) {
@@ -110,7 +110,7 @@ if (varientContainer) {
             }
             return response.json(); // Parse the JSON response
         })
-
+console.log("R");
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
@@ -139,7 +139,7 @@ if (varientContainer) {
             row.style.display = 'none';
         }
     })
-
+console.log("F");
     const inputElement = document.querySelector('[name="qty"]');
     inputElement.disabled = true;
     if (inputElement) {
