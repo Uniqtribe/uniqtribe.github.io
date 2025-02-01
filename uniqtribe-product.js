@@ -835,7 +835,7 @@ async function populatePalette() {
     const swatchFragment = document.createDocumentFragment();
 
     // Populate dominant colors
-    configObject.dominantColors.forEach((color, index) => {
+    basicColor[0].baseColor.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
 
