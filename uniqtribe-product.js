@@ -497,7 +497,6 @@ function updateFields() {
 
 function loadBasicField() {
     let obj = {}
-console.log("XXXX", basicColor[0].baseColor)
     obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexForColorPattern);
     obj['quantity'] = 1;
     obj['shape'] = '';
@@ -513,7 +512,6 @@ function loadSelectionFieldsWithPattern() {
     for (let a = 0; a < selection.length; a++) {
         selection[a].value = '';
     }
-    console.log("Selection Value", selectionValue);
     for (let i = 0; i < selectionValue.length; i++) {
         for (let j = 0; j < selection.length; j++) {
             if (selection[j].value === '') {
@@ -548,7 +546,6 @@ function loadSelectionFieldsWithPattern() {
         })
 
     }
-    console.log("patternSelection", patternSelection)
     printPattern(patternSelection);
 }
 
@@ -568,7 +565,6 @@ function rgbArrayToHex({
     g,
     b
 }) {
-console.log("component",component);
     // Convert each RGB component to hexadecimal and pad with zeroes if necessary
     const toHex = (component) => component.toString(16).padStart(2, '0');
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
@@ -822,7 +818,6 @@ function applyDirectionToColor(toColor, direction) {
 }
 
 async function populatePalette() {
-console.log("AAAA", basicColor);
     const colors = await fetchColors(); // Fetch colors from the endpoint
     const fragment = document.createDocumentFragment();
     const swatchFragment = document.createDocumentFragment();
@@ -883,17 +878,13 @@ function generateControls() {
     const sourceContainer = document.createElement('div');
     sourceContainer.className = 'colorSwatches selected';
     sourceContainer.id = `swatches-0`;
-console.log("Colorzzz", sourceColors.map(colorObj => colorObj));
-console.log("1");
     sourceContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     toColorSwatchesContainer.appendChild(sourceContainer);
     paletteColors.forEach((palette, paletteIndex) => {
         const swatchContainer = document.createElement('div');
         swatchContainer.className = 'colorSwatches';
         swatchContainer.id = `swatches-${(paletteIndex + 1)}`;
-console.log("ColorzzzBBB", sourceColors);
-console.log("2");
-        swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
+       swatchContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
         toColorSwatchesContainer.appendChild(swatchContainer);
 
         swatches.push(swatchContainer);
@@ -903,7 +894,6 @@ console.log("2");
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
 
-console.log("3",paletteColors);
     customContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
     customContainer.style.border = '0.5px solid black';
     customContainer.style.position = 'relative';
@@ -923,7 +913,6 @@ console.log("3",paletteColors);
 }
 
 function generateVerticalGradient(colors, isCustom = false) {
-console.log("Colorsss", colors);
     const segmentSize = 100 / colors.length;
     const gradientSegments = colors.map((color, index) => {
         const startPercent = index * segmentSize;
@@ -967,9 +956,7 @@ function createColorPickerSwatch() {
 function populateSwatchesForIndex(index, palette) {
     const swatchContainer = swatches[index];
     swatchContainer.innerHTML = '';
-console.log("1111", palette);
     swatchContainer.style.backgroundImage = generateVerticalGradientPalette(palette);
-console.log("777", palette);
 
 }
 
@@ -1025,7 +1012,6 @@ function generateCustomSelect() {
             });
         });
         const preselectedValue = hiddenSelect.value;
-        console.log("preselectedValue", preselectedValue)
         const initialOption = Array.from(customOptions).find(option => option.getAttribute('data-value') === preselectedValue);
         if (initialOption) {
             initialOption.classList.add('selected'); // Set initial visual selection
