@@ -1774,6 +1774,7 @@ console.log("23", colors);
         const endPercent = (index + 1) * segmentSize;
         return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
+console.log("100");
 
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
 }
