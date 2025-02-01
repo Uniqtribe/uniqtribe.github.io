@@ -1788,6 +1788,7 @@ console.log("6666", `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${en
 
         return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
     }).join(', ');
+console.log("888", `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`)	;
 
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
 }
