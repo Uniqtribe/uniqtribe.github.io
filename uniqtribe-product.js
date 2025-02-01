@@ -919,7 +919,7 @@ console.log("18",swatches);
     const customContainer = document.createElement('div');
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
-    customContainer.style.backgroundImage = generateVerticalGradient(sourceColors.map(colorObj => colorObj));
+    customContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors.map(colorObj => colorObj));
     customContainer.style.border = '0.5px solid black';
     customContainer.style.position = 'relative';
 
