@@ -989,6 +989,7 @@ function createColorPickerSwatch() {
 function populateSwatchesForIndex(index, palette) {
     const swatchContainer = swatches[index];
     swatchContainer.innerHTML = '';
+console.log("1111", palette);
     swatchContainer.style.backgroundImage = generateVerticalGradient(palette);
 }
 
@@ -1532,6 +1533,7 @@ function updateCustomColor() {
     customSelectedColorsElement.forEach(s => {
         customSelectedColorsArray.push(s.style.backgroundColor);
     });
+console.log("2222", customSelectedColorsArray);
 
     document.querySelector('.custom-color-selector').style.backgroundImage = generateVerticalGradient(customSelectedColorsArray.map(colorObj => colorObj));
 
