@@ -964,7 +964,6 @@ function createColorPickerSwatch() {
 }
 
 function populateSwatchesForIndex(index, palette) {
-console.log("21", palette);
     const swatchContainer = swatches[index];
     swatchContainer.innerHTML = '';
     swatchContainer.style.backgroundImage = generateVerticalGradientPalette(palette);
@@ -990,18 +989,18 @@ function addClickEventToSwatches() {
 }
 
 function generateCustomSelect() {
-console.log("aa");
     const hiddenSelect = document.querySelector('select[data-label="Shape"]');
     if (document.querySelector('#customSelectContainer')) {
         document.querySelector('#customSelectContainer').remove()
     }
+console.log("hiddenSelect", hiddenSelect)
     if (hiddenSelect) {
         const customSelectContainer = document.createElement('div');
         customSelectContainer.id = 'customSelectContainer';
         hiddenSelect.parentNode.insertBefore(customSelectContainer, hiddenSelect.nextSibling);
 
         let customSelectContent = '';
-
+console.log("hiddenSelect", hiddenSelect.options)
         Array.from(hiddenSelect.options).forEach((option, index) => {
             if (index === 0 && option.textContent.trim() === "Choose an option") {
                 return;
