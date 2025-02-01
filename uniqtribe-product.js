@@ -15,8 +15,7 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 if (varientContainer) {
 	waitForImageToLoad("base-image", function() {
 
-    console.log("Image is fully loaded. Running script...");
-    // Your script here
+   // Your script here
 	
     let varientContainerRows = document.createElement('div')
     varientContainerRows.className = 'theme-product-varients-row';
@@ -35,7 +34,6 @@ if (varientContainer) {
     varientContainerRows.append(cartContainer);
     varientContainer.append(varientContainerRows);
     imgElement = document.querySelector('img[alt="base-image"]');
-console.log("A");
     (function () {
         const originalFetch = window.fetch;
         window.fetch = function (...args) {
@@ -57,7 +55,7 @@ console.log("A");
             return fetchPromise;
         };
     })();
-console.log("B");
+
     (function () {
         const originalXHR = window.XMLHttpRequest;
 
@@ -95,7 +93,6 @@ console.log("B");
         }
         window.XMLHttpRequest = newXHR; // Override the global XMLHttpRequest
     })();
-console.log("C");
     document.addEventListener("cartUpdated", function (event) {
         cartData = event.detail.payload;
         setTimeout(() => {
@@ -103,7 +100,6 @@ console.log("C");
             updateFields();
         }, 100); // Delay time (ms) can be adjusted
     });
-console.log("D");
     fetch('/storefront/api/v1/cart')
         .then(response => {
             if (!response.ok) {
@@ -111,7 +107,6 @@ console.log("D");
             }
             return response.json(); // Parse the JSON response
         })
-console.log("E");
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
@@ -147,10 +142,9 @@ console.log("E");
             row.style.display = 'none';
         }
     })
-console.log("F");
     const inputElement = document.querySelector('[name="qty"]');
     inputElement.disabled = true;
-	console.log("G");
+	
     if (inputElement) {
         inputElement.addEventListener('input', () => {
             console.log('Value changed by user to:', inputElement.value);
@@ -169,12 +163,9 @@ console.log("F");
             configurable: true
         });
     }
-console.log("H");
     productVariantId = extractIdFromUrl(window.location.href);
     quantityInput = document.querySelector('[title="quantity"]');
-console.log("I");
     addLightboxEventListener();
-console.log("J");
     const container = document.querySelector('.theme-custom-field-main-container');
     container.insertAdjacentHTML('afterbegin', `
             <div class="customColorPickerPalette">
@@ -202,7 +193,6 @@ console.log("J");
             </div>
               <canvas id="imageCanvas" style="display: none;"></canvas>
         `);
-console.log("K");
     paletteToggle = document.getElementById('paletteToggle');
     palette1 = document.getElementById('palette');
     palette2 = document.getElementById('palette2');
@@ -212,7 +202,6 @@ console.log("K");
     toColorSwatchesContainer = document.getElementById('toColorSwatches');
     customColorPicker = document.getElementById('customColorPicker');
     paletteContainer = document.getElementById('palette')
-console.log("L");
     const productImage = document.querySelector(".theme-product-detail-image");
     designCanvas = document.createElement('canvas')
     designCanvas.id = 'designCanvas';
@@ -223,11 +212,9 @@ console.log("L");
     imgElement.onload = () => {
         designCanvasCtx.drawImage(imgElement, 0, 0);
     };
-	console.log("M");
     if (imgElement.complete) {
         imgElement.onload();
     }
-console.log("N");
     // Initialize Three.js renderer, camera, and scene
     const renderer = new THREE.WebGLRenderer({
         alpha: true,
@@ -239,7 +226,6 @@ console.log("N");
     productImage.appendChild(renderer.domElement);
     productImage.appendChild(designCanvas);
     const dpr = window.devicePixelRatio || 1;
-console.log("N1");
     renderer.setSize(productImage.clientWidth * dpr, productImage.clientWidth * dpr);
     renderer.domElement.style.width = productImage.clientWidth + 'px';
     renderer.domElement.style.height = productImage.clientWidth + 'px';
@@ -247,7 +233,6 @@ console.log("N1");
     renderer.setClearColor(0xffffff);
     renderedImage = document.querySelector('#renderedImage');
 
-console.log("N2");
     const cameraWidth = 10; // Width of the camera view
     const cameraHeight = 10; // Height of the camera view
 
@@ -256,7 +241,6 @@ console.log("N2");
         cameraHeight / 2, -cameraHeight / 2,
         0.1, 1000
     );
-console.log("N3");
     const scene = new THREE.Scene();
     scene.add(new THREE.AmbientLight(0x404040));
     let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -269,7 +253,6 @@ console.log("N3");
     scene.add(directionalLight1);
 
     const loader = new THREE.GLTFLoader();
-console.log("N4");
     loader.load(configObject.imageInfo.objectPath, function (gltf) {
         object = gltf.scene;
         scene.add(object);
@@ -419,11 +402,8 @@ const colorThief = new ColorThief();
         });
 
         // Now uniquePalettes contains only non-similar palettes
-        console.log("Unique Palettes:");
         console.log(uniquePalettes);
         const { uniqueColoredPalettes, removedColoredPalettes } = removePalettesWithSimilarColors(uniquePalettes)
-        console.log("Removed Palettes:");
-        console.log(uniqueColoredPalettes);
         for (let i = 0; i < uniqueColoredPalettes.length; i++) {
             generatePaletteStructure(uniqueColoredPalettes[i]);
         }
@@ -447,7 +427,6 @@ const colorThief = new ColorThief();
             productImage.append(displayImgElement);
         });
     };
-console.log("N5");
     const imageGallery = document.createElement('div');
     imageGallery.id = 'image-gallery';
     document.querySelector(".theme-product-detail-image-container").appendChild(imageGallery);
@@ -461,7 +440,6 @@ console.log("N5");
         productImage.querySelectorAll('img').forEach(img => img.remove());
         renderedImage.style.display = 'block';
     });
-console.log("N6");
     configObject.commonImages.forEach(imageUrl => {
         const imgElement = document.createElement('img');
         imgElement.src = imageUrl;
@@ -472,13 +450,10 @@ console.log("N6");
         // Append the image element to the gallery
         imgWrapper.appendChild(imgElement);
         imageGallery.append(imgWrapper);
-console.log("N7");
         // Attach the click handler
         handleImageClick(imgWrapper, imageUrl);
     });
-	console.log("N8", configObject);
     populatePalette();
-	console.log("N9" , configObject);
 	generateControls();
     generateCustomSelect();
     paletteToggle.addEventListener('change', () => {
@@ -2403,6 +2378,8 @@ function hsvToRgb(h, s, v) {
     ];
 }
 function generatePaletteStructure(palette){
+
+
     const colorDiv = document.createElement('div');
                     // Construct the gradient string with the colors and positions
                     colorDiv.className = 'colorSwatches';
@@ -2484,7 +2461,6 @@ function removePalettesWithSimilarColors(palette) {
         uniqueColoredPalettes.push(currentPalette);
     }
   });
-console.log("uniquePalettes123",uniqueColoredPalettes)
   return { uniqueColoredPalettes, removedColoredPalettes };
 }
 
