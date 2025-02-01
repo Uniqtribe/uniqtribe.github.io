@@ -858,10 +858,13 @@ console.log("5");
 console.log("6");
         });
     });
+console.log("8");
+
     sectionSelector.appendChild(fragment);
 
     // Populate swatches
     colors.forEach((color) => {
+console.log("9", color);
         const swatch = document.createElement('div');
         swatch.className = 'color-swatch';
         swatch.style.backgroundColor = color.hex;
