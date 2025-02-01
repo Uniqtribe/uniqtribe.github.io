@@ -407,6 +407,8 @@ const colorThief = new ColorThief();
         // Now uniquePalettes contains only non-similar palettes
         console.log(uniquePalettes);
         const { uniqueColoredPalettes, removedColoredPalettes } = removePalettesWithSimilarColors(uniquePalettes)
+
+console.log("uniqueColoredPalettes", uniqueColoredPalettes)
         for (let i = 0; i < uniqueColoredPalettes.length; i++) {
             generatePaletteStructure(uniqueColoredPalettes[i]);
         }
