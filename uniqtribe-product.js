@@ -1770,6 +1770,8 @@ console.log("23", colors);
 
 
     const gradientSegments = colors.map((color, index) => {
+console.log("50", color);
+
         const startPercent = index * segmentSize;
         const endPercent = (index + 1) * segmentSize;
         return `rgb(${color.r},${color.g},${color.b}) ${startPercent}% ${endPercent}%`;
