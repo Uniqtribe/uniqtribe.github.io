@@ -851,6 +851,7 @@ async function populatePalette() {
     const swatchFragment = document.createDocumentFragment();
 
     basicColor[0].baseColor.forEach((color, index) => {
+console.log("color", color)
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
         colorDiv.style.backgroundColor = color;
