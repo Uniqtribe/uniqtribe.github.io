@@ -514,8 +514,10 @@ function updateFields() {
         }
     }
     loadSelectionFieldsWithPattern();
-document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
-document.querySelector('#swatches-0').click();
+const selectedElement = document.querySelector('#customSelect div[data-value].selected');
+if (selectedElement) {
+    selectedElement.click();
+}
 
 }
 
@@ -1036,7 +1038,11 @@ console.log("hiddenSelect.value", hiddenSelect);
 //        const preselectedValue = hiddenSelect.value;
 //        const initialOption = Array.from(customOptions).find(option => option.getAttribute('data-value') === preselectedValue);
 //        if (initialOption) {
-            document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
+            const selectedElement = document.querySelector('#customSelect div[data-value].selected');
+if (selectedElement) {
+    selectedElement.click();
+}
+
 
 // Set initial visual selection
 //        }
