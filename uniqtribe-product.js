@@ -871,6 +871,7 @@ console.log("fragment", fragment)
     });
 
     sectionSelector.appendChild(fragment);
+console.log("sectionSelector", sectionSelector)
 
     // Populate swatches
     colors.forEach((color) => {
