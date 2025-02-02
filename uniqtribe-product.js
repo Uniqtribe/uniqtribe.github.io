@@ -29,6 +29,7 @@ waitForImageToLoad("base-image", function() {
     let cartPatternContainer = document.createElement('div');
     cartPatternContainer.id = 'cartPatternContainer';
     cartPatternContainer.className = 'theme-product-variant-pattern';
+cartLabelContainer.innerHTML = 'No Items in Cart'
     cartContainer.appendChild(cartLabelContainer);
     cartContainer.appendChild(cartPatternContainer);
     varientContainerRows.append(cartContainer);
