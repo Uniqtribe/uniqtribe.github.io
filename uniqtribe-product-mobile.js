@@ -1,4 +1,11 @@
 
+document.querySelector('#image-gallery').style.display = 'none';
+
+const slider = document.querySelector('.theme-product-detail-image');
+slider.addEventListener('touchstart', handleTouchStart, false);
+slider.addEventListener('touchmove', handleTouchMove, false);
+slider.addEventListener('touchend', handleTouchEnd, false);
+
 function handleTouchStart(e) {
   isTouching = true;
   const touchStart = e.touches[0];  // Get the touch start position
