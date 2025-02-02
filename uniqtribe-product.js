@@ -478,9 +478,7 @@ const colorThief = new ColorThief();
         handleImageClick(imgWrapper, imageUrl);
     });
 
-const images =imageGallery.querySelectorAll('img');
-const totalImages = images.length;
-alert("totalImages", totalImages);
+
 const slider = document.querySelector('.theme-product-detail-image');
 slider.addEventListener('touchstart', handleTouchStart, false);
 slider.addEventListener('touchmove', handleTouchMove, false);
