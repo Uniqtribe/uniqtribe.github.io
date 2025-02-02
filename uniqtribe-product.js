@@ -12,6 +12,8 @@ let selectedSwatch;
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
 if (varientContainer) {
+waitForImageToLoad("base-image", function() {
+
     console.log("Image is fully loaded. Running script...");
     // Your script here
 	
@@ -483,7 +485,7 @@ console.log("1");
         palette2.style.display = showPalette2 ? 'flex' : 'none';
     });
     createColorPicker();
-	
+	})
 }
 
 
