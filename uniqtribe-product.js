@@ -29,7 +29,6 @@ waitForImageToLoad("base-image", function() {
     let cartPatternContainer = document.createElement('div');
     cartPatternContainer.id = 'cartPatternContainer';
     cartPatternContainer.className = 'theme-product-variant-pattern';
-cartPatternContainer.innerHTML = 'No Items in Cart'
     cartContainer.appendChild(cartLabelContainer);
     cartContainer.appendChild(cartPatternContainer);
     varientContainerRows.append(cartContainer);
@@ -601,7 +600,7 @@ function rgbArrayToHex({
 
 function printPattern(patternSelection) {
     const container = document.querySelector('.theme-product-variant-pattern');
-    container.innerHTML = ''; // Clear existing content
+    container.innerHTML = 'No Items in Cart'; // Clear existing content
     patternSelection.forEach(pattern => {
         const rowDiv = createColumnDiv(pattern);
         container.appendChild(rowDiv);
