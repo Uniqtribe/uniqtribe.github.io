@@ -1,0 +1,48 @@
+
+#toColorSwatches {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 0;
+  gap: 10px;
+  scroll-snap-type: x mandatory;
+}
+
+.colorSwatches {
+  flex-shrink: 0;
+  width: 80px; /* Set the width of each color swatch */
+  height: 80px; /* Set the height of each color swatch */
+  border-radius: 5px;
+  scroll-snap-align: center;
+  transition: transform 0.3s ease, transform-origin 0.3s ease;
+}
+
+.colorSwatches.selected {
+  transform: scale(1.2);
+  z-index: 2; /* Ensure the selected one stays on top */
+}
+
+.custom-color-selector {
+  border: 2px solid black;
+}
+
+.overlay-image {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 768px) {
+  /* Make sure it's responsive on smaller screens */
+  .colorSwatches {
+    width: 60px; /* Reduce size for mobile */
+    height: 60px; 
+  }
+
+  .colorSwatches.selected {
+    transform: scale(1.3); /* Make the center item bigger */
+  }
+}
+
