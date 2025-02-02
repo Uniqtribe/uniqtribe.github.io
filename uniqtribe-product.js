@@ -512,6 +512,7 @@ function updateFields() {
         }
     }
     loadSelectionFieldsWithPattern();
+document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].classList.add('selected')
 }
 
 function loadBasicField() {
@@ -1119,7 +1120,6 @@ function setCustomSelectValue(desiredValue) {
 }
 
 function addToCart(qty) {
-alert("A");
     let custom_field_list = [];
     let totalQuantity = qty;
     variantRows.forEach(row => {
