@@ -600,7 +600,9 @@ function rgbArrayToHex({
 
 function printPattern(patternSelection) {
     const container = document.querySelector('.theme-product-variant-pattern');
+    if(patternSelection.length == 0){
     container.innerHTML = 'No Items in Cart'; // Clear existing content
+}
     patternSelection.forEach(pattern => {
         const rowDiv = createColumnDiv(pattern);
         container.appendChild(rowDiv);
