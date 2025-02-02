@@ -738,8 +738,8 @@ function createCanvas(pattern) {
 function processImageData(context, pattern) {
     const imgData = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
     const data = imgData.data;
-console.log("dominantColor",dominantColor);
-console.log("changeColorArray",changeColorArray);
+console.log("dominantColor",basicColor[0].baseColor);
+console.log("changeColorArray",JSON.parse(JSON.parse(pattern).value).selected);
     const dominantColor = convertHexArrayToRgbArray(basicColor[0].baseColor);
     const changeColorArray = convertHexArrayToRgbArray(JSON.parse(JSON.parse(pattern).value).selected);
     for (let j = 0; j < data.length; j += 4) {
