@@ -1,4 +1,6 @@
 
+let startX = 0;
+let currentIndex = 0;
 document.querySelector('#image-gallery').style.display = 'none';
 
 const slider = document.querySelector('.theme-product-detail-image');
