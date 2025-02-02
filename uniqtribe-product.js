@@ -1029,7 +1029,7 @@ console.log("hiddenSelect.value", hiddenSelect);
 //        const preselectedValue = hiddenSelect.value;
 //        const initialOption = Array.from(customOptions).find(option => option.getAttribute('data-value') === preselectedValue);
 //        if (initialOption) {
-            document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
+   //         document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
 
 // Set initial visual selection
 //        }
