@@ -514,10 +514,8 @@ function updateFields() {
         }
     }
     loadSelectionFieldsWithPattern();
-const selectedElement = document.querySelector('#customSelect div[data-value].selected');
-if (selectedElement) {
-    selectedElement.click();
-}
+document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
+document.querySelector('#swatches-0').click();
 
 }
 
