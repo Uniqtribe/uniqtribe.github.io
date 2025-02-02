@@ -1452,6 +1452,8 @@ function changeColor(changeColorArray) {
             }
         });
     });
+document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
+
 }
 
 function rgbToHex(rgb) {
