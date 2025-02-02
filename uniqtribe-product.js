@@ -513,7 +513,7 @@ function updateFields() {
         }
     }
     loadSelectionFieldsWithPattern();
-document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
+//document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
 document.querySelector('#swatches-0').click();
 
 }
