@@ -7,7 +7,9 @@ const slider = document.querySelector('.theme-product-detail-image');
 slider.addEventListener('touchstart', handleTouchStart, false);
 slider.addEventListener('touchmove', handleTouchMove, false);
 slider.addEventListener('touchend', handleTouchEnd, false);
+document.querySelector('.theme-rating-review-container').appendChild(document.querySelector('.customColorPickerPalette'));
 
+<div class=​"customColorPickerPalette">​…​</div>​
 function handleTouchStart(e) {
   isTouching = true;
   const touchStart = e.touches[0];  // Get the touch start position
