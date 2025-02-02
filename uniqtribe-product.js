@@ -1119,6 +1119,7 @@ function setCustomSelectValue(desiredValue) {
 }
 
 function addToCart(qty) {
+alert("A");
     let custom_field_list = [];
     let totalQuantity = qty;
     variantRows.forEach(row => {
