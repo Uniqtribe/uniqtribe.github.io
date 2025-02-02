@@ -1030,8 +1030,6 @@ function generateCustomSelect() {
                 selectOption(this);
             });
         });
-console.log("AAAA");
-		document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
     } else {
         console.error('No select element found with data-label="Shape".');
     }
