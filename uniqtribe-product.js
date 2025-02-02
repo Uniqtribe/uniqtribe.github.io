@@ -860,7 +860,9 @@ console.log("color", color)
         colorDiv.className = index === 0 ? 'custom-selected-color selected' : 'custom-selected-color';
 
         sectionDiv.appendChild(colorDiv);
+console.log("sectionDiv", sectionDiv)
         fragment.appendChild(sectionDiv);
+console.log("fragment", fragment)
         colorDiv.addEventListener('click', () => {
             document.querySelector('.custom-selected-color.selected')?.classList.remove('selected');
             colorDiv.classList.add('selected');
