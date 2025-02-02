@@ -461,6 +461,8 @@ const colorThief = new ColorThief();
         renderedImage.style.display = 'block';
     });
 
+
+
     configObject.commonImages.forEach(imageUrl => {
         const imgElement = document.createElement('img');
         imgElement.src = imageUrl;
@@ -475,6 +477,15 @@ const colorThief = new ColorThief();
         // Attach the click handler
         handleImageClick(imgWrapper, imageUrl);
     });
+
+const images =imageGallery.querySelectorAll('img');
+const totalImages = images.length;
+alert("totalImages", totalImages);
+const slider = document.querySelector('.theme-product-detail-image');
+slider.addEventListener('touchstart', handleTouchStart, false);
+slider.addEventListener('touchmove', handleTouchMove, false);
+slider.addEventListener('touchend', handleTouchEnd, false);
+
     populatePalette();
     generateControls();
     generateCustomSelect();
@@ -484,13 +495,7 @@ const colorThief = new ColorThief();
         palette2.style.display = showPalette2 ? 'flex' : 'none';
     });
     createColorPicker();
-const images = document.querySelector('#image-gallery').querySelectorAll('img');
-const totalImages = images.length;
-alert("totalImages", totalImages);
-const slider = document.querySelector('.theme-product-detail-image');
-slider.addEventListener('touchstart', handleTouchStart, false);
-slider.addEventListener('touchmove', handleTouchMove, false);
-slider.addEventListener('touchend', handleTouchEnd, false);
+
 
 
 	})
