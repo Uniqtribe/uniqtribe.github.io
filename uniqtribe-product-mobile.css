@@ -2,13 +2,15 @@
   display:none;
 }
 #toColorSwatches {
-  display: flex;
-  overflow: hidden; /* Hide overflow completely */
-  padding: 10px 0;
-  gap: 10px;
-  scroll-snap-type: x mandatory;
-  max-width: 100vw; /* Ensures it does not exceed screen width */
-  justify-content: center; /* Center content if it’s smaller */
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    gap: 10px;
+    scroll-snap-type: x mandatory;
+    width: 100;
+    max-width: 100vw;
+    white-space: nowrap;
 }
 
 .colorSwatches {
