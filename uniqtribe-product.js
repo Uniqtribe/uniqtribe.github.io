@@ -740,7 +740,7 @@ function processImageData(context, pattern) {
     const data = imgData.data;
 console.log("dominantColor",basicColor[0].baseColor);
 console.log("changeColorArray",JSON.parse(JSON.parse(pattern).value).selected);
-    const dominantColor = convertHexArrayToRgbArray(basicColor[0].baseColor);
+    const dominantColor = basicColor[0].baseColor;
     const changeColorArray = convertHexArrayToRgbArray(JSON.parse(JSON.parse(pattern).value).selected);
     for (let j = 0; j < data.length; j += 4) {
         const [r, g, b] = [data[j], data[j + 1], data[j + 2]];
