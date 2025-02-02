@@ -738,8 +738,6 @@ function createCanvas(pattern) {
 function processImageData(context, pattern) {
     const imgData = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
     const data = imgData.data;
-console.log("dominantColor",basicColor[0].baseColor);
-console.log("changeColorArray",JSON.parse(JSON.parse(pattern).value).selected);
     const dominantColor = basicColor[0].baseColor;
     const changeColorArray = convertHexArrayToRgbArray(JSON.parse(JSON.parse(pattern).value).selected);
     for (let j = 0; j < data.length; j += 4) {
@@ -1455,7 +1453,7 @@ function changeColor(changeColorArray) {
         });
     });
 document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
-
+document.querySelector('#swatches-0').click();
 }
 
 function rgbToHex(rgb) {
