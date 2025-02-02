@@ -3,10 +3,12 @@
 }
 #toColorSwatches {
   display: flex;
-  overflow-x: auto;
+  overflow: hidden; /* Hide overflow completely */
   padding: 10px 0;
   gap: 10px;
   scroll-snap-type: x mandatory;
+  max-width: 100vw; /* Ensures it does not exceed screen width */
+  justify-content: center; /* Center content if it’s smaller */
 }
 
 .colorSwatches {
@@ -19,7 +21,7 @@
 }
 
 .colorSwatches.selected {
-  transform: scale(1.2);
+  transform: scale(1.5);
   z-index: 2; /* Ensure the selected one stays on top */
 }
 
