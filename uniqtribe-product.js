@@ -603,6 +603,9 @@ function printPattern(patternSelection) {
     if(patternSelection.length == 0){
     container.innerHTML = 'No Items in Cart'; // Clear existing content
 }
+else{
+container.innerHTML = '';
+}
     patternSelection.forEach(pattern => {
         const rowDiv = createColumnDiv(pattern);
         container.appendChild(rowDiv);
