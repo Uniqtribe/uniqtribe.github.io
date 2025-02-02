@@ -512,7 +512,7 @@ function updateFields() {
         }
     }
     loadSelectionFieldsWithPattern();
-document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
+document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].classList.add('selected')
 }
 
 function loadBasicField() {
