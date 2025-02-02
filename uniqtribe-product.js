@@ -854,7 +854,8 @@ async function populatePalette() {
 console.log("color", color)
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
-        colorDiv.style.backgroundColor = color;
+        colorDiv.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+
         colorDiv.style.width = '25px';
         colorDiv.style.height = '25px';
         colorDiv.className = index === 0 ? 'custom-selected-color selected' : 'custom-selected-color';
