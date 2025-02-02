@@ -1,4 +1,6 @@
-
+.customColorPickerPalette{
+  display:none;
+}
 #toColorSwatches {
   display: flex;
   overflow-x: auto;
