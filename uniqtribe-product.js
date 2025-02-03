@@ -11,10 +11,6 @@ let selectedSwatch;
 
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
-// Run initially on page load
-addCustomizableTags();
-console.log("ABC");
-
 // Detect dynamically added images using MutationObserver
 const observer = new MutationObserver(() => {
   addCustomizableTags(); // Reapply when new content is added
