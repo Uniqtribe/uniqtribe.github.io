@@ -7,7 +7,7 @@ const slider = document.querySelector('.theme-product-detail-image');
 slider.addEventListener('touchstart', handleTouchStart, false);
 slider.addEventListener('touchmove', handleTouchMove, false);
 slider.addEventListener('touchend', handleTouchEnd, false);
-document.querySelector('.theme-rating-review-container').appendChild(document.querySelector('.customColorPickerPalette'));
+document.querySelector('.theme-rating-review-container').prepend(document.querySelector('.customColorPickerPalette'));
 
 function handleTouchStart(e) {
   isTouching = true;
