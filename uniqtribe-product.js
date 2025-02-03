@@ -11,13 +11,6 @@ let selectedSwatch;
 
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
-// Detect dynamically added images using MutationObserver
-const observer = new MutationObserver(() => {
-  addCustomizableTags(); // Reapply when new content is added
-});
-
-observer.observe(document.body, { childList: true, subtree: true });
-
 if (varientContainer) {
 waitForImageToLoad("base-image", function() {
 
