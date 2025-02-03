@@ -10,6 +10,33 @@ let selectedSwatch;
     let maxPaletteCount = 0;
 
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
+function addCustomizableTags() {
+  document.querySelectorAll("img").forEach((img) => {
+    if (img.alt.includes("customizable") && !img.parentNode.classList.contains("image-wrapper")) {
+      // Create the customizable tag
+      const tag = document.createElement("span");
+      tag.textContent = "Customizable";
+      tag.classList.add("customizable-tag");
+
+      // Wrap the image in a div for styling
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("image-wrapper");
+      img.parentNode.insertBefore(wrapper, img);
+      wrapper.appendChild(img);
+      wrapper.appendChild(tag);
+    }
+  });
+}
+
+// Run initially on page load
+addCustomizableTags();
+
+// Detect dynamically added images using MutationObserver
+const observer = new MutationObserver(() => {
+  addCustomizableTags(); // Reapply when new content is added
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
 
 if (varientContainer) {
 waitForImageToLoad("base-image", function() {
