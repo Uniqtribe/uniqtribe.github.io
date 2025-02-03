@@ -13,6 +13,7 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 
 // Run initially on page load
 addCustomizableTags();
+console.log("ABC");
 
 // Detect dynamically added images using MutationObserver
 const observer = new MutationObserver(() => {
