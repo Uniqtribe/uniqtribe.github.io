@@ -64,7 +64,7 @@ margin-block-end: 0px !important;
   }
 }
 .theme-prod-img-container:has(img[alt*="customizable"])::after {
-    top: 5% !important;
+    top: 10% !important;
     left: 5% !important;
     width: 250% !important;
 }
