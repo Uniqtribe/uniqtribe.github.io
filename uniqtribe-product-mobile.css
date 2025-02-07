@@ -63,4 +63,8 @@ margin-block-end: 0px !important;
     transform: scale(1.3); /* Make the center item bigger */
   }
 }
-
+.theme-prod-img-container:has(img[alt*="customizable"])::after {
+    top: 5% !important;
+    left: 5% !important;
+    width: 250% !important;
+}
