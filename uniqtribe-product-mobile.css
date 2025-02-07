@@ -68,3 +68,7 @@ margin-block-end: 0px !important;
     left: 5% !important;
     width: 250% !important;
 }
+
+.zpcarousel-controller-container{
+  display:none;
+}
