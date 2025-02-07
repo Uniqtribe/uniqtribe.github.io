@@ -70,5 +70,5 @@ margin-block-end: 0px !important;
 }
 
 .zpcarousel-controller-container{
-  display:none;
+  display:none !important;
 }
