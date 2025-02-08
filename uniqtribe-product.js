@@ -8,7 +8,6 @@ let selectedSwatch;
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
-console.log("A");
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
 if (varientContainer) {
@@ -487,8 +486,9 @@ const colorThief = new ColorThief();
         palette2.style.display = showPalette2 ? 'flex' : 'none';
     });
     createColorPicker();
-
-
+if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
+alterPalette();
+}
 
 	})
 }
