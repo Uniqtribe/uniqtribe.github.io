@@ -486,9 +486,7 @@ const colorThief = new ColorThief();
         palette2.style.display = showPalette2 ? 'flex' : 'none';
     });
     createColorPicker();
-if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
-alterPalette();
-}
+
 
 	})
 }
