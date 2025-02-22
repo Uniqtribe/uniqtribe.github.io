@@ -738,8 +738,8 @@ function createColumnDiv(pattern) {
 function createCanvas(pattern) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 800;
+    canvas.width = 150;
+    canvas.height = 150;
     const img = new Image();
     img.src = document.querySelector('img[alt="base-image"]').src;
     img.onload = function () {
