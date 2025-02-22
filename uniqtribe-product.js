@@ -769,7 +769,7 @@ function processImageData(context, pattern) {
             data[j + 2] = newColor.b;
         }
     }
-    context.putImageData(imgData, 0, 0);
+    context.putImageData(imgData, 0, 0,150,150);
 }
 
 function createQuantitySpinner(pattern) {
