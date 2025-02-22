@@ -2558,4 +2558,3 @@ console.log("totalImages", totalImages);
   // Add selection highlight
   images[currentIndex].classList.add('selected');
 }
-
