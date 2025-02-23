@@ -149,7 +149,7 @@ waitForImageToLoad("base-image", function() {
             row.style.display = 'none';
         }
     })
-
+/*
     const inputElement = document.querySelector('[name="qty"]');
     inputElement.disabled = true;
     if (inputElement) {
@@ -169,7 +169,32 @@ waitForImageToLoad("base-image", function() {
             },
             configurable: true
         });
-    }
+    }*/
+	const inputElement = document.querySelector('[name="qty"]');
+inputElement.disabled = true; // Disables user input
+
+if (inputElement) {
+    // Listen for changes made programmatically
+    let originalDescriptor = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+
+    Object.defineProperty(inputElement, 'value', {
+        get() {
+            return originalDescriptor.get.call(this);
+        },
+        set(newValue) {
+            console.log('Value changed programmatically to:', newValue);
+            originalDescriptor.set.call(this, newValue);
+            updateTargetValue(newValue);
+        },
+        configurable: true
+    });
+
+    // Monitor changes via direct user interaction
+    inputElement.addEventListener('input', () => {
+        console.log('Value changed by user to:', inputElement.value);
+    });
+}
+
 
     productVariantId = extractIdFromUrl(window.location.href);
     quantityInput = document.querySelector('[title="quantity"]');
