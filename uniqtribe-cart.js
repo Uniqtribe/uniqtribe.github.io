@@ -1,59 +1,66 @@
     const cartItemElements = document.querySelectorAll('[data-cart-item]');
+    const checkoutItemElements = document.querySelectorAll('[data-zs-checkout-cart-item]');
 
+    
 
     if (cartItemElements) {
-        cartItemElements.forEach(cartItem => {
-            const liElements = cartItem.querySelectorAll("li");
-            let patternList = [];
-            let source = '';
-            liElements.forEach(li => {
-                if (li.textContent.trim().startsWith("source:")) {
-                    source = li.querySelector("span").textContent.trim();
-                    cartItem.querySelector('ul').style.display = 'none';
-                    cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
-                        item.disabled = true;
-                    });
-                    cartItem.querySelector('[data-zs-quantity]').disabled = true;
-                }
-                if(li.textContent.trim().startsWith("target:") || li.textContent.trim().startsWith("selection")){
-                    patternList.push(li.querySelector("span").textContent.trim());
-                }
-            });
-            console.log("source", source);
-            const table = document.createElement("table");
-                table.border = "1"; // Add border for visibility
-                const thead = document.createElement("thead");
-                const headerRow = document.createElement("tr");
-                // Column names
-                ["Pattern", "Shape", "Size"].forEach(text => {
-                    const th = document.createElement("th");
-                    th.textContent = text;
-                    headerRow.appendChild(th);
-                });
-
-                thead.appendChild(headerRow);
-                table.appendChild(thead);
-                
-
-            patternList.forEach(pattern => {
-                const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
-                const tableRow = document.createElement("tr");
-                const td1 = document.createElement("td");
-                td1.appendChild(canvas);
-                tableRow.appendChild(td1);
-                const td2 = document.createElement("td");
-                td2.textContent = JSON.parse(pattern).shape;
-                tableRow.appendChild(td2);
-                const td3 = document.createElement("td");
-                td3.textContent = JSON.parse(pattern).quantity;
-                tableRow.appendChild(td3);
-                table.appendChild(tableRow);
-                cartItem.querySelector('.theme-cart-item-info').appendChild(table);
-            });
-        })
+        generateTemplate(cartItemElements);
+    }
+    else if(checkoutItemElements){
+        generateTemplate(checkoutItemElements);
     }
 
+function generateTemplate(cartElements){
+    cartElements.forEach(cartItem => {
+        const liElements = cartItem.querySelectorAll("li");
+        let patternList = [];
+        let source = '';
+        liElements.forEach(li => {
+            if (li.textContent.trim().startsWith("source:")) {
+                source = li.querySelector("span").textContent.trim();
+                cartItem.querySelector('ul').style.display = 'none';
+                cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
+                    item.disabled = true;
+                });
+                cartItem.querySelector('[data-zs-quantity]').disabled = true;
+            }
+            if(li.textContent.trim().startsWith("target:") || li.textContent.trim().startsWith("selection")){
+                patternList.push(li.querySelector("span").textContent.trim());
+            }
+        });
+        console.log("source", source);
+        const table = document.createElement("table");
+            table.border = "1"; // Add border for visibility
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+            // Column names
+            ["Pattern", "Shape", "Size"].forEach(text => {
+                const th = document.createElement("th");
+                th.textContent = text;
+                headerRow.appendChild(th);
+            });
 
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+
+        patternList.forEach(pattern => {
+            const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
+            const tableRow = document.createElement("tr");
+            const td1 = document.createElement("td");
+            td1.appendChild(canvas);
+            tableRow.appendChild(td1);
+            const td2 = document.createElement("td");
+            td2.textContent = JSON.parse(pattern).shape;
+            tableRow.appendChild(td2);
+            const td3 = document.createElement("td");
+            td3.textContent = JSON.parse(pattern).quantity;
+            tableRow.appendChild(td3);
+            table.appendChild(tableRow);
+            cartItem.querySelector('.theme-cart-item-info').appendChild(table);
+        });
+    })
+}
 function createCanvas(pattern, baseImage, source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
