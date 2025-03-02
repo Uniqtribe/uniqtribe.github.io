@@ -22,7 +22,21 @@
             console.log("source", source);
             patternList.forEach(pattern => {
                 const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
-                cartItem.querySelector('.theme-cart-item-info').appendChild(canvas);
+                const table = document.createElement("table");
+
+                table.border = "1"; // Add border for visibility
+                const thead = document.createElement("thead");
+                const headerRow = document.createElement("tr");
+                // Column names
+                ["Pattern", "Shape", "Size"].forEach(text => {
+                    const th = document.createElement("th");
+                    th.textContent = text;
+                    headerRow.appendChild(th);
+                });
+
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                cartItem.querySelector('.theme-cart-item-info').appendChild(table);
             });
         })
     }
