@@ -22,7 +22,7 @@
             console.log("source", source);
             patternList.forEach(pattern => {
                 const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
-                cartItem.appendChild(canvas);
+                cartItem.querySelector('.theme-cart-item-info').appendChild(canvas);
             });
         })
     }
