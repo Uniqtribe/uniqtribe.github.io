@@ -21,7 +21,7 @@
             });
             console.log("source", source);
             patternList.forEach(pattern=>{
-                cartItem.appendChild(createCanvas(pattern.selected,cartItem.querySelector('img[alt="base-image"]').src), source);       
+                cartItem.appendChild(createCanvas(pattern,cartItem.querySelector('img[alt="base-image"]').src), source);       
             })
         })
     }
