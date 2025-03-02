@@ -101,3 +101,17 @@ function findClosestColorIndex(r, g, b, dominantColors) {
     });
     return closestColorIndex;
 }
+
+function applyDirectionToColor(toColor, direction) {
+
+    const newColor = {
+        r: toColor.r + direction.r,
+        g: toColor.g + direction.g,
+        b: toColor.b + direction.b
+    };
+    return {
+        r: Math.min(255, Math.max(0, Math.round(newColor.r))),
+        g: Math.min(255, Math.max(0, Math.round(newColor.g))),
+        b: Math.min(255, Math.max(0, Math.round(newColor.b)))
+    };
+}
