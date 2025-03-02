@@ -20,10 +20,7 @@
                 }
             });
             console.log("source", source);
-            patternList.forEach(pattern => {
-                const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
-                const table = document.createElement("table");
-
+            const table = document.createElement("table");
                 table.border = "1"; // Add border for visibility
                 const thead = document.createElement("thead");
                 const headerRow = document.createElement("tr");
@@ -36,6 +33,21 @@
 
                 thead.appendChild(headerRow);
                 table.appendChild(thead);
+                
+
+            patternList.forEach(pattern => {
+                const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
+                const tableRow = document.createElement("tr");
+                const td1 = document.createElement("td");
+                td1.textContent = canvas;
+                tableRow.appendChild(td1);
+                const td2 = document.createElement("td");
+                td2.textContent = "shape";
+                tableRow.appendChild(td2);
+                const td3 = document.createElement("td");
+                td3.textContent = "10";
+                tableRow.appendChild(td3);
+                table.appendChild(tableRow);
                 cartItem.querySelector('.theme-cart-item-info').appendChild(table);
             });
         })
