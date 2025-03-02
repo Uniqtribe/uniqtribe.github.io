@@ -3,10 +3,10 @@
 
     
 
-    if (cartItemElements) {
+    if (cartItemElements.length>0) {
         generateTemplate(cartItemElements);
     }
-    else if(checkoutItemElements){
+    else if(checkoutItemElements.length>0){
         generateTemplate(checkoutItemElements);
     }
 
