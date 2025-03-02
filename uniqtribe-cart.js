@@ -5,8 +5,10 @@
         cartItemElements.forEach(cartItem => {
             const liElements = cartItem.querySelectorAll("li");
             let patternList = [];
+            let source = '';
             liElements.forEach(li => {
                 if (li.textContent.trim().startsWith("source:")) {
+                    source = li.querySelector("span").textContent.trim();
                     cartItem.querySelector('ul').style.display = 'none';
                     cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
                         item.disabled = true;
@@ -24,7 +26,7 @@
     }
 
 
-function createCanvas(pattern, baseImage) {
+function createCanvas(pattern, baseImage, source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     canvas.width = 150;
@@ -37,15 +39,15 @@ function createCanvas(pattern, baseImage) {
     img.src = baseImage;
     img.onload = function () {
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
-        processImageData(context, pattern);
+        processImageData(context, pattern, source);
     };
     return canvas;
 }
 
-function processImageData(context, pattern) {
+function processImageData(context, pattern,source) {
     const imgData = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
     const data = imgData.data;
-    const dominantColor = basicColor[0].baseColor;
+    const dominantColor = JSON.parse(source).selected;
     const changeColorArray = convertHexArrayToRgbArray(JSON.parse(JSON.parse(pattern).value).selected);
     for (let j = 0; j < data.length; j += 4) {
         const [r, g, b] = [data[j], data[j + 1], data[j + 2]];
