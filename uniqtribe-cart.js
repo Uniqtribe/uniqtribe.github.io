@@ -31,8 +31,8 @@
 function createCanvas(pattern, baseImage, source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 150;
-    canvas.height = 150;
+    canvas.width = 75;
+    canvas.height = 75;
 
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high"; // You can use "low", "medium", or "high"
