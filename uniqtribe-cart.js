@@ -88,3 +88,16 @@ function hexToRgb(hex) {
         b
     };
 }
+
+function findClosestColorIndex(r, g, b, dominantColors) {
+    let closestColorIndex = -1;
+    let smallestDiff = Infinity;
+    dominantColors.forEach((color, index) => {
+        const diff = Math.abs(r - color.r) + Math.abs(g - color.g) + Math.abs(b - color.b);
+        if (diff < smallestDiff) {
+            smallestDiff = diff;
+            closestColorIndex = index;
+        }
+    });
+    return closestColorIndex;
+}
