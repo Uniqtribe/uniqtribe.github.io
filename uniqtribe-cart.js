@@ -42,10 +42,10 @@
                 td1.appendChild(canvas);
                 tableRow.appendChild(td1);
                 const td2 = document.createElement("td");
-                td2.textContent = "shape";
+                td2.textContent = JSON.parse(pattern).shape;
                 tableRow.appendChild(td2);
                 const td3 = document.createElement("td");
-                td3.textContent = "10";
+                td3.textContent = JSON.parse(pattern).quantity;
                 tableRow.appendChild(td3);
                 table.appendChild(tableRow);
                 cartItem.querySelector('.theme-cart-item-info').appendChild(table);
