@@ -71,3 +71,20 @@ function processImageData(context, pattern,source) {
 function convertHexArrayToRgbArray(hexArray) {
     return hexArray.map(hex => hexToRgb(hex)); // Map hex array to RGB objects
 }
+
+function hexToRgb(hex) {
+    // Remove the '#' if present
+    hex = hex.replace(/^#/, '');
+
+    // Parse the hex string to RGB values
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return {
+        r,
+        g,
+        b
+    };
+}
