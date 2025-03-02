@@ -19,6 +19,7 @@
                     patternList.push(li.querySelector("span").textContent.trim());
                 }
             });
+            console.log("source", source);
             patternList.forEach(pattern=>{
                 cartItem.appendChild(createCanvas(pattern.selected,cartItem.querySelector('img[alt="base-image"]').src), source);       
             })
