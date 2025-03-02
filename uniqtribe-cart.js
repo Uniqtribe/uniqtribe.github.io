@@ -18,7 +18,7 @@
                 }
             });
             patternList.forEach(pattern=>{
-                cartItemElements.appendChild(createCanvas(pattern.selected,cartItemElements.querySelector('img[alt="base-image"]').src));       
+                cartItem.appendChild(createCanvas(pattern.selected,cartItem.querySelector('img[alt="base-image"]').src));       
             })
         })
     }
