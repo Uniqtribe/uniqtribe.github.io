@@ -20,9 +20,10 @@
                 }
             });
             console.log("source", source);
-            patternList.forEach(pattern=>{
-                cartItem.appendChild(createCanvas(pattern,cartItem.querySelector('img[alt="base-image"]').src), JSON.stringify(source));       
-            })
+            patternList.forEach(pattern => {
+                const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
+                cartItem.appendChild(canvas);
+            });
         })
     }
 
