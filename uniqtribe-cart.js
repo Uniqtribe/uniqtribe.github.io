@@ -68,3 +68,6 @@ function processImageData(context, pattern,source) {
     }
     context.putImageData(imgData, 0, 0);
 }
+function convertHexArrayToRgbArray(hexArray) {
+    return hexArray.map(hex => hexToRgb(hex)); // Map hex array to RGB objects
+}
