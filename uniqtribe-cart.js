@@ -39,7 +39,7 @@
                 const canvas = createCanvas(pattern, cartItem.querySelector('img[alt="base-image"]').src, source);
                 const tableRow = document.createElement("tr");
                 const td1 = document.createElement("td");
-                td1.textContent = canvas;
+                td1.appendChild(canvas);
                 tableRow.appendChild(td1);
                 const td2 = document.createElement("td");
                 td2.textContent = "shape";
