@@ -50,7 +50,7 @@ function processImageData(context, pattern,source) {
     const imgData = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
     const data = imgData.data;
     const dominantColor = JSON.parse(source).source;
-    const changeColorArray = convertHexArrayToRgbArray(JSON.parse(pattern).selected);
+    const changeColorArray = convertHexArrayToRgbArray((JSON.parse(pattern)).selected);
     for (let j = 0; j < data.length; j += 4) {
         const [r, g, b] = [data[j], data[j + 1], data[j + 2]];
         const closestColorIndex = findClosestColorIndex(r, g, b, dominantColor);
