@@ -503,7 +503,10 @@ const colorThief = new ColorThief();
     });
 
     populatePalette();
-    generateControls();
+	if(configObject.customColor === true){
+		generateControls();
+	}
+    
     generateCustomSelect();
     paletteToggle.addEventListener('change', () => {
         const showPalette2 = paletteToggle.checked;
