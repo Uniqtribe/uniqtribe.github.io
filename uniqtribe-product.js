@@ -361,7 +361,7 @@ if (inputElement) {
         };
         animate();
         
-    const img = document.querySelector('img[alt="base-image"]');
+    const img = document.querySelector('img[alt*="base-image"]');
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = img.width;
@@ -476,7 +476,7 @@ const colorThief = new ColorThief();
     document.querySelector(".theme-product-detail-image-container").appendChild(imageGallery);
 
     // Handle base image element
-    const baseImgElement = document.querySelector('img[alt="base-image"]');
+    const baseImgElement = document.querySelector('img[alt*="base-image"]');
     imageGallery.append(baseImgElement);
 
     baseImgElement.addEventListener('click', () => {
@@ -772,7 +772,7 @@ function createCanvas(pattern) {
     context.imageSmoothingQuality = "high"; // You can use "low", "medium", or "high"
 	
     const img = new Image();
-    img.src = document.querySelector('img[alt="base-image"]').src;
+    img.src = document.querySelector('img[alt*="base-image"]').src;
     img.onload = function () {
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
         processImageData(context, pattern);
@@ -1384,7 +1384,7 @@ function changeColor(changeColorArray) {
     obj['quantity'] = quantityInput.value;
     target.value = JSON.stringify(obj);
 
-    let imgElement = document.querySelector('img[alt="base-image"]');
+    let imgElement = document.querySelector('img[alt*="base-image"]');
     let imgData;
 
     if (imgElement.complete) {
