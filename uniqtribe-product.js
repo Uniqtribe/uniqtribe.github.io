@@ -940,6 +940,7 @@ function generateControls() {
     sourceContainer.id = `swatches-0`;
     sourceContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors);
     toColorSwatchesContainer.appendChild(sourceContainer);
+	if(configObject.customColor === true){
     paletteColors.forEach((palette, paletteIndex) => {
         const swatchContainer = document.createElement('div');
         swatchContainer.className = 'colorSwatches';
@@ -949,7 +950,7 @@ function generateControls() {
 
         swatches.push(swatchContainer);
     });
-if(configObject.customColor === true){
+
     const customContainer = document.createElement('div');
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
