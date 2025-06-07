@@ -502,10 +502,9 @@ const colorThief = new ColorThief();
         handleImageClick(imgWrapper, imageUrl);
     });
 
-    populatePalette();
-	if(configObject.customColor === true){
-		generateControls();
-	}
+        populatePalette();
+	generateControls();
+	
     
     generateCustomSelect();
     paletteToggle.addEventListener('change', () => {
@@ -907,7 +906,7 @@ async function populatePalette() {
     });
 
     sectionSelector.appendChild(fragment);
-
+if(configObject.suggestedColor === true){
     // Populate swatches
     colors.forEach((color) => {
         const swatch = document.createElement('div');
@@ -928,6 +927,7 @@ async function populatePalette() {
     const colorpicker = createColorPickerSwatch();
     swatchFragment.appendChild(colorpicker);
     paletteContainer.appendChild(swatchFragment);
+}
 }
 
 function generateControls() {
