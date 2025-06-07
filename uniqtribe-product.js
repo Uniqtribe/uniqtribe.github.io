@@ -32,7 +32,7 @@ waitForImageToLoad("base-image", function() {
     cartContainer.appendChild(cartPatternContainer);
     varientContainerRows.append(cartContainer);
     varientContainer.append(varientContainerRows);
-    imgElement = document.querySelector('img[alt="base-image"]');
+    imgElement = document.querySelector('img[alt*="base-image"]');
 
     (function () {
         const originalFetch = window.fetch;
