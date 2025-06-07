@@ -1023,7 +1023,7 @@ function addClickEventToSwatches() {
     swatchElements.forEach(swatch => {
 
         swatch.addEventListener('click', function () {
-            if (this.classList.contains('custom-color-selector')) {
+            if (this.classList.contains('custom-color-selector') && configObject.customColor === true) {
                 customColorPicker.style.display = 'block';
             } else {
                 customColorPicker.style.display = 'none';
