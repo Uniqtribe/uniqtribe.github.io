@@ -949,7 +949,7 @@ function generateControls() {
 
         swatches.push(swatchContainer);
     });
-
+if(configObject.customColor === true){
     const customContainer = document.createElement('div');
     customContainer.className = 'colorSwatches custom-color-selector';
     customContainer.id = `swatches-${(paletteColors.length + 1)}`;
@@ -967,6 +967,7 @@ function generateControls() {
         populateSwatchesForIndex(index, palette);
     });
     addClickEventToSwatches();
+}
 }
 
 function generateVerticalGradient(colors, isCustom = false) {
