@@ -906,7 +906,7 @@ async function populatePalette() {
     });
 
     sectionSelector.appendChild(fragment);
-if(configObject.suggestedColor === true){
+if(configObject.customColor === true){
     // Populate swatches
     colors.forEach((color) => {
         const swatch = document.createElement('div');
