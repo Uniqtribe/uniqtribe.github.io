@@ -906,7 +906,7 @@ async function populatePalette() {
     });
 
     sectionSelector.appendChild(fragment);
-if(configObject.customColor === true){
+
     // Populate swatches
     colors.forEach((color) => {
         const swatch = document.createElement('div');
@@ -927,7 +927,7 @@ if(configObject.customColor === true){
     const colorpicker = createColorPickerSwatch();
     swatchFragment.appendChild(colorpicker);
     paletteContainer.appendChild(swatchFragment);
-}
+
 }
 
 function generateControls() {
