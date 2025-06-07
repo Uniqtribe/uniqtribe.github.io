@@ -2459,7 +2459,7 @@ function areColorsSimilar(color1, color2, threshold = 10) {
 }
 
 function waitForImageToLoad(altText, callback) {
-    var img = document.querySelector('img[alt="' + altText + '"]');
+    var img = document.querySelector('img[alt*="' + altText + '"]');
 
     if (img.complete && img.naturalHeight !== 0) {
         callback(); // Image is already loaded
