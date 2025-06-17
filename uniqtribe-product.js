@@ -505,20 +505,26 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 
 }
 
-	 configObject.commonImages.forEach(imageUrl => {
-        const imgElement = document.createElement('img');
-        imgElement.src = imageUrl;
-        imgElement.alt = "Common Image";
-
-        const imgWrapper = document.createElement('div');
-        imgWrapper.classList.add('image-wrapper')
-        // Append the image element to the gallery
-        imgWrapper.appendChild(imgElement);
-        imageGallery.append(imgWrapper);
-
-        // Attach the click handler
-        handleImageClick(imgWrapper, imageUrl);
-    });
+		configObject.commonImages.forEach(imageUrl => {
+		    const imgElement = new Image();
+		    imgElement.src = imageUrl;
+		    imgElement.alt = "Common Image";
+		
+		    imgElement.onload = () => {
+		        const imgWrapper = document.createElement('div');
+		        imgWrapper.classList.add('image-wrapper');
+		        imgWrapper.appendChild(imgElement);
+		        imageGallery.append(imgWrapper);
+		
+		        // Attach the click handler
+		        handleImageClick(imgWrapper, imageUrl);
+		    };
+		
+		    imgElement.onerror = (err) => {
+		        console.error("Failed to load image:", imageUrl, err);
+		    };
+		});
+	
 	})
 }
 
