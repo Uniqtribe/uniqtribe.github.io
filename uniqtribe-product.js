@@ -487,20 +487,7 @@ const colorThief = new ColorThief();
 
 
 
-    configObject.commonImages.forEach(imageUrl => {
-        const imgElement = document.createElement('img');
-        imgElement.src = imageUrl;
-        imgElement.alt = "Common Image";
-
-        const imgWrapper = document.createElement('div');
-        imgWrapper.classList.add('image-wrapper')
-        // Append the image element to the gallery
-        imgWrapper.appendChild(imgElement);
-        imageGallery.append(imgWrapper);
-
-        // Attach the click handler
-        handleImageClick(imgWrapper, imageUrl);
-    });
+   
 
         populatePalette();
 	generateControls();
@@ -517,6 +504,21 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
     alterPalette();
 
 }
+
+	 configObject.commonImages.forEach(imageUrl => {
+        const imgElement = document.createElement('img');
+        imgElement.src = imageUrl;
+        imgElement.alt = "Common Image";
+
+        const imgWrapper = document.createElement('div');
+        imgWrapper.classList.add('image-wrapper')
+        // Append the image element to the gallery
+        imgWrapper.appendChild(imgElement);
+        imageGallery.append(imgWrapper);
+
+        // Attach the click handler
+        handleImageClick(imgWrapper, imageUrl);
+    });
 	})
 }
 
