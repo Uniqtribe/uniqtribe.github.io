@@ -1513,7 +1513,7 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
 
     const useMultiPattern = configObject?.multipattern === true;
 
-    // Default: full image settings
+    // Default to full image settings
     texture.repeat.set(1, 1);
     texture.offset.set(0, 0);
 
@@ -1522,10 +1522,13 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
 
         let appliedTexture = texture;
 
-        const isPatterned = configObject.imageInfo.appliedPattern.includes(child.name);
+        // Check if this child is in the pattern list AND contains 'nail'
+        const isPatterned =
+            useMultiPattern &&
+            configObject.imageInfo.appliedPattern.includes(child.name) &&
+            child.name.toLowerCase().includes('nail');
 
-        if (useMultiPattern && isPatterned) {
-            // Only apply slicing to patterned meshes
+        if (isPatterned) {
             const sliceIndex = currentSlice % totalSlices;
             appliedTexture = texture.clone();
             appliedTexture.needsUpdate = true;
@@ -1536,13 +1539,13 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
             currentSlice++;
         }
 
-        // Override texture if defined externally
+        // Override with external texture if one is defined
         const textureInfo = textures.find(tex => tex.objects.includes(child.name));
         if (textureInfo) {
             appliedTexture = textureInfo.texture;
         }
 
-        // Apply material logic
+        // Apply materials
         if (child.name === configObject.imageInfo.backgroundPattern) {
             child.material = new THREE.MeshStandardMaterial({
                 map: appliedTexture,
@@ -1553,7 +1556,7 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
                 emissiveIntensity: 0.3,
                 color: new THREE.Color(0xffffff)
             });
-        } else if (isPatterned) {
+        } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
             child.material = new THREE.MeshStandardMaterial({
                 map: appliedTexture,
                 transparent: true,
@@ -1565,6 +1568,7 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
         child.material.needsUpdate = true;
     });
 });
+
 
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
