@@ -312,7 +312,7 @@ if (inputElement) {
                 transparent: textureInfo.transparent
             };
         });
-
+/*
 	    const totalSlices = 5;
 let currentSlice = 0;
 
@@ -381,8 +381,8 @@ const uploadedTexture = textureLoader.load(
         });
     }
 );
-
-	    /*
+*/
+	    
         const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
             function (texture) {
                 texture.wrapS = THREE.RepeatWrapping;
@@ -422,7 +422,7 @@ const uploadedTexture = textureLoader.load(
                     }
                 });
             });
-*/
+
         camera.position.set(center.x, center.y, 10);
         camera.lookAt(center);
 
@@ -1536,7 +1536,7 @@ function changeColor(changeColorArray) {
     // Load uploaded texture
 
 	
-    /*const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'), function (texture) {
+    const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'), function (texture) {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, 1);
@@ -1572,8 +1572,8 @@ function changeColor(changeColorArray) {
                 child.material.needsUpdate = true;
             }
         });
-    });*/
-
+    });
+/*
 const base64Image = document.querySelector('#designCanvas').toDataURL('image/png');
 const totalSlices = 5;
 let currentSlice = 0;
@@ -1639,7 +1639,7 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
         child.material.needsUpdate = true;
     });
 });
-
+*/
 
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
