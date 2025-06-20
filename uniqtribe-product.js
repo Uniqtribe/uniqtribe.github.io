@@ -1463,7 +1463,9 @@ function changeColor(changeColorArray) {
     }
     designCanvasCtx.putImageData(imgData, 0, 0);
     // Load uploaded texture
-    const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'), function (texture) {
+
+	
+    /*const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'), function (texture) {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, 1);
@@ -1499,7 +1501,72 @@ function changeColor(changeColorArray) {
                 child.material.needsUpdate = true;
             }
         });
+    });*/
+
+	const base64Image = document.querySelector('#designCanvas').toDataURL('image/png');
+const totalSlices = 5;
+let currentSlice = 0;
+
+const uploadedTexture = textureLoader.load(base64Image, function (texture) {
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+
+    // Only use multipattern logic if the key exists AND is true
+    const useMultiPattern = configObject?.multipattern === true;
+
+    // If not slicing, use full image
+    if (!useMultiPattern) {
+        texture.repeat.set(1, 1);
+        texture.offset.set(0, 0);
+    }
+
+    object.traverse(function (child) {
+        if (!child.isMesh) return;
+
+        // Start with the base texture
+        let appliedTexture = texture;
+
+        if (useMultiPattern) {
+            // Clone the texture and set slice
+            const sliceIndex = currentSlice % totalSlices;
+            appliedTexture = texture.clone();
+            appliedTexture.needsUpdate = true;
+            appliedTexture.repeat.set(1, 1 / totalSlices);
+            appliedTexture.offset.y = 1 - (sliceIndex + 1) * (1 / totalSlices);
+            currentSlice++;
+        }
+
+        // Check for pre-defined texture override
+        const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+        if (textureInfo) {
+            appliedTexture = textureInfo.texture;
+        }
+
+        // Assign material based on object name
+        if (child.name === configObject.imageInfo.backgroundPattern) {
+            child.material = new THREE.MeshStandardMaterial({
+                map: appliedTexture,
+                transparent: true,
+                opacity: 1,
+                depthWrite: false,
+                emissive: new THREE.Color(0xffffff),
+                emissiveIntensity: 0.3,
+                color: new THREE.Color(0xffffff)
+            });
+        } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
+            child.material = new THREE.MeshStandardMaterial({
+                map: appliedTexture,
+                transparent: true,
+                opacity: 1,
+                depthWrite: false
+            });
+        }
+
+        // Force material update
+        child.material.needsUpdate = true;
     });
+});
+
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
     selectedElement.click();
