@@ -1503,7 +1503,7 @@ function changeColor(changeColorArray) {
         });
     });*/
 
-	const base64Image = document.querySelector('#designCanvas').toDataURL('image/png');
+const base64Image = document.querySelector('#designCanvas').toDataURL('image/png');
 const totalSlices = 5;
 let currentSlice = 0;
 
@@ -1511,38 +1511,38 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
 
-    // Only use multipattern logic if the key exists AND is true
     const useMultiPattern = configObject?.multipattern === true;
 
-    // If not slicing, use full image
-    if (!useMultiPattern) {
-        texture.repeat.set(1, 1);
-        texture.offset.set(0, 0);
-    }
+    // Default: full image settings
+    texture.repeat.set(1, 1);
+    texture.offset.set(0, 0);
 
     object.traverse(function (child) {
         if (!child.isMesh) return;
 
-        // Start with the base texture
         let appliedTexture = texture;
 
-        if (useMultiPattern) {
-            // Clone the texture and set slice
+        const isPatterned = configObject.imageInfo.appliedPattern.includes(child.name);
+
+        if (useMultiPattern && isPatterned) {
+            // Only apply slicing to patterned meshes
             const sliceIndex = currentSlice % totalSlices;
             appliedTexture = texture.clone();
             appliedTexture.needsUpdate = true;
+            appliedTexture.wrapS = THREE.RepeatWrapping;
+            appliedTexture.wrapT = THREE.RepeatWrapping;
             appliedTexture.repeat.set(1, 1 / totalSlices);
             appliedTexture.offset.y = 1 - (sliceIndex + 1) * (1 / totalSlices);
             currentSlice++;
         }
 
-        // Check for pre-defined texture override
+        // Override texture if defined externally
         const textureInfo = textures.find(tex => tex.objects.includes(child.name));
         if (textureInfo) {
             appliedTexture = textureInfo.texture;
         }
 
-        // Assign material based on object name
+        // Apply material logic
         if (child.name === configObject.imageInfo.backgroundPattern) {
             child.material = new THREE.MeshStandardMaterial({
                 map: appliedTexture,
@@ -1553,7 +1553,7 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
                 emissiveIntensity: 0.3,
                 color: new THREE.Color(0xffffff)
             });
-        } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
+        } else if (isPatterned) {
             child.material = new THREE.MeshStandardMaterial({
                 map: appliedTexture,
                 transparent: true,
@@ -1562,7 +1562,6 @@ const uploadedTexture = textureLoader.load(base64Image, function (texture) {
             });
         }
 
-        // Force material update
         child.material.needsUpdate = true;
     });
 });
