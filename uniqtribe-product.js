@@ -340,13 +340,15 @@ const uploadedTexture = textureLoader.load(
 
             if (isPatterned) {
                 const sliceIndex = currentSlice % totalSlices;
-                appliedTexture = texture.clone();
-                appliedTexture.needsUpdate = true;
-                appliedTexture.wrapS = THREE.RepeatWrapping;
-                appliedTexture.wrapT = THREE.RepeatWrapping;
-                appliedTexture.repeat.set(1, 1 / totalSlices);
-                appliedTexture.offset.y = 1 - (sliceIndex + 1) * (1 / totalSlices);
-                currentSlice++;
+		appliedTexture = texture.clone();
+		appliedTexture.needsUpdate = true;
+		appliedTexture.wrapS = THREE.RepeatWrapping;
+		appliedTexture.wrapT = THREE.RepeatWrapping;
+		
+		// Horizontal slice
+		appliedTexture.repeat.set(1 / totalSlices, 1);
+		appliedTexture.offset.set(sliceIndex / totalSlices, 0);
+		currentSlice++;
             }
 
             // Override with external texture if found
