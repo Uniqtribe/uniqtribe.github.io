@@ -1,6 +1,7 @@
 let isDragging = false;
 let selection = [];
 let patternSelection;
+let packSelection;
 let productVariantId;
 let swatches = [];
 let selectedSwatch;
@@ -113,6 +114,7 @@ waitForImageToLoad("base-image", function() {
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
+	
     variantRows.forEach(row => {
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
         if (label?.textContent.replace("*", "").trim() === 'source') {
@@ -648,7 +650,7 @@ function updateFields() {
         }
     }
     loadSelectionFieldsWithPattern();
-
+     loadSelectionFieldsWithPack();
 document.querySelector('#swatches-0').click();
 document.querySelector('#customSelect').querySelectorAll('div[data-value]')[0].click();
 }
@@ -658,6 +660,7 @@ function loadBasicField() {
     obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
     obj['quantity'] = 1;
     obj['shape'] = '';
+    obj['pack'] = '';
     target.value = JSON.stringify(obj);
     let object = {};
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
@@ -711,6 +714,51 @@ function loadSelectionFieldsWithPattern() {
     printPattern(patternSelection);
 }
 
+
+function loadSelectionFieldsWithPack() {
+    packSelection = [];
+
+    for (let a = 0; a < selection.length; a++) {
+        selection[a].value = '';
+    }
+    console.log("Selection Value", selectionValue);
+    for (let i = 0; i < selectionValue.length; i++) {
+        for (let j = 0; j < selection.length; j++) {
+            if (selection[j].value === '') {
+                selection[j].value = JSON.stringify(selectionValue[i]);
+                if (j === (selection.length - 1)) {
+                    document.querySelector('.theme-cart-button').style.display = 'none';
+                }
+                break;
+            } else if ((JSON.stringify(JSON.parse(selection[j].value).selected) === JSON.stringify(selectionValue[i].selected)) &&
+                (JSON.stringify(JSON.parse(selection[j].value).shape) === JSON.stringify(selectionValue[i].shape))
+            ) {
+
+                let obj = JSON.parse((selection[j].value));
+                obj.quantity = parseInt(obj.quantity, 10) + parseInt(selectionValue[i].quantity, 10);
+                selection[j].value = JSON.stringify(obj);
+                cartPatternContainer.append(JSON.stringify(obj))
+                break;
+            }
+        }
+        let x = 0;
+        variantRows.forEach(row => {
+            let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+            if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
+                if (row.querySelector('input').value != '') {
+                    let obj = {};
+                    obj['value'] = row.querySelector('input').value;
+                    obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
+                    patternSelection[x] = JSON.stringify(obj);
+                }
+                x++;
+            }
+        })
+
+    }
+    console.log("patternSelection", patternSelection)
+    printPattern(patternSelection);
+}
 function parseColor(colorStr) {
     const r = parseInt(colorStr.substr(1, 2), 16);
     const g = parseInt(colorStr.substr(3, 2), 16);
