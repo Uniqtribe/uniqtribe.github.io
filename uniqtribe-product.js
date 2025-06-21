@@ -312,8 +312,7 @@ if (inputElement) {
                 transparent: textureInfo.transparent
             };
         });
-
-	    const totalSlices = 5;
+const totalSlices = 5;
 let currentSlice = 0;
 
 const uploadedTexture = textureLoader.load(
@@ -324,7 +323,7 @@ const uploadedTexture = textureLoader.load(
 
         const useMultiPattern = configObject?.multipattern === true;
 
-        // Set base texture to full image
+        // Default texture uses full image
         texture.repeat.set(1, 1);
         texture.offset.set(0, 0);
 
@@ -333,6 +332,7 @@ const uploadedTexture = textureLoader.load(
 
             let appliedTexture = texture;
 
+            // 🟡 Determine if this mesh should get a sliced texture
             const isPatterned =
                 useMultiPattern &&
                 configObject.imageInfo.appliedPattern.includes(child.name) &&
@@ -340,24 +340,25 @@ const uploadedTexture = textureLoader.load(
 
             if (isPatterned) {
                 const sliceIndex = currentSlice % totalSlices;
-		appliedTexture = texture.clone();
-		appliedTexture.needsUpdate = true;
-		appliedTexture.wrapS = THREE.RepeatWrapping;
-		appliedTexture.wrapT = THREE.RepeatWrapping;
-		
-		// Horizontal slice
-		appliedTexture.repeat.set(1 / totalSlices, 1);
-		appliedTexture.offset.set(sliceIndex / totalSlices, 0);
-		currentSlice++;
+                appliedTexture = texture.clone();
+                appliedTexture.needsUpdate = true;
+                appliedTexture.wrapS = THREE.RepeatWrapping;
+                appliedTexture.wrapT = THREE.RepeatWrapping;
+
+                // 🟢 Horizontal slicing (1/5 of the image)
+                appliedTexture.repeat.set(1 / totalSlices, 1);
+                appliedTexture.offset.set(sliceIndex / totalSlices, 0);
+
+                currentSlice++;
             }
 
-            // Override with external texture if found
+            // 🔁 Override with custom texture if found (takes priority)
             const textureInfo = textures.find(tex => tex.objects.includes(child.name));
             if (textureInfo) {
                 appliedTexture = textureInfo.texture;
             }
 
-            // Assign appropriate material
+            // 🧱 Assign material
             if (child.name === configObject.imageInfo.backgroundPattern) {
                 child.material = new THREE.MeshStandardMaterial({
                     map: appliedTexture,
@@ -381,6 +382,7 @@ const uploadedTexture = textureLoader.load(
         });
     }
 );
+
 
 	/*    
         const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
