@@ -292,6 +292,7 @@ if (inputElement) {
     scene.add(directionalLight1);
 
     const loader = new THREE.GLTFLoader();
+loader.setMeshoptDecoder(window.MeshoptDecoder);
 
     loader.load(configObject.imageInfo.objectPath, function (gltf) {
         object = gltf.scene;
