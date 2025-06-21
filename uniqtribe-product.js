@@ -313,63 +313,82 @@ if (inputElement) {
             };
         });
 
-	 const totalSlices = 5;
+const totalSlices = 5;
 let currentSlice = 0;
 
 const uploadedTexture = textureLoader.load(
   document.querySelector('#designCanvas').toDataURL('image/png'),
   function (texture) {
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(1,1);
-    texture.offset.set(0,0);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1, 1);
+    texture.offset.set(0, 0);
 
-    const useMulti = configObject?.multipattern === true;
+    const useMultiPattern = configObject?.multipattern === true;
 
     object.traverse(child => {
       if (!child.isMesh) return;
 
-      console.log('Processing mesh:', child.name);
+      let appliedTexture = texture;
+      let materialOptions = null;
 
-      let applied = texture;
+      // 🥇 Check if there's a texture override first
+      const textureInfo = textures.find(tex => tex.objects.includes(child.name));
 
-      // 1️⃣ Try override
-      const overrideInfo = textures.find(t => t.objects.includes(child.name));
-      console.log(' → overrideInfo?', overrideInfo ? overrideInfo.texture : 'none');
-      if (overrideInfo) {
-        applied = overrideInfo.texture;
+      if (textureInfo) {
+        appliedTexture = textureInfo.texture;
+
+        materialOptions = {
+          map: appliedTexture,
+          transparent: textureInfo.transparent,
+          opacity: textureInfo.transparent ? 1 : undefined,
+          depthWrite: !textureInfo.transparent
+        };
       } else {
-        // 2️⃣ multipattern?
-        const isPatterned = useMulti
-          && configObject.imageInfo.appliedPattern.includes(child.name)
-          && child.name.toLowerCase().includes('nail');
+        // 🥈 If multipattern applies and it's a "nail" mesh
+        const isPatterned =
+          useMultiPattern &&
+          configObject.imageInfo.appliedPattern.includes(child.name) &&
+          child.name.toLowerCase().includes('nail');
 
-        console.log(` → isPatterned? ${isPatterned}`);
         if (isPatterned) {
-          const sliceIdx = currentSlice % totalSlices;
-          console.log(' → slicing sliceIdx', sliceIdx);
+          const sliceIndex = currentSlice % totalSlices;
 
-          applied = texture.clone();
-          applied.needsUpdate = true;
-          applied.wrapS = applied.wrapT = THREE.RepeatWrapping;
-          applied.repeat.set(1 / totalSlices, 1);
-          applied.offset.set(sliceIdx / totalSlices, 0);
+          appliedTexture = texture.clone();
+          appliedTexture.needsUpdate = true;
+          appliedTexture.wrapS = THREE.RepeatWrapping;
+          appliedTexture.wrapT = THREE.RepeatWrapping;
+          appliedTexture.repeat.set(1 / totalSlices, 1);
+          appliedTexture.offset.set(sliceIndex / totalSlices, 0);
+
           currentSlice++;
         }
+
+        // Material for base (non-overridden) texture
+        materialOptions = {
+          map: appliedTexture,
+          transparent: true,
+          opacity: 1,
+          depthWrite: false
+        };
       }
 
-      const matOpts = { map: applied, transparent: true, opacity: 1, depthWrite: false };
+      // 🟢 Special styling for background pattern
       if (child.name === configObject.imageInfo.backgroundPattern) {
-        Object.assign(matOpts, {
-          emissive: new THREE.Color(0xffffff),
-          emissiveIntensity: 0.3,
-          color: new THREE.Color(0xffffff)
-        });
+        materialOptions.emissive = new THREE.Color(0xffffff);
+        materialOptions.emissiveIntensity = 0.3;
+        materialOptions.color = new THREE.Color(0xffffff);
       }
-      child.material = new THREE.MeshStandardMaterial(matOpts);
+
+      // 💄 Assign final material
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
       child.material.needsUpdate = true;
+
+      // 🔍 Optional: Debug log
+      // console.log(`Mesh: ${child.name}, transparent: ${child.material.transparent}`);
     });
 
-    console.log('Traversal done, currentSlice:', currentSlice);
+    console.log('Finished applying textures and slicing.');
   }
 );
 
