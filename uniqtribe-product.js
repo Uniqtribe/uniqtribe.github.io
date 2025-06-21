@@ -312,7 +312,7 @@ if (inputElement) {
                 transparent: textureInfo.transparent
             };
         });
-/*
+
 	    const totalSlices = 5;
 let currentSlice = 0;
 
@@ -381,8 +381,8 @@ const uploadedTexture = textureLoader.load(
         });
     }
 );
-*/
-	    
+
+	/*    
         const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
             function (texture) {
                 texture.wrapS = THREE.RepeatWrapping;
@@ -422,7 +422,7 @@ const uploadedTexture = textureLoader.load(
                     }
                 });
             });
-
+*/
         camera.position.set(center.x, center.y, 10);
         camera.lookAt(center);
 
