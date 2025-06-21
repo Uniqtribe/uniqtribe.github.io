@@ -360,7 +360,11 @@ const uploadedTexture = textureLoader.load(
           appliedTexture.wrapT = THREE.RepeatWrapping;
           appliedTexture.repeat.set(1 / totalSlices, 1);
           appliedTexture.offset.set(sliceIndex / totalSlices, 0);
-
+ console.log(
+        `🧩 Applying slice ${sliceIndex} to mesh "${child.name}"`,
+        `→ repeat: (${appliedTexture.repeat.x}, ${appliedTexture.repeat.y})`,
+        `→ offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
+    );
           currentSlice++;
         }
 
