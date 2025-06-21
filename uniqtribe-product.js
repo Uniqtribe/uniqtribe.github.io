@@ -589,7 +589,8 @@ const colorThief = new ColorThief();
 	generateControls();
 	
     
-    generateCustomSelect();
+    generateCustomShapeSelect();
+    generateCustomPackSelect();
     paletteToggle.addEventListener('change', () => {
         const showPalette2 = paletteToggle.checked;
         palette1.style.display = showPalette2 ? 'none' : 'flex';
@@ -1188,16 +1189,16 @@ function addClickEventToSwatches() {
     });
 }
 
-function generateCustomSelect() {
+function generateCustomShapeSelect() {
     const hiddenSelect = document.querySelector('select[data-label="Shape"]');
-    if (document.querySelector('#customSelectContainer')) {
-        document.querySelector('#customSelectContainer').remove()
+    if (document.querySelector('#customShapeSelectContainer')) {
+        document.querySelector('#customShapeSelectContainer').remove()
     }
 
     if (hiddenSelect) {
-        const customSelectContainer = document.createElement('div');
-        customSelectContainer.id = 'customSelectContainer';
-        hiddenSelect.parentNode.insertBefore(customSelectContainer, hiddenSelect.nextSibling);
+        const customShapeSelectContainer = document.createElement('div');
+        customShapeSelectContainer.id = 'customShapeSelectContainer';
+        hiddenSelect.parentNode.insertBefore(customShapeSelectContainer, hiddenSelect.nextSibling);
 
         let customSelectContent = '';
         Array.from(hiddenSelect.options).forEach((option, index) => {
@@ -1213,8 +1214,8 @@ function generateCustomSelect() {
             }
         });
 
-        customSelectContainer.innerHTML = '<div class="custom-select" id="customSelect">' + customSelectContent + '</div>';
-        const customOptions = customSelectContainer.querySelectorAll('div[data-value]');
+        customShapeSelectContainer.innerHTML = '<div class="custom-shape-select" id="customShapeSelect">' + customSelectContent + '</div>';
+        const customOptions = customShapeSelectContainer.querySelectorAll('div[data-value]');
 
         customOptions.forEach(option => {
             option.addEventListener('click', function () {
@@ -1226,6 +1227,43 @@ function generateCustomSelect() {
     }
 }
 
+function generateCustomPackSelect() {
+    const hiddenSelect = document.querySelector('select[data-label="Pack"]');
+    if (document.querySelector('#customPackSelectContainer')) {
+        document.querySelector('#customPackSelectContainer').remove()
+    }
+
+    if (hiddenSelect) {
+        const customShapeSelectContainer = document.createElement('div');
+        customShapeSelectContainer.id = 'customPackSelectContainer';
+        hiddenSelect.parentNode.insertBefore(customShapeSelectContainer, hiddenSelect.nextSibling);
+
+        let customSelectContent = '';
+        Array.from(hiddenSelect.options).forEach((option, index) => {
+            if (index === 0 && option.textContent.trim() === "Choose an option") {
+                return;
+            }
+            if (configObject.shapes.includes(option.value)||configObject.shapes.includes(option.value.toLowerCase())) {
+                customSelectContent += `
+                    <div data-value="${option.value}">
+                        ${option.textContent}
+                    </div>
+                `;
+            }
+        });
+
+        customShapeSelectContainer.innerHTML = '<div class="custom-pack-select" id="customPackSelect">' + customSelectContent + '</div>';
+        const customOptions = customShapeSelectContainer.querySelectorAll('div[data-value]');
+
+        customOptions.forEach(option => {
+            option.addEventListener('click', function () {
+                selectOption(this);
+            });
+        });
+    } else {
+        console.error('No select element found with data-label="Shape".');
+    }
+}
 function createColorPicker() {
     rgbColorPicker = document.getElementById('rgbColorPicker');
     rgbColorPickerCtx = rgbColorPicker.getContext('2d', {
