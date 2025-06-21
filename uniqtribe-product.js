@@ -315,11 +315,11 @@ if (inputElement) {
 const totalSlices = 5;
 
 const nailSliceMap = {
-  0: ['thumb', 'thumb_nail', 'thumb-finger'],
-  1: ['index', 'index_nail', 'index-finger'],
-  2: ['middle', 'middle_nail', 'middle-finger'],
-  3: ['ring', 'ring_nail', 'ring-finger'],
-  4: ['pinky', 'pinky_nail', 'pinky-finger']
+  0: ['thumb', 'thumb_nail', 'Thumb_Finger'],
+  1: ['index', 'index_nail', 'Index_Finger'],
+  2: ['middle', 'middle_nail', 'Middle_Finger'],
+  3: ['ring', 'ring_nail', 'Ring_Finger'],
+  4: ['little', 'little_nail', 'Little_Finger']
 };
 
 const uploadedTexture = textureLoader.load(
