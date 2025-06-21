@@ -1062,7 +1062,7 @@ function generateControls() {
     customContainer.style.position = 'relative';
 
     const overlayImage = document.createElement('img');
-    overlayImage.src = 'https://uniqtribe.github.io/Custom-Palette-min.png'; // Replace with the path to your image
+    overlayImage.src = 'https://uniqtribe.github.io/Custom-Palette-min.avif'; // Replace with the path to your image
     overlayImage.alt = 'Overlay Image';
     overlayImage.className = 'overlay-image';
     customContainer.appendChild(overlayImage);
