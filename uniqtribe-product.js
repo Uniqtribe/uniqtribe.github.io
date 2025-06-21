@@ -312,9 +312,15 @@ if (inputElement) {
                 transparent: textureInfo.transparent
             };
         });
-
 const totalSlices = 5;
-let currentSlice = 0;
+
+const nailSliceMap = {
+  0: ['thumb', 'thumb_nail', 'thumb-finger'],
+  1: ['index', 'index_nail', 'index-finger'],
+  2: ['middle', 'middle_nail', 'middle-finger'],
+  3: ['ring', 'ring_nail', 'ring-finger'],
+  4: ['pinky', 'pinky_nail', 'pinky-finger']
+};
 
 const uploadedTexture = textureLoader.load(
   document.querySelector('#designCanvas').toDataURL('image/png'),
@@ -332,12 +338,11 @@ const uploadedTexture = textureLoader.load(
       let appliedTexture = texture;
       let materialOptions = null;
 
-      // 🥇 Check if there's a texture override first
+      // Check if there's an override texture for this mesh
       const textureInfo = textures.find(tex => tex.objects.includes(child.name));
 
       if (textureInfo) {
         appliedTexture = textureInfo.texture;
-
         materialOptions = {
           map: appliedTexture,
           transparent: textureInfo.transparent,
@@ -345,30 +350,36 @@ const uploadedTexture = textureLoader.load(
           depthWrite: !textureInfo.transparent
         };
       } else {
-        // 🥈 If multipattern applies and it's a "nail" mesh
+        // Attempt to find slice index based on mesh name keywords
+        let matchedSliceIndex = null;
+        const meshName = child.name.toLowerCase();
+
+        for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+          if (keywords.some(keyword => meshName.includes(keyword))) {
+            matchedSliceIndex = parseInt(sliceIdx);
+            break;
+          }
+        }
+
         const isPatterned =
           useMultiPattern &&
           configObject.imageInfo.appliedPattern.includes(child.name) &&
-          child.name.toLowerCase().includes('nail');
+          matchedSliceIndex !== null;
 
         if (isPatterned) {
-          const sliceIndex = currentSlice % totalSlices;
-
           appliedTexture = texture.clone();
           appliedTexture.needsUpdate = true;
           appliedTexture.wrapS = THREE.RepeatWrapping;
           appliedTexture.wrapT = THREE.RepeatWrapping;
+
           appliedTexture.repeat.set(1 / totalSlices, 1);
-          appliedTexture.offset.set(sliceIndex / totalSlices, 0);
- console.log(
-        `🧩 Applying slice ${sliceIndex} to mesh "${child.name}"`,
-        `→ repeat: (${appliedTexture.repeat.x}, ${appliedTexture.repeat.y})`,
-        `→ offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
-    );
-          currentSlice++;
+          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+
+          console.log(
+            `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
+          );
         }
 
-        // Material for base (non-overridden) texture
         materialOptions = {
           map: appliedTexture,
           transparent: true,
@@ -377,19 +388,16 @@ const uploadedTexture = textureLoader.load(
         };
       }
 
-      // 🟢 Special styling for background pattern
+      // Special styling for background pattern
       if (child.name === configObject.imageInfo.backgroundPattern) {
         materialOptions.emissive = new THREE.Color(0xffffff);
         materialOptions.emissiveIntensity = 0.3;
         materialOptions.color = new THREE.Color(0xffffff);
       }
 
-      // 💄 Assign final material
+      // Assign final material
       child.material = new THREE.MeshStandardMaterial(materialOptions);
       child.material.needsUpdate = true;
-
-      // 🔍 Optional: Debug log
-      // console.log(`Mesh: ${child.name}, transparent: ${child.material.transparent}`);
     });
 
     console.log('Finished applying textures and slicing.');
