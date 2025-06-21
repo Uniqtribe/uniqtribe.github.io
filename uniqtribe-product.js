@@ -313,77 +313,65 @@ if (inputElement) {
             };
         });
 
-	    const totalSlices = 5;
+	 const totalSlices = 5;
 let currentSlice = 0;
 
 const uploadedTexture = textureLoader.load(
-    document.querySelector('#designCanvas').toDataURL('image/png'),
-    function (texture) {
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
+  document.querySelector('#designCanvas').toDataURL('image/png'),
+  function (texture) {
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1,1);
+    texture.offset.set(0,0);
 
-        const useMultiPattern = configObject?.multipattern === true;
+    const useMulti = configObject?.multipattern === true;
 
-        // Default texture uses full image
-        texture.repeat.set(1, 1);
-        texture.offset.set(0, 0);
+    object.traverse(child => {
+      if (!child.isMesh) return;
 
-        object.traverse(function (child) {
-            if (!child.isMesh) return;
+      console.log('Processing mesh:', child.name);
 
-            let appliedTexture = texture;
+      let applied = texture;
 
-            // 🔁 Check for texture override first (this takes top priority)
-            const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-            if (textureInfo) {
-                appliedTexture = textureInfo.texture;
-            } else {
-                // Only apply slicing if no override texture is present
-                const isPatterned =
-                    useMultiPattern &&
-                    configObject.imageInfo.appliedPattern.includes(child.name) &&
-                    child.name.toLowerCase().includes('nail');
+      // 1️⃣ Try override
+      const overrideInfo = textures.find(t => t.objects.includes(child.name));
+      console.log(' → overrideInfo?', overrideInfo ? overrideInfo.texture : 'none');
+      if (overrideInfo) {
+        applied = overrideInfo.texture;
+      } else {
+        // 2️⃣ multipattern?
+        const isPatterned = useMulti
+          && configObject.imageInfo.appliedPattern.includes(child.name)
+          && child.name.toLowerCase().includes('nail');
 
-                if (isPatterned) {
-                    const sliceIndex = currentSlice % totalSlices;
-                    appliedTexture = texture.clone();
-                    appliedTexture.needsUpdate = true;
-                    appliedTexture.wrapS = THREE.RepeatWrapping;
-                    appliedTexture.wrapT = THREE.RepeatWrapping;
+        console.log(` → isPatterned? ${isPatterned}`);
+        if (isPatterned) {
+          const sliceIdx = currentSlice % totalSlices;
+          console.log(' → slicing sliceIdx', sliceIdx);
 
-                    // Horizontal slice logic
-                    appliedTexture.repeat.set(1 / totalSlices, 1);
-                    appliedTexture.offset.set(sliceIndex / totalSlices, 0);
+          applied = texture.clone();
+          applied.needsUpdate = true;
+          applied.wrapS = applied.wrapT = THREE.RepeatWrapping;
+          applied.repeat.set(1 / totalSlices, 1);
+          applied.offset.set(sliceIdx / totalSlices, 0);
+          currentSlice++;
+        }
+      }
 
-                    currentSlice++;
-                }
-            }
-
-            // Assign material
-            if (child.name === configObject.imageInfo.backgroundPattern) {
-                child.material = new THREE.MeshStandardMaterial({
-                    map: appliedTexture,
-                    transparent: true,
-                    opacity: 1,
-                    depthWrite: false,
-                    emissive: new THREE.Color(0xffffff),
-                    emissiveIntensity: 0.3,
-                    color: new THREE.Color(0xffffff)
-                });
-            } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
-                child.material = new THREE.MeshStandardMaterial({
-                    map: appliedTexture,
-                    transparent: true,
-                    opacity: 1,
-                    depthWrite: false
-                });
-            }
-
-            child.material.needsUpdate = true;
+      const matOpts = { map: applied, transparent: true, opacity: 1, depthWrite: false };
+      if (child.name === configObject.imageInfo.backgroundPattern) {
+        Object.assign(matOpts, {
+          emissive: new THREE.Color(0xffffff),
+          emissiveIntensity: 0.3,
+          color: new THREE.Color(0xffffff)
         });
-    }
-);
+      }
+      child.material = new THREE.MeshStandardMaterial(matOpts);
+      child.material.needsUpdate = true;
+    });
 
+    console.log('Traversal done, currentSlice:', currentSlice);
+  }
+);
 
 
 	/*    
