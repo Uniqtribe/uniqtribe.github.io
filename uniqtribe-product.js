@@ -110,49 +110,6 @@ waitForImageToLoad("base-image", function() {
             return response.json(); // Parse the JSON response
         })
 
-    variantRows = document.querySelectorAll('.theme-product-varients-row');
-    let i = 0;
-    patternSelection = [];
-    variantRows.forEach(row => {
-        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-	    
-	    console.log("label", label)
-
-	    console.log("row", row)
-        if (label?.textContent.replace("*", "").trim() === 'source') {
-            source = row.querySelector('input')
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'target') {
-            target = row.querySelector('input')
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'Config') {
-            config = row.querySelector('span');
-            configObject = JSON.parse(config.textContent.trim());
-            row.style.display = 'none';
-        }
-		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
-            basicColorConfig = row.querySelector('span');
-            basicColor = JSON.parse(basicColorConfig.textContent.trim());
-            row.style.display = 'none';
-        }
-		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
-            alternateColorConfig = row.querySelector('span');
-            alternateColor = JSON.parse(basicColorConfig.textContent.trim());
-            row.style.display = 'none';
-        }
-
-        if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
-            selection[i] = row.querySelector('input');
-            let obj = {};
-            obj['value'] = row.querySelector('input').value;
-            obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
-            patternSelection[i] = JSON.stringify(obj);
-            i++;
-            row.style.display = 'none';
-        }
-    })
 /*
 	function initVariantProcessing() {
     const variantRows = document.querySelectorAll('.theme-product-varients-row');
@@ -472,6 +429,49 @@ const uploadedTexture = textureLoader.load(
 );
 
 
+    variantRows = document.querySelectorAll('.theme-product-varients-row');
+    let i = 0;
+    patternSelection = [];
+    variantRows.forEach(row => {
+        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+	    
+	    console.log("label", label)
+
+	    console.log("row", row)
+        if (label?.textContent.replace("*", "").trim() === 'source') {
+            source = row.querySelector('input')
+            row.style.display = 'none';
+        }
+        if (label?.textContent.replace("*", "").trim() === 'target') {
+            target = row.querySelector('input')
+            row.style.display = 'none';
+        }
+        if (label?.textContent.replace("*", "").trim() === 'Config') {
+            config = row.querySelector('span');
+            configObject = JSON.parse(config.textContent.trim());
+            row.style.display = 'none';
+        }
+		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
+            basicColorConfig = row.querySelector('span');
+            basicColor = JSON.parse(basicColorConfig.textContent.trim());
+            row.style.display = 'none';
+        }
+		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
+            alternateColorConfig = row.querySelector('span');
+            alternateColor = JSON.parse(basicColorConfig.textContent.trim());
+            row.style.display = 'none';
+        }
+
+        if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
+            selection[i] = row.querySelector('input');
+            let obj = {};
+            obj['value'] = row.querySelector('input').value;
+            obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
+            patternSelection[i] = JSON.stringify(obj);
+            i++;
+            row.style.display = 'none';
+        }
+    })
 	/*    
         const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
             function (texture) {
