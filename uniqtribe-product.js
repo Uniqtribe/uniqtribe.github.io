@@ -110,7 +110,8 @@ waitForImageToLoad("base-image", function() {
             return response.json(); // Parse the JSON response
         })
 
-	    
+	    waitForVariantRows((variantRows) => {
+
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
@@ -154,7 +155,8 @@ waitForImageToLoad("base-image", function() {
             row.style.display = 'none';
         }
     })
-
+  // Your variant field reading & hiding logic here
+});
 /*
 	function initVariantProcessing() {
     const variantRows = document.querySelectorAll('.theme-product-varients-row');
@@ -2862,4 +2864,21 @@ console.log("totalImages", totalImages);
 
   // Add selection highlight
   images[currentIndex].classList.add('selected');
+}
+function waitForVariantRows(callback, timeout = 5000) {
+  const start = Date.now();
+
+  function check() {
+    const rows = document.querySelectorAll('.theme-product-varients-row');
+    if (rows.length > 0) {
+      console.log("✅ Variant rows found");
+      callback(rows);
+    } else if (Date.now() - start < timeout) {
+      requestAnimationFrame(check); // retry soon
+    } else {
+      console.warn("⚠️ Timeout: .theme-product-varients-row not found");
+    }
+  }
+
+  check();
 }
