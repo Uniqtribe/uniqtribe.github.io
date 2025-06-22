@@ -12,53 +12,9 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 
 if (varientContainer) {
 
-	 waitForVariantRows((variantRows) => {
-
-    variantRows = document.querySelectorAll('.theme-product-varients-row');
-    let i = 0;
-    patternSelection = [];
-    variantRows.forEach(row => {
-        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-	    
-	    console.log("label", label)
-
-	    console.log("row", row)
-        if (label?.textContent.replace("*", "").trim() === 'source') {
-            source = row.querySelector('input')
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'target') {
-            target = row.querySelector('input')
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'Config') {
-            config = row.querySelector('span');
-            configObject = JSON.parse(config.textContent.trim());
-            row.style.display = 'none';
-        }
-		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
-            basicColorConfig = row.querySelector('span');
-            basicColor = JSON.parse(basicColorConfig.textContent.trim());
-            row.style.display = 'none';
-        }
-		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
-            alternateColorConfig = row.querySelector('span');
-            alternateColor = JSON.parse(basicColorConfig.textContent.trim());
-            row.style.display = 'none';
-        }
-
-        if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
-            selection[i] = row.querySelector('input');
-            let obj = {};
-            obj['value'] = row.querySelector('input').value;
-            obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
-            patternSelection[i] = JSON.stringify(obj);
-            i++;
-            row.style.display = 'none';
-        }
-    })
+   
   // Your variant field reading & hiding logic here
-});
+
 waitForImageToLoad("base-image", function() {
 
     console.log("Image is fully loaded. Running script...");
@@ -157,7 +113,40 @@ waitForImageToLoad("base-image", function() {
             }
             return response.json(); // Parse the JSON response
         })
+ variantRows = document.querySelectorAll('.theme-product-varients-row');
+    let i = 0;
+    patternSelection = [];
+    variantRows.forEach(row => {
+        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+	    
+	if (label?.textContent.replace("*", "").trim() === 'source') {
+            source = row.querySelector('input')
+        }
+        if (label?.textContent.replace("*", "").trim() === 'target') {
+            target = row.querySelector('input')
+        }
+        if (label?.textContent.replace("*", "").trim() === 'Config') {
+            config = row.querySelector('span');
+            configObject = JSON.parse(config.textContent.trim());
+        }
+		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
+            basicColorConfig = row.querySelector('span');
+            basicColor = JSON.parse(basicColorConfig.textContent.trim());
+        }
+		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
+            alternateColorConfig = row.querySelector('span');
+            alternateColor = JSON.parse(basicColorConfig.textContent.trim());
+        }
 
+        if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
+            selection[i] = row.querySelector('input');
+            let obj = {};
+            obj['value'] = row.querySelector('input').value;
+            obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
+            patternSelection[i] = JSON.stringify(obj);
+            i++;
+        }
+    })
 	   
 /*
 	function initVariantProcessing() {
@@ -667,6 +656,14 @@ const colorThief = new ColorThief();
         palette2.style.display = showPalette2 ? 'flex' : 'none';
     });
     createColorPicker();
+  variantRows.forEach(row => {
+        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+	    
+	if (label?.textContent.replace("*", "").trim() === 'source' || label?.textContent.replace("*", "").trim() === 'target' || label?.textContent.replace("*", "").trim() === 'Config' || label?.textContent.replace("*", "").trim() === 'Basic Color Pattern' || label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern' || label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
+            row.style.display='none';
+        }
+    })
+	
 if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
     alterPalette();
 
