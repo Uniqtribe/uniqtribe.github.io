@@ -117,6 +117,8 @@ waitForImageToLoad("base-image", function() {
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 	    
 	    console.log("label", label)
+
+	    console.log("row", row)
         if (label?.textContent.replace("*", "").trim() === 'source') {
             source = row.querySelector('input')
             row.style.display = 'none';
