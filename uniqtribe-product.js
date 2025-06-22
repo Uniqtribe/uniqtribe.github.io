@@ -617,7 +617,7 @@ function updateFields() {
     let x = 0;
     selectionValue = [];
     for (let i = 0; i < cartData.line_items.length; i++) {
-        if (cartData.line_items[i].item_id === productVariantId) {
+        if (cartData.line_items[i].product_id === productVariantId) {
             for (let j = 0; j < cartData.line_items[i].item_custom_fields.length; j++) {
                 if ((cartData.line_items[i].item_custom_fields[j].label.startsWith('target') ||
                     cartData.line_items[i].item_custom_fields[j].label.startsWith('selection')) && cartData.line_items[i].item_custom_fields[j].value_formatted != '') {
