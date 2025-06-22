@@ -2871,7 +2871,7 @@ function waitForVariantRows(callback, timeout = 5000) {
   function check() {
     const rows = document.querySelectorAll('.theme-custom-field-main-container');
     if (rows.length > 0) {
-      console.log("✅ Variant rows found");
+      console.log("✅ Variant rows found", rows.length);
       callback(rows);
     } else if (Date.now() - start < timeout) {
 	    console.log("✅ Variant rows not found");
