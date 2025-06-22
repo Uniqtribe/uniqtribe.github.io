@@ -1159,7 +1159,8 @@ function generateCustomSelect() {
     } else {
         console.error('No select element found with data-label="Shape".');
     }
-
+ variantRows = document.querySelectorAll('.theme-product-varients-row');
+console.log("variation", variantRows)
 		  variantRows.forEach(row => {
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 	    
