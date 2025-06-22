@@ -1159,17 +1159,17 @@ function generateCustomSelect() {
     } else {
         console.error('No select element found with data-label="Shape".');
     }
- variantRows = document.querySelectorAll('.theme-product-varients-row');
-console.log("variation", variantRows)
-		  variantRows.forEach(row => {
-			  	    console.log("row", row)
+document.querySelectorAll('.theme-product-variant.theme-custom-field-container').forEach(row => {
+  const labelEl = row.querySelector('.theme-product-variant-label');
+  const labelText = labelEl?.textContent?.replace("*", "").trim().toLowerCase();
 
-        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-	    console.log("variation", label?.textContent.replace("*", "").trim())
-	if (label?.textContent.replace("*", "").trim() === 'source' || label?.textContent.replace("*", "").trim() === 'target' || label?.textContent.replace("*", "").trim() === 'Config' || label?.textContent.replace("*", "").trim() === 'Basic Color Pattern' || label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern' || label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
-            row.style.display='none';
-        }
-    })
+  if (
+    ['source', 'target', 'config', 'basic color pattern', 'alternate color pattern'].includes(labelText) ||
+    labelText.startsWith('selection')
+  ) {
+    row.classList.add('hide-custom-field');
+  }
+});
 }
 
 function createColorPicker() {
