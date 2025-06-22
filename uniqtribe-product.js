@@ -2874,6 +2874,7 @@ function waitForVariantRows(callback, timeout = 5000) {
       console.log("✅ Variant rows found");
       callback(rows);
     } else if (Date.now() - start < timeout) {
+	    console.log("✅ Variant rows not found");
       requestAnimationFrame(check); // retry soon
     } else {
       console.warn("⚠️ Timeout: .theme-product-varients-row not found");
