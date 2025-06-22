@@ -110,67 +110,6 @@ waitForImageToLoad("base-image", function() {
             return response.json(); // Parse the JSON response
         })
 
-	    function initVariantProcessing() {
-    const variantRows = document.querySelectorAll('.theme-product-varients-row');
-    if (variantRows.length === 0) return;
-
-    let i = 0;
-    patternSelection = [];
-
-    variantRows.forEach(row => {
-        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-        console.log("label", label);
-        console.log("row", row);
-
-        if (label?.textContent.replace("*", "").trim() === 'source') {
-            source = row.querySelector('input');
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'target') {
-            target = row.querySelector('input');
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'Config') {
-            config = row.querySelector('span');
-            configObject = JSON.parse(config.textContent.trim());
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
-            basicColorConfig = row.querySelector('span');
-            basicColor = JSON.parse(basicColorConfig.textContent.trim());
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
-            alternateColorConfig = row.querySelector('span');
-            alternateColor = JSON.parse(alternateColorConfig.textContent.trim());
-            row.style.display = 'none';
-        }
-        if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
-            selection[i] = row.querySelector('input');
-            let obj = {};
-            obj['value'] = row.querySelector('input').value;
-            obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
-            patternSelection[i] = JSON.stringify(obj);
-            i++;
-            row.style.display = 'none';
-        }
-    });
-}
-
-// MutationObserver to wait for variant rows to load
-const observer = new MutationObserver((mutations, obs) => {
-    const rows = document.querySelectorAll('.theme-product-varients-row');
-    if (rows.length > 0) {
-        initVariantProcessing();
-        obs.disconnect(); // Stop observing after rows are found
-    }
-});
-
-observer.observe(document.body, {
-    childList: true,
-    subtree: true
-});
-/*
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
@@ -213,7 +152,7 @@ observer.observe(document.body, {
             i++;
             row.style.display = 'none';
         }
-    })*/
+    })
 /*
     const inputElement = document.querySelector('[name="qty"]');
     inputElement.disabled = true;
