@@ -1123,13 +1123,7 @@ function addClickEventToSwatches() {
 
 function generateCustomSelect() {
 
-	  variantRows.forEach(row => {
-        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-	    
-	if (label?.textContent.replace("*", "").trim() === 'source' || label?.textContent.replace("*", "").trim() === 'target' || label?.textContent.replace("*", "").trim() === 'Config' || label?.textContent.replace("*", "").trim() === 'Basic Color Pattern' || label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern' || label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
-            row.style.display='none';
-        }
-    })
+
     const hiddenSelect = document.querySelector('select[data-label="Shape"]');
     if (document.querySelector('#customSelectContainer')) {
         document.querySelector('#customSelectContainer').remove()
@@ -1165,6 +1159,14 @@ function generateCustomSelect() {
     } else {
         console.error('No select element found with data-label="Shape".');
     }
+
+		  variantRows.forEach(row => {
+        let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+	    
+	if (label?.textContent.replace("*", "").trim() === 'source' || label?.textContent.replace("*", "").trim() === 'target' || label?.textContent.replace("*", "").trim() === 'Config' || label?.textContent.replace("*", "").trim() === 'Basic Color Pattern' || label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern' || label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
+            row.style.display='none';
+        }
+    })
 }
 
 function createColorPicker() {
