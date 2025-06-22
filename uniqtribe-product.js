@@ -109,7 +109,7 @@ waitForImageToLoad("base-image", function() {
             }
             return response.json(); // Parse the JSON response
         })
-/*
+
     variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
     patternSelection = [];
@@ -152,8 +152,8 @@ waitForImageToLoad("base-image", function() {
             i++;
             row.style.display = 'none';
         }
-    })*/
-
+    })
+/*
 	function initVariantProcessing() {
     const variantRows = document.querySelectorAll('.theme-product-varients-row');
     if (variantRows.length === 0) return;
@@ -214,7 +214,7 @@ const intervalId = setInterval(() => {
         console.warn("Variant rows not found after multiple tries.");
         clearInterval(intervalId);
     }
-}, 100); 
+}, 100); */
 /*
     const inputElement = document.querySelector('[name="qty"]');
     inputElement.disabled = true;
