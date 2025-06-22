@@ -1163,7 +1163,7 @@ function generateCustomSelect() {
 console.log("variation", variantRows)
 		  variantRows.forEach(row => {
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-	    
+	    console.log("variation", label)
 	if (label?.textContent.replace("*", "").trim() === 'source' || label?.textContent.replace("*", "").trim() === 'target' || label?.textContent.replace("*", "").trim() === 'Config' || label?.textContent.replace("*", "").trim() === 'Basic Color Pattern' || label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern' || label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
             row.style.display='none';
         }
