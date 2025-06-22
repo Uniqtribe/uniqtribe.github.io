@@ -2869,7 +2869,7 @@ function waitForVariantRows(callback, timeout = 5000) {
   const start = Date.now();
 
   function check() {
-    const rows = document.querySelectorAll('.theme-product-varients-row');
+    const rows = document.querySelectorAll('.theme-custom-field-main-container');
     if (rows.length > 0) {
       console.log("✅ Variant rows found");
       callback(rows);
