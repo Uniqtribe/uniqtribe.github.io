@@ -114,8 +114,9 @@ waitForImageToLoad("base-image", function() {
     let i = 0;
     patternSelection = [];
     variantRows.forEach(row => {
-	    console.log("label", label)
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+	    
+	    console.log("label", label)
         if (label?.textContent.replace("*", "").trim() === 'source') {
             source = row.querySelector('input')
             row.style.display = 'none';
