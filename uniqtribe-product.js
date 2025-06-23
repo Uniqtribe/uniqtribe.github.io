@@ -1144,7 +1144,7 @@ function addClickEventToSwatches() {
         });
     });
 }
-
+/*
 function generateCustomSelect() {
 
 
@@ -1195,6 +1195,72 @@ document.querySelectorAll('.theme-product-variant.theme-custom-field-container')
     row.classList.add('hide-custom-field');
   }
 });
+}
+*/
+
+function generateCustomSelect() {
+  // Loop through all select elements labeled "Shape"
+  const hiddenSelects = document.querySelectorAll('select[data-label="Shape"]');
+
+  hiddenSelects.forEach((hiddenSelect, index) => {
+    // Remove existing custom select (if re-rendering)
+    const existingCustom = hiddenSelect.parentElement.querySelector('.custom-select-container');
+    if (existingCustom) existingCustom.remove();
+
+    // Create new custom select container
+    const customSelectContainer = document.createElement('div');
+    customSelectContainer.className = 'custom-select-container custom-select-container-' + index;
+
+    let customSelectContent = '';
+
+    Array.from(hiddenSelect.options).forEach((option, idx) => {
+      const value = option.value;
+      const label = option.textContent.trim();
+
+      // Skip "Choose an option"
+      if (idx === 0 && label.toLowerCase().includes("choose")) return;
+
+      if (
+        configObject.shapes.includes(value) ||
+        configObject.shapes.includes(value.toLowerCase())
+      ) {
+        customSelectContent += `
+          <div class="custom-option" data-value="${value}">
+            ${label}
+          </div>`;
+      }
+    });
+
+    // Inject custom select UI
+    customSelectContainer.innerHTML = `<div class="custom-select">${customSelectContent}</div>`;
+    hiddenSelect.style.display = 'none'; // Optional: hide original select
+    hiddenSelect.parentElement.appendChild(customSelectContainer);
+
+    // Add click handler for each custom option
+    const customOptions = customSelectContainer.querySelectorAll('.custom-option');
+    customOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        hiddenSelect.value = option.getAttribute('data-value');
+        hiddenSelect.dispatchEvent(new Event('change')); // Optional: trigger change logic
+        // Highlight selected
+        customOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+      });
+    });
+  });
+
+  // Hide unwanted custom fields
+  document.querySelectorAll('.theme-product-variant.theme-custom-field-container').forEach(row => {
+    const labelEl = row.querySelector('.theme-product-variant-label');
+    const labelText = labelEl?.textContent?.replace("*", "").trim().toLowerCase();
+
+    if (
+      ['source', 'target', 'config', 'basic color pattern', 'alternate color pattern'].includes(labelText) ||
+      labelText.startsWith('selection')
+    ) {
+      row.classList.add('hide-custom-field'); // You can style this in CSS
+    }
+  });
 }
 
 function createColorPicker() {
