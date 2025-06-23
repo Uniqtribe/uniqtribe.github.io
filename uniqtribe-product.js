@@ -1208,19 +1208,17 @@ document.querySelectorAll('.theme-product-variant.theme-custom-field-container')
 });
 }
 */
-
 function generateCustomSelect() {
-  // Loop through all select elements labeled "Shape"
   const hiddenSelects = document.querySelectorAll('select[data-label="Shape"]');
 
   hiddenSelects.forEach((hiddenSelect, index) => {
-    // Remove existing custom select (if re-rendering)
+    // Remove any previous custom select
     const existingCustom = hiddenSelect.parentElement.querySelector('.custom-select-container');
     if (existingCustom) existingCustom.remove();
 
-    // Create new custom select container
+    // Create container for custom dropdown
     const customSelectContainer = document.createElement('div');
-    customSelectContainer.className = 'custom-select-container custom-select-container-' + index;
+    customSelectContainer.className = `custom-select-container custom-select-container-${index}`;
 
     let customSelectContent = '';
 
@@ -1228,7 +1226,6 @@ function generateCustomSelect() {
       const value = option.value;
       const label = option.textContent.trim();
 
-      // Skip "Choose an option"
       if (idx === 0 && label.toLowerCase().includes("choose")) return;
 
       if (
@@ -1242,25 +1239,36 @@ function generateCustomSelect() {
       }
     });
 
-    // Inject custom select UI
-    customSelectContainer.innerHTML = `<div class="custom-select">${customSelectContent}</div>`;
-    hiddenSelect.style.display = 'none'; // Optional: hide original select
+    customSelectContainer.innerHTML = `
+      <div class="custom-select">
+        ${customSelectContent}
+      </div>
+    `;
+
+    // Hide the original select
+    hiddenSelect.style.display = 'none';
+
+    // Insert custom dropdown
     hiddenSelect.parentElement.appendChild(customSelectContainer);
 
-    // Add click handler for each custom option
+    // Handle click on each option
     const customOptions = customSelectContainer.querySelectorAll('.custom-option');
-    customOptions.forEach(option => {
-      option.addEventListener('click', () => {
-        hiddenSelect.value = option.getAttribute('data-value');
-        hiddenSelect.dispatchEvent(new Event('change')); // Optional: trigger change logic
-        // Highlight selected
-        customOptions.forEach(o => o.classList.remove('selected'));
-        option.classList.add('selected');
+    customOptions.forEach(optionEl => {
+      optionEl.addEventListener('click', () => {
+        const value = optionEl.getAttribute('data-value');
+
+        // Set value in the original select
+        hiddenSelect.value = value;
+        hiddenSelect.dispatchEvent(new Event('change')); // Notify any listeners
+
+        // Visually mark selected
+        customOptions.forEach(opt => opt.classList.remove('selected'));
+        optionEl.classList.add('selected');
       });
     });
   });
 
-  // Hide unwanted custom fields
+  // Hide unnecessary fields
   document.querySelectorAll('.theme-product-variant.theme-custom-field-container').forEach(row => {
     const labelEl = row.querySelector('.theme-product-variant-label');
     const labelText = labelEl?.textContent?.replace("*", "").trim().toLowerCase();
@@ -1269,7 +1277,7 @@ function generateCustomSelect() {
       ['source', 'target', 'config', 'basic color pattern', 'alternate color pattern'].includes(labelText) ||
       labelText.startsWith('selection')
     ) {
-      row.classList.add('hide-custom-field'); // You can style this in CSS
+      row.classList.add('hide-custom-field');
     }
   });
 }
