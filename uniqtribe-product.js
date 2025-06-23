@@ -24,10 +24,11 @@ if (pricingContainer) {
       if (mutation.type === 'attributes' || mutation.type === 'childList') {
         console.log('🟢 Price container updated!');
         // You can fetch the updated price like this:
-        const visiblePrice = pricingContainer.querySelector('[style*="display: block"] [data-zs-selling-price]');
-        if (visiblePrice) {
-          console.log("💰 New Price:", visiblePrice.textContent.trim());
-        }
+        const visibleBlock = pricingContainer.querySelector('[style*="display: block"]');
+		if (visibleBlock) {
+		  const variantId = visibleBlock.getAttribute('data-zs-variant-id');
+		  console.log("🆔 Selected Variant ID:", variantId);
+		}
       }
     }
   });
