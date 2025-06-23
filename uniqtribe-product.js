@@ -12,7 +12,6 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 
 if (varientContainer) {
     // Your variant field reading & hiding logic here
-
 waitForImageToLoad("base-image", function() {
 const pricingContainer = document.querySelector('[data-zs-pricing-container]');
 
