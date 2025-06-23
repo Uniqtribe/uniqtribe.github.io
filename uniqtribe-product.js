@@ -649,7 +649,7 @@ function rgbArrayToHexFromPattern(rgb) {
 }
 function loadSelectionFieldsWithPattern() {
     patternSelection = [];
-alert("AA");
+
     for (let a = 0; a < selection.length; a++) {
         selection[a].value = '';
     }
