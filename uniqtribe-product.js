@@ -1212,7 +1212,7 @@ function generateCustomSelect() {
   const hiddenSelects = document.querySelectorAll('select[data-label="Shape"]');
 
   hiddenSelects.forEach((hiddenSelect, index) => {
-    // Remove any previous custom select
+    // Remove previous custom select if any
     const existingCustom = hiddenSelect.parentElement.querySelector('.custom-select-container');
     if (existingCustom) existingCustom.remove();
 
@@ -1251,24 +1251,16 @@ function generateCustomSelect() {
     // Insert custom dropdown
     hiddenSelect.parentElement.appendChild(customSelectContainer);
 
-    // Handle click on each option
+    // Bind click to each option using your selectOption()
     const customOptions = customSelectContainer.querySelectorAll('.custom-option');
     customOptions.forEach(optionEl => {
       optionEl.addEventListener('click', () => {
-        const value = optionEl.getAttribute('data-value');
-
-        // Set value in the original select
-        hiddenSelect.value = value;
-        hiddenSelect.dispatchEvent(new Event('change')); // Notify any listeners
-
-        // Visually mark selected
-        customOptions.forEach(opt => opt.classList.remove('selected'));
-        optionEl.classList.add('selected');
+        selectOption(optionEl); // ✅ Use your logic here
       });
     });
   });
 
-  // Hide unnecessary fields
+  // Hide unwanted fields
   document.querySelectorAll('.theme-product-variant.theme-custom-field-container').forEach(row => {
     const labelEl = row.querySelector('.theme-product-variant-label');
     const labelText = labelEl?.textContent?.replace("*", "").trim().toLowerCase();
@@ -1281,6 +1273,7 @@ function generateCustomSelect() {
     }
   });
 }
+
 
 function createColorPicker() {
     rgbColorPicker = document.getElementById('rgbColorPicker');
