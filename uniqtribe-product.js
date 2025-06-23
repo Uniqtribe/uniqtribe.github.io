@@ -1155,7 +1155,7 @@ function generateCustomSelect() {
 
     if (hiddenSelect) {
         const customSelectContainerList = document.createElement('div');
-	    customSelectContainerList..forEach((option, index) => {
+	    customSelectContainerList.forEach((option, index) => {
         customSelectContainer.id = 'customSelectContainer';
         hiddenSelect.parentNode.insertBefore(customSelectContainer, hiddenSelect.nextSibling);
 
