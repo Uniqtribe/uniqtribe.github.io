@@ -144,10 +144,10 @@ if (pricingContainer) {
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 	    
 	if (label?.textContent.replace("*", "").trim() === 'source') {
-            customFieldsByVariant[focusVariant]['source'] = row.querySelector('input')
+            source = row.querySelector('input')
         }
         if (label?.textContent.replace("*", "").trim() === 'target') {
-            customFieldsByVariant[focusVariant]['target'] = row.querySelector('input')
+            target = row.querySelector('input')
         }
         if (label?.textContent.replace("*", "").trim() === 'Config') {
             config = row.querySelector('span');
@@ -664,10 +664,10 @@ function loadBasicField() {
     obj['quantity'] = 1;
     obj['shape'] = '';
 
-	customFieldsByVariant[focusVariant]['target'].value = JSON.stringify(obj);
+	target.value = JSON.stringify(obj);
     let object = {};
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
-    customFieldsByVariant[focusVariant]['source'].value =  JSON.stringify(object);
+    source.value =  JSON.stringify(object);
 }
 function rgbArrayToHexFromPattern(rgb) {
     return `#${((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1).toUpperCase()}`;
