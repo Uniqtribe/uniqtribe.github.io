@@ -139,15 +139,19 @@ if (pricingContainer) {
         })
  variantRows = document.querySelectorAll('.theme-product-varients-row');
     let i = 0;
+	let j = 0;
+	let k = 0;
     patternSelection = [];
     variantRows.forEach(row => {
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 	    
 	if (label?.textContent.replace("*", "").trim() === 'source') {
-            source = row.querySelector('input')
+            source[j] = row.querySelector('input');
+		j++;
         }
         if (label?.textContent.replace("*", "").trim() === 'target') {
-            target = row.querySelector('input')
+            target[k] = row.querySelector('input')
+		k++;
         }
         if (label?.textContent.replace("*", "").trim() === 'Config') {
             config = row.querySelector('span');
@@ -663,11 +667,15 @@ function loadBasicField() {
     obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
     obj['quantity'] = 1;
     obj['shape'] = '';
-
-	target.value = JSON.stringify(obj);
+    target.forEach(tar=>{
+	    tar.value = JSON.stringify(obj);
+    })
+	
     let object = {};
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
-    source.value =  JSON.stringify(object);
+    source.forEach(sou=>{
+	    sou.value = JSON.stringify(obj);
+    })
 }
 function rgbArrayToHexFromPattern(rgb) {
     return `#${((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1).toUpperCase()}`;
