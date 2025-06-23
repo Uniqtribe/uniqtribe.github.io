@@ -667,7 +667,7 @@ function loadBasicField() {
 	customFieldsByVariant[focusVariant]['target'].value = JSON.stringify(obj);
     let object = {};
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
-    customFieldsByVariant[focusVariant]['source'].value =  = JSON.stringify(object);
+    customFieldsByVariant[focusVariant]['source'].value =  JSON.stringify(object);
 }
 function rgbArrayToHexFromPattern(rgb) {
     return `#${((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1).toUpperCase()}`;
