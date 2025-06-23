@@ -2827,6 +2827,5 @@ function waitForVariantRows(callback, timeout = 5000) {
       console.warn("⚠️ Timeout: .theme-product-varients-row not found");
     }
   }
-
   check();
 }
