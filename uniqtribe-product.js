@@ -680,7 +680,7 @@ function loadBasicField() {
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
 	    object['variant'] = sou.closest('[data-variant-id]')?.getAttribute('data-variant-id');
 	    
-	    sou.value = JSON.stringify(obj);
+	    sou.value = JSON.stringify(object);
     })
 }
 function rgbArrayToHexFromPattern(rgb) {
