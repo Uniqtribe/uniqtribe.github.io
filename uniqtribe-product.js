@@ -649,9 +649,9 @@ function updateFields() {
                     x++;
                 }
             }
-    loadSelectionFieldsWithPattern();
         }
     }
+    loadSelectionFieldsWithPattern();
 
 
 document.querySelector('#swatches-0').click();
