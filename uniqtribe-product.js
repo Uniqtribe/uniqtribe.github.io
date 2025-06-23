@@ -1154,8 +1154,7 @@ function generateCustomSelect() {
     }
 
     if (hiddenSelect) {
-        const customSelectContainerList = document.createElement('div');
-	    customSelectContainerList.forEach((option, index) => {
+        const customSelectContainer = document.createElement('div');
         customSelectContainer.id = 'customSelectContainer';
         hiddenSelect.parentNode.insertBefore(customSelectContainer, hiddenSelect.nextSibling);
 
@@ -1181,7 +1180,7 @@ function generateCustomSelect() {
                 selectOption(this);
             });
         });
-	    });
+
     } else {
         console.error('No select element found with data-label="Shape".');
     }
