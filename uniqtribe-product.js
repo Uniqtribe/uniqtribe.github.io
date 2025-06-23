@@ -16,16 +16,32 @@ if (varientContainer) {
   // Your variant field reading & hiding logic here
 
 waitForImageToLoad("base-image", function() {
-    // Find the element using the custom attribute
-const pricingElement = document.querySelector('[data-zs-pricing-container]');
+const pricingContainer = document.querySelector('[data-zs-pricing-container]');
 
-if (pricingElement) {
-  pricingElement.addEventListener('change', function (event) {
-    console.log('🛒 Pricing container changed:', event.target);
-    // Add your logic here
+if (pricingContainer) {
+  const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'attributes' || mutation.type === 'childList') {
+        console.log('🟢 Price container updated!');
+        // You can fetch the updated price like this:
+        const visiblePrice = pricingContainer.querySelector('[style*="display: block"] [data-zs-selling-price]');
+        if (visiblePrice) {
+          console.log("💰 New Price:", visiblePrice.textContent.trim());
+        }
+      }
+    }
   });
+
+  observer.observe(pricingContainer, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['style']
+  });
+
+  console.log('👀 Watching pricing container...');
 } else {
-  console.warn('⚠️ Element with [data-zs-pricing-container] not found.');
+  console.warn('⚠️ Pricing container not found');
 }
     console.log("Image is fully loaded. Running script...");
     // Your script here
