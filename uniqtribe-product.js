@@ -5,7 +5,7 @@ let productVariantId;
 let swatches = [];
 let selectedSwatch;
 let customFieldsByVariant={}
-let focusVariant;
+let variants;
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
@@ -26,8 +26,8 @@ if (pricingContainer) {
         // You can fetch the updated price like this:
         const visibleBlock = pricingContainer.querySelector('[style*="display: block"]');
 		if (visibleBlock) {
-		  focusVariant = visibleBlock.getAttribute('data-zs-variant-id');
-		  	}
+		  variants = visibleBlock.getAttribute('data-zs-variant-id');
+		}
       }
     }
   });
@@ -665,11 +665,12 @@ document.querySelector('.customSelect').querySelectorAll('div[data-value]')[0].c
 }
 
 function loadBasicField() {
-    let obj = {}
-    obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
-    obj['quantity'] = 1;
-    obj['shape'] = '';
     target.forEach(tar=>{
+	let obj = {}
+	    obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
+	    obj['quantity'] = 1;
+	    obj['shape'] = '';
+	    obj['variant'] = tar.closest('[data-variant-id]')?.getAttribute('data-variant-id');
 	    tar.value = JSON.stringify(obj);
     })
 	
