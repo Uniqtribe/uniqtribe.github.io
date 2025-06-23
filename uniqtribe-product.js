@@ -9,6 +9,8 @@ let focusVariant;
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
+let source = [];
+let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
 if (varientContainer) {
