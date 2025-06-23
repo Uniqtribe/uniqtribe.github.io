@@ -1148,13 +1148,14 @@ function addClickEventToSwatches() {
 function generateCustomSelect() {
 
 
-    const hiddenSelect = document.querySelector('select[data-label="Shape"]');
+    const hiddenSelect = document.querySelectorAll('select[data-label="Shape"]');
     if (document.querySelector('#customSelectContainer')) {
         document.querySelector('#customSelectContainer').remove()
     }
 
     if (hiddenSelect) {
-        const customSelectContainer = document.createElement('div');
+        const customSelectContainerList = document.createElement('div');
+	    customSelectContainerList..forEach((option, index) => {
         customSelectContainer.id = 'customSelectContainer';
         hiddenSelect.parentNode.insertBefore(customSelectContainer, hiddenSelect.nextSibling);
 
@@ -1180,6 +1181,7 @@ function generateCustomSelect() {
                 selectOption(this);
             });
         });
+	    });
     } else {
         console.error('No select element found with data-label="Shape".');
     }
