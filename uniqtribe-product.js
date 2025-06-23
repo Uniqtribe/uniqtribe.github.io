@@ -674,9 +674,12 @@ function loadBasicField() {
 	    tar.value = JSON.stringify(obj);
     })
 	
+
+    source.forEach(sou=>{
     let object = {};
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
-    source.forEach(sou=>{
+	    object['variant'] = sou.closest('[data-variant-id]')?.getAttribute('data-variant-id');
+	    
 	    sou.value = JSON.stringify(obj);
     })
 }
