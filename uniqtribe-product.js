@@ -4,7 +4,8 @@ let patternSelection;
 let productVariantId;
 let swatches = [];
 let selectedSwatch;
-
+let customFieldsByVariant={}
+let focusVariant;
     let minPaletteCount = 0;
     let recommendedPaletteCount = 0;
     let maxPaletteCount = 0;
@@ -23,9 +24,8 @@ if (pricingContainer) {
         // You can fetch the updated price like this:
         const visibleBlock = pricingContainer.querySelector('[style*="display: block"]');
 		if (visibleBlock) {
-		  const variantId = visibleBlock.getAttribute('data-zs-variant-id');
-		  console.log("🆔 Selected Variant ID:", variantId);
-		}
+		  focusVariant = visibleBlock.getAttribute('data-zs-variant-id');
+		  	}
       }
     }
   });
@@ -144,10 +144,10 @@ if (pricingContainer) {
         let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 	    
 	if (label?.textContent.replace("*", "").trim() === 'source') {
-            source = row.querySelector('input')
+            customFieldsByVariant[focusVariant]['source'] = row.querySelector('input')
         }
         if (label?.textContent.replace("*", "").trim() === 'target') {
-            target = row.querySelector('input')
+            customFieldsByVariant[focusVariant]['target'] = row.querySelector('input')
         }
         if (label?.textContent.replace("*", "").trim() === 'Config') {
             config = row.querySelector('span');
@@ -663,10 +663,11 @@ function loadBasicField() {
     obj['selected'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
     obj['quantity'] = 1;
     obj['shape'] = '';
-    target.value = JSON.stringify(obj);
+
+	customFieldsByVariant[focusVariant]['target'].value = JSON.stringify(obj);
     let object = {};
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
-    source.value = JSON.stringify(object);
+    customFieldsByVariant[focusVariant]['source'].value =  = JSON.stringify(object);
 }
 function rgbArrayToHexFromPattern(rgb) {
     return `#${((1 << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16).slice(1).toUpperCase()}`;
