@@ -16,7 +16,17 @@ if (varientContainer) {
   // Your variant field reading & hiding logic here
 
 waitForImageToLoad("base-image", function() {
+    // Find the element using the custom attribute
+const pricingElement = document.querySelector('[data-zs-pricing-container]');
 
+if (pricingElement) {
+  pricingElement.addEventListener('change', function (event) {
+    console.log('🛒 Pricing container changed:', event.target);
+    // Add your logic here
+  });
+} else {
+  console.warn('⚠️ Element with [data-zs-pricing-container] not found.');
+}
     console.log("Image is fully loaded. Running script...");
     // Your script here
 	
