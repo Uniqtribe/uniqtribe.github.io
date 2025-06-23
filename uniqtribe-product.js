@@ -11,8 +11,7 @@ let selectedSwatch;
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
 if (varientContainer) {
-
-   
+  
   // Your variant field reading & hiding logic here
 
 waitForImageToLoad("base-image", function() {
