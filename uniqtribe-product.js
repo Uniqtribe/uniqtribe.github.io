@@ -719,8 +719,8 @@ function loadSelectionFieldsWithPattern() {
 		console.log(row.querySelector('.theme-product-varients-row'));
 console.log(row.querySelector('.theme-product-varients-row').getAttribute('data-variant-id'));
 		
-            if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') && selectionValue[i].variant === row.querySelector('.theme-product-varients-row').getAttribute('data-variant-id')) {
-                if (row.querySelector('input').value != '') {
+            if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') ) {
+                if (row.querySelector('input').value != '' && selectionValue[i].variant === row.querySelector('.theme-product-varients-row').getAttribute('data-variant-id')) {
                     let obj = {};
                     obj['value'] = row.querySelector('input').value;
                     obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
