@@ -717,7 +717,8 @@ function loadSelectionFieldsWithPattern() {
             let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 		
             if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') ) {
-		    
+		    console.log("var", selectionValue[i].variant)
+		    console.log("var", row.getAttribute('data-variant-id'))
                 if (row.querySelector('input').value != '' && selectionValue[i].variant === row.getAttribute('data-variant-id')) {
                     let obj = {};
                     obj['value'] = row.querySelector('input').value;
