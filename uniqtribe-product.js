@@ -717,9 +717,8 @@ function loadSelectionFieldsWithPattern() {
             let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 		
             if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') ) {
-		    console.log(row)
-		    console.log(row.querySelector('.theme-product-varients-row'))
-                if (row.querySelector('input').value != '' && selectionValue[i].variant === row.querySelector('.theme-product-varients-row').getAttribute('data-variant-id')) {
+		    
+                if (row.querySelector('input').value != '' && selectionValue[i].variant === row.getAttribute('data-variant-id')) {
                     let obj = {};
                     obj['value'] = row.querySelector('input').value;
                     obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
