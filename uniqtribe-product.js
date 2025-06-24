@@ -657,6 +657,8 @@ function updateFields() {
             }
         }
     }
+
+	console.log("CART",selectionValue)
     loadSelectionFieldsWithPattern();
 
 
