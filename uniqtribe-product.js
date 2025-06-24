@@ -720,6 +720,7 @@ function loadSelectionFieldsWithPattern() {
 		    console.log("var", selectionValue[i].variant)
 		    console.log("var", row.getAttribute('data-variant-id'))
                 if (row.querySelector('input').value != '' && selectionValue[i].variant === row.getAttribute('data-variant-id')) {
+			console.log("MATCHED")			
                     let obj = {};
                     obj['value'] = row.querySelector('input').value;
                     obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
