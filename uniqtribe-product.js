@@ -704,7 +704,9 @@ document.querySelector('#swatches-0').click();
 		                let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 
 				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && row.getAttribute('data-variant-id')===variantId) {
-					row.querySelector('input').value = value;
+					let obj = JSON.parse(row.querySelector('input').value);
+					obj.shape = value;
+					row.querySelector('input').value = JSON.stringify(obj);
 				}
 			})
 		  } else {
