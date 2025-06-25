@@ -1750,6 +1750,7 @@ function changeColor(changeColorArray) {
 					    let obj = {};
 					    obj['selected'] = changeColorArray.map(rgb => rgbToHex(rgb));
 					    obj['quantity'] = quantityInput.value;
+					obj['variant'] = variants;
 					row.querySelector('input').value = JSON.stringify(obj);
 				}
 			})
