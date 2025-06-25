@@ -30,7 +30,7 @@ if (pricingContainer) {
 		}
       }
     }
-  });
+  }); 
 
   observer.observe(pricingContainer, {
     childList: true,
