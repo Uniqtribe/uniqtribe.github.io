@@ -729,7 +729,7 @@ function loadSelectionFieldsWithPattern() {
 	})
 		for (const selectionListEntity of selectionList) {
 		    console.log("selectionListEntity",selectionListEntity);
-
+		if(selectionListEntity != ''){
  		 for (const row of variantRows) {
 		            let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 				    if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') && row.getAttribute('data-variant-id') === (JSON.parse(selectionListEntity)).variant && row.querySelector('input').value === '') {
@@ -738,6 +738,7 @@ function loadSelectionFieldsWithPattern() {
 				    }
 
 			   }
+		}
 	    }
         variantRows.forEach(row => {
 		            let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
