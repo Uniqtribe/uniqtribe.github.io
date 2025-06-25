@@ -717,9 +717,10 @@ function loadSelectionFieldsWithPattern() {
         let x = 0;
 	let selectionList = [];
 	    let y = 0;
-            let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 
 	    variantRows.forEach(row => {    
+		                let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+
 		if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') ) {
 			selectionList[y] = row.querySelector('input').value;
 			row.querySelector('input').value = '';
@@ -730,6 +731,8 @@ function loadSelectionFieldsWithPattern() {
 		    console.log("selectionListEntity",selectionListEntity);
 	    })
         variantRows.forEach(row => {
+		            let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+
 		// selectionValue[i].variant === row.getAttribute('data-variant-id')
 
             if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') ) {
