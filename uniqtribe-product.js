@@ -663,7 +663,9 @@ function updateFields() {
 
 
 document.querySelector('#swatches-0').click();
-document.querySelector('.customSelect').querySelectorAll('div[data-value]')[0].click();
+//document.querySelector('.customSelect').querySelectorAll('div[data-value]')[0].click();
+	document.querySelectorAll('.custom-select').forEach(s => s.querySelector('div[data-value]')?.click());
+
 }
 
 function loadBasicField() {
