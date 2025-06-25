@@ -685,7 +685,36 @@ document.querySelector('#swatches-0').click();
 //document.querySelector('.customSelect').querySelectorAll('div[data-value]')[0].click();
 	document.querySelectorAll('.custom-select').forEach(s => s.querySelector('div[data-value]')?.click());
 
+	document.querySelectorAll('.custom-select').forEach(customSelect => {
+		  const firstOption = customSelect.querySelector('div[data-value]');
+		  if (!firstOption) return;
+		
+		  firstOption.click();
+		
+		  const value = firstOption.dataset.value;
+		  console.log('Selected value:', value);
+		
+		  // Find closest parent with data-variant-id
+		  const variantRow = customSelect.closest('.theme-product-varients-row');
+		  if (variantRow) {
+		    const variantId = variantRow.dataset.variantId;
+		    console.log('Variant ID:', variantId);
+
+			   variantRows.forEach(row => {    
+		                let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+
+				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && row.getAttribute('data-variant-id')===variantId) {
+					row.querySelector('input').value = value;
+				}
+			})
+		  } else {
+		    console.warn('No variant row found for this select');
+		  }
+		});
+
+
 }
+
 
 function loadBasicField() {
     target.forEach(tar=>{
