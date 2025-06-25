@@ -1742,11 +1742,17 @@ function updateCartSuccess(e) {
 }
 
 function changeColor(changeColorArray) {
-    let obj = {};
-    obj['selected'] = changeColorArray.map(rgb => rgbToHex(rgb));
-    obj['quantity'] = quantityInput.value;
-    target.value = JSON.stringify(obj);
 
+		   variantRows.forEach(row => {    
+		                let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
+
+				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && row.getAttribute('data-variant-id')===variantId) {
+					    let obj = {};
+					    obj['selected'] = changeColorArray.map(rgb => rgbToHex(rgb));
+					    obj['quantity'] = quantityInput.value;
+					row.querySelector('input').value = JSON.stringify(obj);
+				}
+			})
     let imgElement = document.querySelector('img[alt*="base-image"]');
     let imgData;
 
