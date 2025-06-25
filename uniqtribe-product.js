@@ -635,11 +635,30 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 
 
 function updateTargetValue(newValue) {
+	/*
     if (target.value) {
         let obj = JSON.parse(target.value);
         obj.quantity = newValue;
         target.value = JSON.stringify(obj);
     }
+*/
+	 let visibleTarget = null;
+	  for (const key in target) {
+	    if (target[key] && target[key].offsetParent !== null) {
+	      visibleTarget = target[key];
+	      break;
+	    }
+	  }
+	
+	  if (visibleTarget) {
+	    try {
+	      let obj = JSON.parse(visibleTarget.value || '{}');
+	      obj.quantity = newValue;
+	      visibleTarget.value = JSON.stringify(obj);
+	    } catch (e) {
+	      console.warn("⚠️ Could not parse target JSON:", e);
+	    }
+	  }	
 }
 
 function updateFields() {
