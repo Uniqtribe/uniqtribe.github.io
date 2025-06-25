@@ -715,14 +715,24 @@ function loadSelectionFieldsWithPattern() {
             }
         }
         let x = 0;
+	let selectionList = [];
+	    let y = 0;
+	variantRows.forEach(row => {    
+		if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') ) {
+			selectionList[y] = row.querySelector('input').value;
+			row.querySelector('input').value = '';
+			y++;
+		}
+	})
+	    selectionList.forEach(selectionListEntity => {
+		    console.log("selectionListEntity",selectionListEntity);
+	    })
         variantRows.forEach(row => {
             let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
-		
+		// selectionValue[i].variant === row.getAttribute('data-variant-id')
+
             if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection') ) {
-		    console.log("var", selectionValue[i].variant)
-		    console.log("var", row.getAttribute('data-variant-id'))
-                if (row.querySelector('input').value != '' && selectionValue[i].variant === row.getAttribute('data-variant-id')) {
-			console.log("MATCHED")			
+                if (row.querySelector('input').value != '' ) {
                     let obj = {};
                     obj['value'] = row.querySelector('input').value;
                     obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
