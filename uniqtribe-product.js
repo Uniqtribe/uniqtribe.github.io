@@ -737,8 +737,8 @@ function loadSelectionFieldsWithPattern() {
 					    break;
 				    }
 
-			   })
-	    })
+			   }
+	    }
         variantRows.forEach(row => {
 		            let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 
