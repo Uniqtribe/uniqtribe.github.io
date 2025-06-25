@@ -1742,7 +1742,10 @@ function updateCartSuccess(e) {
 }
 
 function changeColor(changeColorArray) {
-
+ const variantRow = customSelect.closest('.theme-product-varients-row');
+		  if (variantRow) {
+		    const variantId = variantRow.dataset.variantId;
+		    console.log('Variant ID:', variantId);
 		   variantRows.forEach(row => {    
 		                let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 
@@ -1753,6 +1756,9 @@ function changeColor(changeColorArray) {
 					row.querySelector('input').value = JSON.stringify(obj);
 				}
 			})
+			    } else {
+		    console.warn('No variant row found for this select');
+		  }
     let imgElement = document.querySelector('img[alt*="base-image"]');
     let imgData;
 
