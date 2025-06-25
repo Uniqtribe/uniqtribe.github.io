@@ -727,7 +727,7 @@ function loadSelectionFieldsWithPattern() {
 			y++;
 		}
 	})
-		for (const selection of selectionList) {
+		for (const selectionListEntity of selectionList) {
 		    console.log("selectionListEntity",selectionListEntity);
 
  		 for (const row of variantRows) {
