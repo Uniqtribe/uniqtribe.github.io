@@ -45,7 +45,7 @@ function generateTemplate(cartElements){
             
 
         patternList.forEach(pattern => {
-            const canvas = createCanvas(pattern, cartItem.querySelector('img[alt*="base-image"]').src, source);
+            const canvas = createCanvas(pattern, cartItem.querySelector('img').src, source);
             const tableRow = document.createElement("tr");
             const td1 = document.createElement("td");
             td1.appendChild(canvas);
