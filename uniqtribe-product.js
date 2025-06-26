@@ -2022,7 +2022,7 @@ function handleColorClick(swatch) {
     selectedSwatch = swatch;
 };
 
-document.addEventListener('DOMContentLoaded', loadPage);
+//document.addEventListener('DOMContentLoaded', loadPage);
 
 function updateCustomColor() {
     const customSelectedColorsElement = document.querySelectorAll('.custom-selected-color');
