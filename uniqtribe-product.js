@@ -663,7 +663,7 @@ if (imageId) {
 }
     trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
     trialButton.style.display = 'inline-block';
-    trialButton.style.textDecoration = 'none';
+    trialButton.style.textDecoration = 'underline';
     trialButton.style.fontWeight = 'bold';
 
     targetDiv.appendChild(trialButton);
