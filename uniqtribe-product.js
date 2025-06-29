@@ -598,7 +598,9 @@ const colorThief = new ColorThief();
     
     //generateCustomSelect();
 	buildCustomSelect({ labelName: 'Shape', allowedValues: configObject.shapes });
-	buildCustomSelect({ labelName: 'Size',  allowedValues: configObject.sizes });
+	//buildCustomSelect({ labelName: 'Size',  allowedValues: configObject.sizes });
+	buildCustomSelect('Size', ['XS', 'S', 'M', 'L']);
+
 
     paletteToggle.addEventListener('change', () => {
         const showPalette2 = paletteToggle.checked;
