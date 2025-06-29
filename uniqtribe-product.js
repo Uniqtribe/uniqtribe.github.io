@@ -601,7 +601,7 @@ const colorThief = new ColorThief();
 	//buildCustomSelect({ labelName: 'Size',  allowedValues: configObject.sizes });
 	buildCustomSelect({
   labelName: 'Size',
-  allowedValues: ['XS', 'S', 'M', 'L']
+  allowedValues: ['Extra Small (XS)', 'Small (S)', 'Medium (M)', 'Large (L)']
 });
 
 
