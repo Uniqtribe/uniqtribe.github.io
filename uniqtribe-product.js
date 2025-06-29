@@ -646,9 +646,21 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
     const trialButton = document.createElement('a');
 
 
-    trialButton.href = 	  `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?productImage=`+document.querySelector(
+const activeThumb = document.querySelector(
   '.theme-product-detail-thumbnail.theme-active-thumbnail[data-zs-image-id]'
 );
+
+// 2️⃣  Read its data‑attribute (either way works)
+const imageId = activeThumb?.dataset.zsImageId      // using dataset
+             || activeThumb?.getAttribute('data-zs-image-id'); // or getAttribute
+
+// 3️⃣  Build the link safely
+if (imageId) {
+  trialButton.href =
+    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?productImage=` +
+    encodeURIComponent(imageId);
+  //                       ^^^^^^^^^^^^^^^^^  always a good idea
+}
     trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
     trialButton.className = 'zpbutton zpbutton-type-secondary zpbutton-size-lg zpbutton-full-width';
     trialButton.style.marginTop = '1rem';
