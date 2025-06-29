@@ -658,7 +658,7 @@ const imageId = activeThumb?.dataset.zsImageId      // using dataset
 if (imageId) {
   trialButton.href =
     `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?productImage=` +
-    encodeURIComponent(imageId);
+    encodeURIComponent(imageId)+`&config=`+config;
   //                       ^^^^^^^^^^^^^^^^^  always a good idea
 }
     trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
