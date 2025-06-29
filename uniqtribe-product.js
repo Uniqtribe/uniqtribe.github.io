@@ -596,7 +596,10 @@ const colorThief = new ColorThief();
 	generateControls();
 	
     
-    generateCustomSelect();
+    //generateCustomSelect();
+	buildCustomSelect({ labelName: 'Shape', allowedValues: configObject.shapes });
+	buildCustomSelect({ labelName: 'Size',  allowedValues: configObject.sizes });
+
     paletteToggle.addEventListener('change', () => {
         const showPalette2 = paletteToggle.checked;
         palette1.style.display = showPalette2 ? 'none' : 'flex';
@@ -1294,6 +1297,7 @@ document.querySelectorAll('.theme-product-variant.theme-custom-field-container')
 });
 }
 */
+/*
 function generateCustomSelect() {
   const hiddenSelects = document.querySelectorAll('select[data-label="Shape"]');
 
@@ -1359,7 +1363,38 @@ function generateCustomSelect() {
     }
   });
 }
+*/
 
+function buildCustomSelect({ labelName, allowedValues }) {
+  const hiddenSelects = document.querySelectorAll(`select[data-label="${labelName}"]`);
+
+  hiddenSelects.forEach((hiddenSelect, index) => {
+    // Remove any previous custom dropdown
+    hiddenSelect.parentElement.querySelector('.custom-select-container')?.remove();
+
+    // Create the container
+    const container = document.createElement('div');
+    container.className = `custom-select-container custom-select-container-${index}`;
+
+    // Build the option list
+    const optionsHTML = Array.from(hiddenSelect.options)
+      .filter((opt, idx) => !(idx === 0 && /choose/i.test(opt.textContent)))
+      .filter(opt => allowedValues.includes(opt.value) || allowedValues.includes(opt.value.toLowerCase()))
+      .map(opt => `<div class="custom-option" data-value="${opt.value}">${opt.textContent.trim()}</div>`)
+      .join('');
+
+    container.innerHTML = `<div class="custom-select">${optionsHTML}</div>`;
+
+    // Hide the native select and insert the custom one
+    hiddenSelect.style.display = 'none';
+    hiddenSelect.parentElement.appendChild(container);
+
+    // Bind click events
+    container.querySelectorAll('.custom-option').forEach(optEl => {
+      optEl.addEventListener('click', () => selectOption(optEl));
+    });
+  });
+}
 
 function createColorPicker() {
     rgbColorPicker = document.getElementById('rgbColorPicker');
