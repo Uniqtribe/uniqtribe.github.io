@@ -666,7 +666,7 @@ if (imageId) {
 	  trialButton.style.fontSize = '100%';
     trialButton.style.textDecoration = 'none';
     trialButton.style.fontWeight = 'bold';
-	  trialButton.style.margin = '8px';
+	  trialButton.style.margin = '1.5%';
 
     targetDiv.appendChild(trialButton);
   }
