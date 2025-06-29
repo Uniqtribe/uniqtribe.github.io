@@ -639,6 +639,22 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 		});
 	
 	})
+
+	 const targetDiv = document.querySelector('.theme-product-varient-quantity');
+
+  if (targetDiv) {
+    const trialButton = document.createElement('a');
+    trialButton.href = `/products/trial-pack?productImage=${imageId}`;
+    trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
+    trialButton.className = 'zpbutton zpbutton-type-secondary zpbutton-size-lg zpbutton-full-width';
+    trialButton.style.marginTop = '1rem';
+    trialButton.style.textAlign = 'center';
+    trialButton.style.display = 'inline-block';
+    trialButton.style.textDecoration = 'none';
+    trialButton.style.fontWeight = 'bold';
+
+    targetDiv.appendChild(trialButton);
+  }
 }
 
 
