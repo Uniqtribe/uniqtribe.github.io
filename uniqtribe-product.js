@@ -645,7 +645,7 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
   if (targetDiv) {
     const trialButton = document.createElement('a');
     trialButton.href = document
-  .querySelector('.theme-product-detail-image img[alt*="base-image"]')
+  .querySelector('#image-gallery img[alt*="base-image"]')
   ?.src;
     trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
     trialButton.className = 'zpbutton zpbutton-type-secondary zpbutton-size-lg zpbutton-full-width';
