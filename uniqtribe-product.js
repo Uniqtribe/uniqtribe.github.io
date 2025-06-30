@@ -660,31 +660,7 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 	
 	})
 
-	 const targetDiv = document.querySelector('.theme-product-varient-quantity');
 
-  if (targetDiv) {
-    const trialButton = document.createElement('a');
-
-
-const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
-	  
-
-
-	const configText = config?.textContent;
-
-  trialButton.href =
-    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+imgUrl+`&source=`+JSON.stringify(source[0])
-  //                       ^^^^^^^^^^^^^^^^^  always a good idea
-
-    trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
-    trialButton.style.display = 'inline-block';
-	  trialButton.style.fontSize = '100%';
-    trialButton.style.textDecoration = 'none';
-    trialButton.style.fontWeight = 'bold';
-	  trialButton.style.margin = '1.5%';
-
-    targetDiv.appendChild(trialButton);
-  }
 }
 
 
@@ -727,6 +703,31 @@ function updateFields() {
 			    })
 		}else{
     loadBasicField();
+				 const targetDiv = document.querySelector('.theme-product-varient-quantity');
+
+  if (targetDiv) {
+    const trialButton = document.createElement('a');
+
+
+const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
+	  
+
+
+	const configText = config?.textContent;
+
+  trialButton.href =
+    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+imgUrl+`&source=`+JSON.stringify(source[0])
+  //                       ^^^^^^^^^^^^^^^^^  always a good idea
+
+    trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
+    trialButton.style.display = 'inline-block';
+	  trialButton.style.fontSize = '100%';
+    trialButton.style.textDecoration = 'none';
+    trialButton.style.fontWeight = 'bold';
+	  trialButton.style.margin = '1.5%';
+
+    targetDiv.appendChild(trialButton);
+  }
     let x = 0;
     selectionValue = [];
     for (let i = 0; i < cartData.line_items.length; i++) {
