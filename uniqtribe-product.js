@@ -16,13 +16,26 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
 
-if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
-  updateImage(imageUrl);
-}
+
 
 if (varientContainer) {
     // Your variant field reading & hiding logic here
 waitForImageToLoad("base-image", function() {
+
+	if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
+		const imgEl = document.querySelector('.theme-product-detail-image-inner picture img[alt^="base-image"]');
+if (imgEl) {
+  imgEl.src = imageUrl;
+  imgEl.alt = "base-image:customized";
+  imgEl.title = "base-image:customized";
+  console.log("✅ Image replaced");
+} else {
+  console.warn("❌ base-image not found");
+}
+		
+//  updateImage(imageUrl);
+}
+	
 const pricingContainer = document.querySelector('[data-zs-pricing-container]');
 
 if (pricingContainer) {
