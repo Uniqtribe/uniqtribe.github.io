@@ -649,14 +649,13 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
 	  
 
-// 3️⃣  Build the link safely
-if (imageId) {
+
 	const configText = config?.textContent;
 
   trialButton.href =
     `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+encodeURIComponent(imgUrl)
   //                       ^^^^^^^^^^^^^^^^^  always a good idea
-}
+
     trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
     trialButton.style.display = 'inline-block';
 	  trialButton.style.fontSize = '100%';
