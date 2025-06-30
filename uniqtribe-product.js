@@ -716,6 +716,16 @@ function updateTargetValue(newValue) {
 }
 
 function updateFields() {
+		if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
+			
+			 target.forEach(tar=>{
+				    tar.value = new URLSearchParams(location.search).get('source');
+			    })
+				
+			    source.forEach(sou=>{				    
+				    sou.value =  new URLSearchParams(location.search).get('source');;
+			    })
+		}else{
     loadBasicField();
     let x = 0;
     selectionValue = [];
@@ -768,7 +778,7 @@ document.querySelector('#swatches-0').click();
 		  }
 		});
 
-
+		}
 }
 
 
