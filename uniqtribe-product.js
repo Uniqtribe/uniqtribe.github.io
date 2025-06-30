@@ -14,6 +14,8 @@ let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
 const imageUrl = new URLSearchParams(location.search).get('url');
+    const isProductPage = window.zs_view === 'product';
+
 if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
   updateImage(imageUrl);
 }
