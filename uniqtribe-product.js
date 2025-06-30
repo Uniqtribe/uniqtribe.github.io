@@ -710,7 +710,7 @@ function updateFields() {
 	const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
 	const configText = config?.textContent;
 		  trialButton.href =
-	    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+imgUrl+`&source=`+source[0].value
+	    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+imgUrl+`&source=`+encodeURIComponent(JSON.stringify(source[0].value))
 	  //                       ^^^^^^^^^^^^^^^^^  always a good idea
 	
 	    trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
