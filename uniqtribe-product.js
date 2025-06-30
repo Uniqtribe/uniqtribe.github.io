@@ -13,6 +13,31 @@ let source = [];
 let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
+  if (isProductPage && location.href.includes('trial-pack')) {
+  /* 🏷️ 1. Pull ?url=…  --------------------------------------------------- */
+  const imageUrl = new URLSearchParams(location.search).get('url');
+  if (!imageUrl) return;   // nothing to do if the param is missing
+
+  /* 🖼️ 2. Find the base image inside #image-gallery ---------------------- */
+  const galleryImg =
+    document.querySelector('#image-gallery img[alt^="base-image"]') ||
+    document.querySelector('#image-gallery img');   // fallback to first <img>
+
+  if (!galleryImg) return; // gallery hasn’t rendered yet
+
+  /* 🔄 3. Replace its source -------------------------------------------- */
+  galleryImg.src = imageUrl;
+  galleryImg.alt = 'base-image (updated)';
+  galleryImg.removeAttribute('srcset'); // optional: avoids mismatched sizes
+
+  /* Optional: if you rely on data attributes for lightbox, reset them   */
+  // const hash = imageUrl.split('/').pop(); // e.g. "600x600" or file name
+  // galleryImg.dataset.detailImage = 'theme-detail-image-' + hash;
+
+  console.log('✅ Replaced gallery image with', imageUrl);
+}
+
+
 if (varientContainer) {
     // Your variant field reading & hiding logic here
 waitForImageToLoad("base-image", function() {
@@ -1805,6 +1830,126 @@ function updateCartSuccess(e) {
             imgContainer.setAttribute('title', imageTitle);
         }
     }
+}
+/**
+ * updateImage()
+ * -------------
+ * Replace the model’s texture with the image supplied in `?url=...`
+ * or with a URL passed directly to the function.
+ *
+ * @param {string|null} directUrl — Pass a URL manually or leave null to read from query.
+ */
+function updateImage(directUrl = null) {
+  /* 1️⃣  Get the image URL ------------------------------------------------- */
+  let imageUrl = directUrl;
+  if (!imageUrl) {
+    const params = new URLSearchParams(location.search);
+    imageUrl = params.get('url');               // <- same param you built earlier
+  }
+  if (!imageUrl) {
+    console.warn('updateImage: No image URL provided.');
+    return;
+  }
+
+  /* 2️⃣  Replace the gallery preview (optional — remove if you don’t want it) */
+  const galleryImg = document.querySelector('#image-gallery img[alt^="base-image"]');
+  if (galleryImg) {
+    galleryImg.src = imageUrl;
+    galleryImg.alt = 'base-image (updated)';
+    galleryImg.removeAttribute('srcset');       // keeps browsers from swapping sizes
+  }
+
+  /* 3️⃣  Load the texture and apply it to the GLB model -------------------- */
+  const textureLoader = new THREE.TextureLoader();
+  const totalSlices   = 5;                      // your 1/5 nail slices
+  const nailSliceMap  = {
+    0: ['thumb',   'thumb_nail',  'Thumb_Finger'],
+    1: ['index',   'index_nail',  'Index_Finger'],
+    2: ['middle',  'middle_nail', 'Middle_Finger'],
+    3: ['ring',    'ring_nail',   'Ring_Finger'],
+    4: ['little',  'little_nail', 'Little_Finger']
+  };
+
+  textureLoader.load(imageUrl, (texture) => {
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1, 1);
+
+    const useMultiPattern = configObject?.multipattern === true;
+
+    object.traverse((child) => {
+      if (!child.isMesh) return;
+
+      let appliedTexture = texture;
+      let materialOptions = null;
+
+      /* --- 3a. Pre‑defined override? ------------------------------------- */
+      const override = textures.find(tex => tex.objects.includes(child.name));
+      if (override) {
+        appliedTexture   = override.texture;
+        materialOptions  = {
+          map:         appliedTexture,
+          transparent: override.transparent,
+          opacity:     override.transparent ? 1 : undefined,
+          depthWrite: !override.transparent
+        };
+
+      } else { /* --- 3b. Multi‑slice logic -------------------------------- */
+        let matchedSliceIndex = null;
+        const meshName = child.name.toLowerCase();
+
+        for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+          if (keywords.some(k => meshName.includes(k))) {
+            matchedSliceIndex = parseInt(sliceIdx);
+            break;
+          }
+        }
+
+        const isPatterned =
+          useMultiPattern &&
+          configObject.imageInfo.appliedPattern.includes(child.name) &&
+          matchedSliceIndex !== null;
+
+        if (isPatterned) {
+          appliedTexture = texture.clone();
+          appliedTexture.needsUpdate = true;
+          appliedTexture.wrapS = THREE.RepeatWrapping;
+          appliedTexture.wrapT = THREE.RepeatWrapping;
+
+          appliedTexture.repeat.set(1 / totalSlices, 1);
+          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+        }
+
+        /* Full image for background pattern or if not multipattern */
+        if (child.name === configObject.imageInfo.backgroundPattern || !isPatterned) {
+          appliedTexture.repeat.set(1, 1);
+          appliedTexture.offset.set(0, 0);
+        }
+
+        materialOptions = {
+          map:         appliedTexture,
+          transparent: true,
+          opacity:     1,
+          depthWrite: false
+        };
+      }
+
+      /* --- 3c. Special emissive tweak for background plane --------------- */
+      if (child.name === configObject.imageInfo.backgroundPattern) {
+        materialOptions.emissive          = new THREE.Color(0xffffff);
+        materialOptions.emissiveIntensity = 0.3;
+        materialOptions.color             = new THREE.Color(0xffffff);
+      }
+
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
+      child.material.needsUpdate = true;
+    });
+
+    console.log('✅ updateImage: Applied new texture', imageUrl);
+  },
+  undefined,
+  (err) => console.error('❌ Texture load failed:', err)
+  );
 }
 
 function changeColor(changeColorArray) {
