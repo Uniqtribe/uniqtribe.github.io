@@ -658,7 +658,7 @@ if (imageId) {
 	const configText = config?.textContent;
 
   trialButton.href =
-    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=encodeURIComponent(imgUrl)&productImage=` +
+    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+encodeURIComponent(imgUrl)+`&productImage=` +
     encodeURIComponent(imageId);
   //                       ^^^^^^^^^^^^^^^^^  always a good idea
 }
