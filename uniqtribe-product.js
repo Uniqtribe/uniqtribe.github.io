@@ -653,7 +653,7 @@ const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').s
 	const configText = config?.textContent;
 
   trialButton.href =
-    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+encodeURIComponent(imgUrl)
+    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+imgUrl
   //                       ^^^^^^^^^^^^^^^^^  always a good idea
 
     trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
