@@ -13,14 +13,10 @@ let source = [];
 let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 
-  if (isProductPage && location.href.includes('trial-pack')) {
-  /* 🏷️ 1. Pull ?url=…  --------------------------------------------------- */
-  const imageUrl = new URLSearchParams(location.search).get('url');
-  if (!imageUrl) return;   // nothing to do if the param is missing
-
- updateImage(imageUrl);
+const imageUrl = new URLSearchParams(location.search).get('url');
+if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
+  updateImage(imageUrl);
 }
-
 
 if (varientContainer) {
     // Your variant field reading & hiding logic here
