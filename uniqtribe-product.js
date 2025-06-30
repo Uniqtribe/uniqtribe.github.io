@@ -649,17 +649,12 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
 	  
 
-// 2️⃣  Read its data‑attribute (either way works)
-const imageId = activeThumb?.dataset.zsImageId      // using dataset
-             || activeThumb?.getAttribute('data-zs-image-id'); // or getAttribute
-
 // 3️⃣  Build the link safely
 if (imageId) {
 	const configText = config?.textContent;
 
   trialButton.href =
-    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+encodeURIComponent(imgUrl)+`&productImage=` +
-    encodeURIComponent(imageId);
+    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+encodeURIComponent(imgUrl)
   //                       ^^^^^^^^^^^^^^^^^  always a good idea
 }
     trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
