@@ -18,23 +18,7 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
   const imageUrl = new URLSearchParams(location.search).get('url');
   if (!imageUrl) return;   // nothing to do if the param is missing
 
-  /* 🖼️ 2. Find the base image inside #image-gallery ---------------------- */
-  const galleryImg =
-    document.querySelector('#image-gallery img[alt^="base-image"]') ||
-    document.querySelector('#image-gallery img');   // fallback to first <img>
-
-  if (!galleryImg) return; // gallery hasn’t rendered yet
-
-  /* 🔄 3. Replace its source -------------------------------------------- */
-  galleryImg.src = imageUrl;
-  galleryImg.alt = 'base-image (updated)';
-  galleryImg.removeAttribute('srcset'); // optional: avoids mismatched sizes
-
-  /* Optional: if you rely on data attributes for lightbox, reset them   */
-  // const hash = imageUrl.split('/').pop(); // e.g. "600x600" or file name
-  // galleryImg.dataset.detailImage = 'theme-detail-image-' + hash;
-
-  console.log('✅ Replaced gallery image with', imageUrl);
+ updateImage(imageUrl);
 }
 
 
