@@ -646,9 +646,8 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
     const trialButton = document.createElement('a');
 
 
-const activeThumb = document.querySelector(
-  '.theme-product-detail-thumbnail.theme-active-thumbnail[data-zs-image-id]'
-);
+const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
+	  
 
 // 2️⃣  Read its data‑attribute (either way works)
 const imageId = activeThumb?.dataset.zsImageId      // using dataset
@@ -659,7 +658,7 @@ if (imageId) {
 	const configText = config?.textContent;
 
   trialButton.href =
-    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?productImage=` +
+    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=encodeURIComponent(imgUrl)&productImage=` +
     encodeURIComponent(imageId);
   //                       ^^^^^^^^^^^^^^^^^  always a good idea
 }
