@@ -2536,7 +2536,21 @@ function calculateClusterVariance(cluster) {
   return clusterVariance;
 }
 
+function generateVerticalGradientPalette(colors = [], isCustom = false) {
+  if (!colors.length) return 'none';
 
+  const norm = colors.map(normaliseColor);
+  const seg   = 100 / norm.length;
+
+  const parts = norm.map((c,i) => {
+    const s = i * seg;
+    const e = (i+1) * seg;
+    return `rgb(${c.r},${c.g},${c.b}) ${s}% ${e}%`;
+  }).join(', ');
+
+  return `linear-gradient(to right, ${parts})`;
+}
+/*
     function generateVerticalGradientPalette(colors, isCustom = false) {
 	    console.log("Colors", colors)
     const segmentSize = 100 / colors.length;
@@ -2548,7 +2562,21 @@ function calculateClusterVariance(cluster) {
     }).join(', ');
 
     return isCustom ? `linear-gradient(to right, ${gradientSegments})` : `linear-gradient(to right, ${gradientSegments})`;
+}*/
+
+
+
+function normaliseColor(c) {
+  // 1) already {r,g,b}
+  if (typeof c === 'object' && 'r' in c) return c;
+  // 2) hex string  "#rrggbb" or "#rgb"
+  if (typeof c === 'string') return hexToRgb(c);
+  // 3) array [r,g,b]
+  if (Array.isArray(c))    return { r:c[0], g:c[1], b:c[2] };
+  return { r:200, g:200, b:200 };      // fallback grey
 }
+
+
 function generatePalettes(palette) {
     const palettes = {
         Analogous: [],
