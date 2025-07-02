@@ -712,7 +712,6 @@ function updateFields() {
 // 1️⃣  Build a clean params object
 const sourceValue      = source[0].value;                 // string OR object
 const baseColorValue   = basicColor[0].baseColor;         // object
-const altColorValue    = basicColor[0].alternativeColor;  // object
 
 const params = new URLSearchParams();
 params.set('url', imgUrl);
