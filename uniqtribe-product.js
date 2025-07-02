@@ -1172,7 +1172,17 @@ async function populatePalette() {
     const fragment = document.createDocumentFragment();
     const swatchFragment = document.createDocumentFragment();
 
-    basicColor[0].baseColor.forEach((color, index) => {
+	let baseColor;
+			if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
+			baseColor = JSON.parse(new URLSearchParams(location.search).get('source'));
+							paletteColors = JSON.parse(new URLSearchParams(location.search).get('source'));
+			}else{
+     baseColor = basicColor[0].baseColor;
+
+			}
+	
+
+    baseColor.forEach((color, index) => {
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
         colorDiv.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
