@@ -700,7 +700,11 @@ function updateFields() {
 			});
 			
 			source.forEach(sou => {
-			  sou.value = JSON.stringify(sourceData);
+				let obj = {}
+				obj['target'] = sourceData.source;
+				obj['variant'] = sourceData.variant;
+				
+			  sou.value = JSON.stringify(obj);
 			});
 		}else{
     loadBasicField();
