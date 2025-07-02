@@ -709,10 +709,18 @@ function updateFields() {
 	  const trialButton = document.createElement('a');
 	const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
 	const configText = config?.textContent;
-		  trialButton.href =
-	    `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?url=`+imgUrl+`&source=`+encodeURIComponent(JSON.stringify(source[0].value))+`&baseColor=`+encodeURIComponent(JSON.stringify(basicColor[0].baseColor))+`&alternativeColor=`+encodeURIComponent(JSON.stringify(basicColor[0].alternativeColor))
-	  //                       ^^^^^^^^^^^^^^^^^  always a good idea
-	
+// 1️⃣  Build a clean params object
+const params = new URLSearchParams({
+  url:              imgUrl,                                    // <-- will be encoded
+  source:           JSON.stringify(source[0].value),           // object → JSON → encoded
+  baseColor:        JSON.stringify(basicColor[0].baseColor),
+  alternativeColor: JSON.stringify(basicColor[0].alternativeColor)
+});
+
+// 2️⃣  Assemble the final URL
+trialButton.href =
+  `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?` +
+  params.toString();  
 	    trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
 	    trialButton.style.display = 'inline-block';
 		  trialButton.style.fontSize = '100%';
