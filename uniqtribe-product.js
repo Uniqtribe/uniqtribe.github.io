@@ -1216,9 +1216,17 @@ async function populatePalette() {
 }
 
 function generateControls() {
-    const sourceColors = basicColor[0].baseColor;
-    const paletteColors = basicColor[0].alternativeColor;
-    colorControlsContainer.innerHTML = '';
+	const sourceColors;
+const paletteColors;	
+			if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
+			sourceColors = JSON.parse(new URLSearchParams(location.search).get('source'));
+							paletteColors = JSON.parse(new URLSearchParams(location.search).get('source'));
+			}else{
+     sourceColors = basicColor[0].baseColor;
+     paletteColors = basicColor[0].alternativeColor;
+
+			}
+				colorControlsContainer.innerHTML = '';
     toColorSwatchesContainer.innerHTML = '';
     const sourceContainer = document.createElement('div');
     sourceContainer.className = 'colorSwatches selected';
