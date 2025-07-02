@@ -1248,7 +1248,7 @@ function generateControls() {
 let paletteColors;	
 			if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
 			sourceColors = JSON.parse(new URLSearchParams(location.search).get('source')).source;
-							paletteColors = JSON.parse(new URLSearchParams(location.search).get('source')).source;
+							paletteColors = [];
 			}else{
      sourceColors = basicColor[0].baseColor;
      paletteColors = basicColor[0].alternativeColor;
