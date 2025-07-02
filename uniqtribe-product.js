@@ -700,11 +700,11 @@ function updateFields() {
 				obj['target'] = sourceData.source;
 				obj['variant'] = sourceData.variant;
 				
-			  sou.value = JSON.stringify(obj);
+			  tar.value = JSON.stringify(obj);
 			});
 			
 			source.forEach(sou => {
-			  tar.value = JSON.stringify(sourceData); // 👈 stringified object
+			  sou.value = JSON.stringify(sourceData); // 👈 stringified object
 				
 			});
 		}else{
