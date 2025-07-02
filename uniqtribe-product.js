@@ -693,14 +693,15 @@ function updateTargetValue(newValue) {
 
 function updateFields() {
 		if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
+			const sourceData = JSON.parse(new URLSearchParams(location.search).get('source'));
+
+			target.forEach(tar => {
+			  tar.value = JSON.stringify(sourceData); // 👈 stringified object
+			});
 			
-			 target.forEach(tar=>{
-				    tar.value = JSON.parse(new URLSearchParams(location.search).get('source'));
-			    })
-				
-			    source.forEach(sou=>{				    
-				    sou.value =  JSON.parse(new URLSearchParams(location.search).get('source'));
-			    })
+			source.forEach(sou => {
+			  sou.value = JSON.stringify(sourceData);
+			});
 		}else{
     loadBasicField();
 				 const targetDiv = document.querySelector('.theme-product-varient-quantity');
