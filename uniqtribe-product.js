@@ -710,17 +710,28 @@ function updateFields() {
 	const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
 	const configText = config?.textContent;
 // 1️⃣  Build a clean params object
-const params = new URLSearchParams({
-  url:              imgUrl,                                    // <-- will be encoded
-  source:           JSON.stringify(source[0].value),           // object → JSON → encoded
-  baseColor:        JSON.stringify(basicColor[0].baseColor),
-  alternativeColor: JSON.stringify(basicColor[0].alternativeColor)
-});
+const imgUrl           = '/product-images/pattern.png/1363523000001792403/600x600';
+const sourceValue      = source[0].value;                 // string OR object
+const baseColorValue   = basicColor[0].baseColor;         // object
+const altColorValue    = basicColor[0].alternativeColor;  // object
 
-// 2️⃣  Assemble the final URL
+const params = new URLSearchParams();
+params.set('url', imgUrl);
+
+// ─── source ───────────────────────────────────────────────
+if (typeof sourceValue === 'string') {
+  params.set('source', sourceValue);                      // already JSON
+} else {
+  params.set('source', JSON.stringify(sourceValue));
+}
+
+// ─── colours ──────────────────────────────────────────────
+params.set('baseColor',        JSON.stringify(baseColorValue));
+params.set('alternativeColor', JSON.stringify(altColorValue));
+
 trialButton.href =
-  `https://www.uniqtribe.com/products/trial-pack/1363523000002443150?` +
-  params.toString();  
+  'https://www.uniqtribe.com/products/trial-pack/1363523000002443150?' +
+  params.toString();
 	    trialButton.textContent = '🎁 Try Trial Pack at Rs. 199/-';
 	    trialButton.style.display = 'inline-block';
 		  trialButton.style.fontSize = '100%';
