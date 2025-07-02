@@ -695,11 +695,11 @@ function updateFields() {
 		if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
 			
 			 target.forEach(tar=>{
-				    tar.value = new URLSearchParams(location.search).get('source');
+				    tar.value = JSON.parse(new URLSearchParams(location.search).get('source'));
 			    })
 				
 			    source.forEach(sou=>{				    
-				    sou.value =  new URLSearchParams(location.search).get('source');;
+				    sou.value =  JSON.parse(new URLSearchParams(location.search).get('source'));
 			    })
 		}else{
     loadBasicField();
