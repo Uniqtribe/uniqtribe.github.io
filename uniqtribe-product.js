@@ -2534,6 +2534,7 @@ function calculateClusterVariance(cluster) {
 
 
     function generateVerticalGradientPalette(colors, isCustom = false) {
+	    console.log("Colors", colors)
     const segmentSize = 100 / colors.length;
     const gradientSegments = colors.map((color, index) => {
         const startPercent = index * segmentSize;
