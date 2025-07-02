@@ -790,11 +790,9 @@ document.querySelector('#swatches-0').click();
 
 				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && row.getAttribute('data-variant-id')===variantId) {
 					let obj = JSON.parse(row.querySelector('input').value);
-					if(customSelect.id = 'shape'){
+					
 						obj.shape = value;
-					}else if(customSelect.id = 'size'){
-						obj.size = value;
-					}
+					
 					row.querySelector('input').value = JSON.stringify(obj);
 				}
 			})
@@ -1499,7 +1497,7 @@ function buildCustomSelect({ labelName, allowedValues, name }) {
     // Create the container
     const container = document.createElement('div');
     container.className = `custom-select-container custom-select-container-${index}`;
-	container.id = name;
+	//container.id = name;
     // Build the option list
     const optionsHTML = Array.from(hiddenSelect.options)
       .filter((opt, idx) => !(idx === 0 && /choose/i.test(opt.textContent)))
