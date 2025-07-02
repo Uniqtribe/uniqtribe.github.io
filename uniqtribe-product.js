@@ -170,6 +170,7 @@ if (pricingContainer) {
 	if (label?.textContent.replace("*", "").trim() === 'source') {
             source[j] = row.querySelector('input');
 		j++;
+		
         }
         if (label?.textContent.replace("*", "").trim() === 'target') {
             target[k] = row.querySelector('input')
@@ -196,6 +197,7 @@ if (pricingContainer) {
             patternSelection[i] = JSON.stringify(obj);
             i++;
         }
+	    row.style.display = 'none'
     })
 	   
 	const inputElement = document.querySelector('[name="qty"]');
