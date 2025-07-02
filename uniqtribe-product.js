@@ -1495,7 +1495,7 @@ function buildCustomSelect({ labelName, allowedValues, name }) {
     // Create the container
     const container = document.createElement('div');
     container.className = `custom-select-container custom-select-container-${index}`;
-
+	container.id = name;
     // Build the option list
     const optionsHTML = Array.from(hiddenSelect.options)
       .filter((opt, idx) => !(idx === 0 && /choose/i.test(opt.textContent)))
