@@ -710,7 +710,6 @@ function updateFields() {
 	const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
 	const configText = config?.textContent;
 // 1️⃣  Build a clean params object
-const imgUrl           = '/product-images/pattern.png/1363523000001792403/600x600';
 const sourceValue      = source[0].value;                 // string OR object
 const baseColorValue   = basicColor[0].baseColor;         // object
 const altColorValue    = basicColor[0].alternativeColor;  // object
