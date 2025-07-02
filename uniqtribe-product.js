@@ -73,7 +73,7 @@ if (pricingContainer) {
   let variants = null;
 
   const getVisibleVariant = () => {
-    return pricingContainer.querySelector('[style*="display: block"][data-zs-variant-id]')?.getAttribute('data-zs-variant-id') || null;
+    return pricingContainer.querySelector('[data-zs-variant-id]')?.getAttribute('data-zs-variant-id') || null;
   };
 
   const updateVariant = () => {
