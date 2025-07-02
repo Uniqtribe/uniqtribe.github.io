@@ -790,7 +790,11 @@ document.querySelector('#swatches-0').click();
 
 				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && row.getAttribute('data-variant-id')===variantId) {
 					let obj = JSON.parse(row.querySelector('input').value);
-					obj.shape = value;
+					if(customSelect.id = 'shape'){
+						obj.shape = value;
+					}else if(customSelect.id = 'size'){
+						obj.size = value;
+					}
 					row.querySelector('input').value = JSON.stringify(obj);
 				}
 			})
