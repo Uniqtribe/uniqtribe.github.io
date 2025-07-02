@@ -1621,16 +1621,7 @@ function selectOption(element) {
   }
 }
 
-  if (visibleTarget) {
-    try {
-      let obj = JSON.parse(visibleTarget.value || '{}');
-      obj.shape = element.getAttribute("data-value");
-      visibleTarget.value = JSON.stringify(obj);
-    } catch (e) {
-      console.warn("⚠️ Could not parse target JSON:", e);
-    }
-  }
-}
+
 
 
 function setCustomSelectValue(desiredValue) {
