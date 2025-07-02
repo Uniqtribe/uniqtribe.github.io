@@ -1216,8 +1216,8 @@ async function populatePalette() {
 }
 
 function generateControls() {
-	const sourceColors;
-const paletteColors;	
+	let sourceColors;
+let paletteColors;	
 			if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
 			sourceColors = JSON.parse(new URLSearchParams(location.search).get('source'));
 							paletteColors = JSON.parse(new URLSearchParams(location.search).get('source'));
