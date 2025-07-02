@@ -747,7 +747,7 @@ trialButton.href =
 	    trialButton.style.textDecoration = 'none';
 	    trialButton.style.fontWeight = 'bold';
 		  trialButton.style.margin = '1.5%';
-	
+	targetDiv.innerHTML = '';
 	    targetDiv.appendChild(trialButton);
   }
     let x = 0;
