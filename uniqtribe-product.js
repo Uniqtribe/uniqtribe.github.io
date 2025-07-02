@@ -1259,6 +1259,8 @@ let paletteColors;
     const sourceContainer = document.createElement('div');
     sourceContainer.className = 'colorSwatches selected';
     sourceContainer.id = `swatches-0`;
+	console.log('Gradient:', generateVerticalGradientPalette(sourceColors));
+
     sourceContainer.style.backgroundImage = generateVerticalGradientPalette(sourceColors);
     toColorSwatchesContainer.appendChild(sourceContainer);
 	if(configObject.customColor === true){
