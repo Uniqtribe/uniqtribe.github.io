@@ -35,7 +35,7 @@ if (imgEl) {
 		
 //  updateImage(imageUrl);
 }
-	
+	/*
 const pricingContainer = document.querySelector('[data-zs-pricing-container]');
 
 if (pricingContainer) {
@@ -65,6 +65,47 @@ if (pricingContainer) {
 }
     console.log("Image is fully loaded. Running script...");
     // Your script here
+	*/
+
+	const pricingContainer = document.querySelector('[data-zs-pricing-container]');
+
+if (pricingContainer) {
+  let variants = null;
+
+  const getVisibleVariant = () => {
+    return pricingContainer.querySelector('[style*="display: block"][data-zs-variant-id]')?.getAttribute('data-zs-variant-id') || null;
+  };
+
+  const updateVariant = () => {
+    const newVariant = getVisibleVariant();
+    if (newVariant && newVariant !== variants) {
+      variants = newVariant;
+      console.log('🟢 Variant updated:', variants);
+      // 👉 Place your variant-dependent script here
+    }
+  };
+
+  // ✅ 1. Run once on initial load
+  updateVariant();
+
+  // ✅ 2. Then observe for changes
+  const observer = new MutationObserver(() => {
+    updateVariant();
+  });
+
+  observer.observe(pricingContainer, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['style', 'data-zs-variant-id']
+  });
+
+  console.log('👀 Watching pricing container...');
+} else {
+  console.warn('⚠️ Pricing container not found');
+}
+
+console.log("Image is fully loaded. Running script...");
 	
     let varientContainerRows = document.createElement('div')
     varientContainerRows.className = 'theme-product-varients-row';
