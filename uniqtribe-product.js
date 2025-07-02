@@ -1173,16 +1173,34 @@ async function populatePalette() {
     const swatchFragment = document.createDocumentFragment();
 
 	let baseColor;
-			if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
-			baseColor = JSON.parse(new URLSearchParams(location.search).get('source'));
-							paletteColors = JSON.parse(new URLSearchParams(location.search).get('source'));
-			}else{
-     baseColor = basicColor[0].baseColor;
 
-			}
-	
+if (isProductPage && location.href.includes('trial-pack') && imageUrl) {
+  const params = new URLSearchParams(location.search);
 
-    baseColor.forEach((color, index) => {
+  // -- colours come in ?source=... (JSON string)
+  const sourceParam = params.get('source');          // string or null
+  if (sourceParam) {
+    const sourceObj = JSON.parse(sourceParam);       // { source:[...], variant:"..." }
+
+    baseColor     = sourceObj.source;                // <-- the ARRAY you need
+    paletteColors = sourceObj.source;                // if you still want this
+  } else {
+    console.warn('No ?source= param found; falling back to defaults');
+  }
+}
+
+/* -----------------------------------------------
+   2. Fallback to your original basicColor array
+--------------------------------------------------*/
+if (!Array.isArray(baseColor)) {
+  baseColor = basicColor[0].baseColor;               // original default
+}
+
+/* -----------------------------------------------
+   3. Now baseColor is guaranteed to be an array
+--------------------------------------------------*/
+baseColor.forEach((color, index) => {
+
         const sectionDiv = document.createElement('div');
         const colorDiv = document.createElement('div');
         colorDiv.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
