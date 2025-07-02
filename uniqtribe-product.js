@@ -770,7 +770,7 @@ document.querySelector('#swatches-0').click();
 //document.querySelector('.customSelect').querySelectorAll('div[data-value]')[0].click();
 	document.querySelectorAll('.custom-select').forEach(s => s.querySelector('div[data-value]')?.click());
 
-	document.querySelectorAll('.custom-select').forEach(customSelect => {
+	document.querySelectorAll('.custom-select-container').forEach(customSelect => {
 		  const firstOption = customSelect.querySelector('div[data-value]');
 		  if (!firstOption) return;
 		
@@ -790,8 +790,12 @@ document.querySelector('#swatches-0').click();
 
 				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && row.getAttribute('data-variant-id')===variantId) {
 					let obj = JSON.parse(row.querySelector('input').value);
-					
+					if(customSelect.id === 'shape'){
 						obj.shape = value;
+					}else if(customSelect.id === 'size'){
+						obj.size = value;
+					} 
+						
 					
 					row.querySelector('input').value = JSON.stringify(obj);
 				}
