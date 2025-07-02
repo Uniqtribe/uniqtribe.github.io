@@ -1619,34 +1619,6 @@ function selectOption(element) {
   }
 }
 
-function selectOption(element) {
-  const customSelect = element.closest('.custom-select');
-  if (!customSelect) return;
-
-  // Deselect all options in this group
-  customSelect.querySelectorAll('.custom-option').forEach(child => {
-    child.classList.remove('selected');
-  });
-
-  element.classList.add('selected');
-
-  // Get the correct hidden <select> next to this custom select
-  const container = customSelect.closest('.theme-custom-field-container');
-  const hiddenSelect = container?.querySelector('select[data-label="Shape"]');
-  if (hiddenSelect) {
-    hiddenSelect.value = element.getAttribute('data-value');
-    hiddenSelect.dispatchEvent(new Event('change'));
-  }
-
-  // 🔍 Find the visible target input from the `target` object
-  let visibleTarget = null;
-  for (const key in target) {
-    if (target[key] && target[key].offsetParent !== null) {
-      visibleTarget = target[key];
-      break;
-    }
-  }
-
   if (visibleTarget) {
     try {
       let obj = JSON.parse(visibleTarget.value || '{}');
