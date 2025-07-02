@@ -737,7 +737,7 @@ if (typeof sourceValue === 'string') {
 
 // ─── colours ──────────────────────────────────────────────
 params.set('baseColor',        JSON.stringify(baseColorValue));
-
+trialButton.id = 'trialButton';
 trialButton.href =
   'https://www.uniqtribe.com/products/trial-pack/1363523000002443150?' +
   params.toString();
@@ -747,7 +747,7 @@ trialButton.href =
 	    trialButton.style.textDecoration = 'none';
 	    trialButton.style.fontWeight = 'bold';
 		  trialButton.style.margin = '1.5%';
-	targetDiv.innerHTML = '';
+	  document.querySelector('#trialButton').innerHTML = '';
 	    targetDiv.appendChild(trialButton);
   }
     let x = 0;
