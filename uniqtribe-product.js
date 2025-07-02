@@ -617,11 +617,11 @@ const colorThief = new ColorThief();
 	
     
     //generateCustomSelect();
-	buildCustomSelect({ labelName: 'Shape', allowedValues: configObject.shapes });
+	buildCustomSelect({ labelName: 'Shape', allowedValues: configObject.shapes, name: 'shape'});
 	//buildCustomSelect({ labelName: 'Size',  allowedValues: configObject.sizes });
 	buildCustomSelect({
   labelName: 'Size',
-  allowedValues: ['Extra Small (XS)', 'Small (S)', 'Medium (M)', 'Large (L)']
+  allowedValues: ['Extra Small (XS)', 'Small (S)', 'Medium (M)', 'Large (L)'], name: 'size'
 });
 
 
@@ -1485,7 +1485,7 @@ function generateCustomSelect() {
 }
 */
 
-function buildCustomSelect({ labelName, allowedValues }) {
+function buildCustomSelect({ labelName, allowedValues, name }) {
   const hiddenSelects = document.querySelectorAll(`select[data-label="${labelName}"]`);
 
   hiddenSelects.forEach((hiddenSelect, index) => {
@@ -1511,7 +1511,11 @@ function buildCustomSelect({ labelName, allowedValues }) {
 
     // Bind click events
     container.querySelectorAll('.custom-option').forEach(optEl => {
-      optEl.addEventListener('click', () => selectOption(optEl));
+	    if(name === 'shape'){
+      optEl.addEventListener('click', () => selectShapeOption(optEl));
+	    }else if (name === 'size'){
+		    optEl.addEventListener('click', () => selectSizeOption(optEl));
+	    }
     });
   });
 }
@@ -1582,7 +1586,7 @@ function selectOption(element) {
     hiddenSelect.value = element.getAttribute('data-value');
     hiddenSelect.dispatchEvent(new Event('change')); // Trigger change if required elsewhere
 }*/
-function selectOption(element) {
+function selectShapeOption(element) {
   const customSelect = element.closest('.custom-select');
   if (!customSelect) return;
 
@@ -1620,7 +1624,44 @@ function selectOption(element) {
     }
   }
 }
+function selectSizeOption(element) {
+  const customSelect = element.closest('.custom-select');
+  if (!customSelect) return;
 
+  // Deselect all options in this group
+  customSelect.querySelectorAll('.custom-option').forEach(child => {
+    child.classList.remove('selected');
+  });
+
+  element.classList.add('selected');
+
+  // Get the correct hidden <select> next to this custom select
+  const container = customSelect.closest('.theme-custom-field-container');
+  const hiddenSelect = container?.querySelector('select[data-label="Size"]');
+  if (hiddenSelect) {
+    hiddenSelect.value = element.getAttribute('data-value');
+    hiddenSelect.dispatchEvent(new Event('change'));
+  }
+
+  // 🔍 Find the visible target input from the `target` object
+  let visibleTarget = null;
+  for (const key in target) {
+    if (target[key] && target[key].offsetParent !== null) {
+      visibleTarget = target[key];
+      break;
+    }
+  }
+
+  if (visibleTarget) {
+    try {
+      let obj = JSON.parse(visibleTarget.value || '{}');
+      obj.size = element.getAttribute("data-value");
+      visibleTarget.value = JSON.stringify(obj);
+    } catch (e) {
+      console.warn("⚠️ Could not parse target JSON:", e);
+    }
+  }
+}
 
 
 
