@@ -12,6 +12,7 @@ let variants;
 let source = [];
 let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
+  let variants = null;
 
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
@@ -70,7 +71,6 @@ if (pricingContainer) {
 	const pricingContainer = document.querySelector('[data-zs-pricing-container]');
 
 if (pricingContainer) {
-  let variants = null;
 
   const getVisibleVariant = () => {
     return pricingContainer.querySelector('[data-zs-variant-id]')?.getAttribute('data-zs-variant-id') || null;
