@@ -1337,6 +1337,8 @@ function createColorPickerSwatch() {
 function populateSwatchesForIndex(index, palette) {
     const swatchContainer = swatches[index];
     swatchContainer.innerHTML = '';
+console.log("palette", palette);
+	
     swatchContainer.style.backgroundImage = generateVerticalGradientPalette(palette);
 }
 
