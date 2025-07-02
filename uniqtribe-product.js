@@ -725,7 +725,6 @@ if (typeof sourceValue === 'string') {
 
 // ─── colours ──────────────────────────────────────────────
 params.set('baseColor',        JSON.stringify(baseColorValue));
-params.set('alternativeColor', JSON.stringify(altColorValue));
 
 trialButton.href =
   'https://www.uniqtribe.com/products/trial-pack/1363523000002443150?' +
