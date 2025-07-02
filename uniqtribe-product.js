@@ -696,15 +696,16 @@ function updateFields() {
 			const sourceData = JSON.parse(new URLSearchParams(location.search).get('source'));
 
 			target.forEach(tar => {
-			  tar.value = JSON.stringify(sourceData); // 👈 stringified object
-			});
-			
-			source.forEach(sou => {
 				let obj = {}
 				obj['target'] = sourceData.source;
 				obj['variant'] = sourceData.variant;
 				
 			  sou.value = JSON.stringify(obj);
+			});
+			
+			source.forEach(sou => {
+			  tar.value = JSON.stringify(sourceData); // 👈 stringified object
+				
 			});
 		}else{
     loadBasicField();
