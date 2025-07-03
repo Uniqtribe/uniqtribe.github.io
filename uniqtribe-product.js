@@ -759,7 +759,7 @@ function updateFields() {
 
   if (targetDiv) {
 	  const trialButton = document.createElement('a');
-	const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
+	const imgUrl = ;
 	const configText = config?.textContent;
 // 1️⃣  Build a clean params object
 const sourceValue      = source[0].value;                 // string OR object
@@ -2077,7 +2077,7 @@ function changeColor(changeColorArray) {
 		   variantRows.forEach(row => {    
 		                let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 
-				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && row.getAttribute('data-variant-id')===variants) {
+				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && ((row.getAttribute('data-variant-id')===variants) || (variants === '-1')) {
 					    let obj = {};
 					    obj['selected'] = changeColorArray.map(rgb => rgbToHex(rgb));
 					    obj['quantity'] = quantityInput.value;
