@@ -210,27 +210,27 @@ console.log("Image is fully loaded. Running script...");
 	if (label?.textContent.replace("*", "").trim() === 'source') {
             source[j] = row.querySelector('input');
 		j++;
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
         if (label?.textContent.replace("*", "").trim() === 'target') {
             target[k] = row.querySelector('input')
 		k++;
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
         if (label?.textContent.replace("*", "").trim() === 'Config') {
             config = row.querySelector('span');
             configObject = JSON.parse(config.textContent.trim());
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
 		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
             basicColorConfig = row.querySelector('span');
             basicColor = JSON.parse(basicColorConfig.textContent.trim());
-			//row.style.display = 'none'
+			row.style.display = 'none'
         }
 		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
             alternateColorConfig = row.querySelector('span');
             alternateColor = JSON.parse(basicColorConfig.textContent.trim());
-			//row.style.display = 'none'
+			row.style.display = 'none'
         }
 
         if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
@@ -240,7 +240,7 @@ console.log("Image is fully loaded. Running script...");
             obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
             patternSelection[i] = JSON.stringify(obj);
             i++;
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
     })
 	   
