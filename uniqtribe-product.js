@@ -2077,7 +2077,7 @@ function changeColor(changeColorArray) {
 		   variantRows.forEach(row => {    
 		                let label = row.querySelector('.theme-product-variant-label.theme-custom-field-label');
 
-				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && ((row.getAttribute('data-variant-id')===variants) || (variants === '-1')) {
+				if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('target') && ((row.getAttribute('data-variant-id')===variants) || (variants === '-1'))) {
 					    let obj = {};
 					    obj['selected'] = changeColorArray.map(rgb => rgbToHex(rgb));
 					    obj['quantity'] = quantityInput.value;
