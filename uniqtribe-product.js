@@ -759,7 +759,7 @@ function updateFields() {
 
   if (targetDiv) {
 	  const trialButton = document.createElement('a');
-	const imgUrl = ;
+	const imgUrl = document.querySelector('#image-gallery img[alt^="base-image"]').src;
 	const configText = config?.textContent;
 // 1️⃣  Build a clean params object
 const sourceValue      = source[0].value;                 // string OR object
