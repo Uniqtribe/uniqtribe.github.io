@@ -1075,7 +1075,7 @@ function createColumnDiv(pattern) {
     columnDiv2.classList.add('column');
     columnDiv2.classList.add('wideColumn');
 
-    columnDiv2.innerHTML = "Shape :" + JSON.parse(JSON.parse(pattern).value).shape;
+    columnDiv2.innerHTML = "Shape : " + JSON.parse(JSON.parse(pattern).value).shape;
 
     const columnDiv4 = document.createElement('div');
     columnDiv4.classList.add('column');
