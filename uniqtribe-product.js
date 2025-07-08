@@ -16,8 +16,6 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
 
-
-
 if (varientContainer) {
     // Your variant field reading & hiding logic here
 waitForImageToLoad("base-image", function() {
