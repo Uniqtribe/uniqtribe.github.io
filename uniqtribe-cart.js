@@ -24,7 +24,7 @@ function generateTemplate(cartElements){
                 });
                 cartItem.querySelector('[data-zs-quantity]').disabled = true;
 		    
-	const link = cartItem.querySelector('a');
+	const link = cartItem.querySelector('.theme-cart-item-info a');
 	  
 	  if (link && link.textContent.includes('Trial Pack')) {
 	    const liTags = cartItem.querySelectorAll('ul li');
