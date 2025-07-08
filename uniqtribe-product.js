@@ -748,7 +748,7 @@ function updateFields() {
 			});
 			
 			source.forEach(sou => {
-			        sourceData.url = document.querySelector('.theme-product-detail-image-inner picture img[alt^="base-image"]').src; 
+			        sourceData.url = document.querySelector('#image-gallery img[alt^="base-image"]').src; 
 				sou.value = JSON.stringify(sourceData); // 👈 stringified object
 				
 			});
@@ -859,7 +859,7 @@ function loadBasicField() {
 	    obj['quantity'] = 1;
 	    obj['shape'] = '';
 	    obj['variant'] = tar.closest('[data-variant-id]')?.getAttribute('data-variant-id');
-	    obj['url'] = document.querySelector('.theme-product-detail-image-inner picture img[alt^="base-image"]').src; 
+	    obj['url'] = document.querySelector('#image-gallery img[alt^="base-image"]').src; 
 	    tar.value = JSON.stringify(obj);
     })
 	
