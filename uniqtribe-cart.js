@@ -34,7 +34,7 @@ function generateTemplate(cartElements){
             const thead = document.createElement("thead");
             const headerRow = document.createElement("tr");
             // Column names
-            ["Pattern", "Shape", "Size"].forEach(text => {
+            ["Pattern", "Shape", "Size", "Qty"].forEach(text => {
                 const th = document.createElement("th");
                 th.textContent = text;
                 headerRow.appendChild(th);
@@ -53,9 +53,13 @@ function generateTemplate(cartElements){
             const td2 = document.createElement("td");
             td2.textContent = JSON.parse(pattern).shape;
             tableRow.appendChild(td2);
-            const td3 = document.createElement("td");
-            td3.textContent = JSON.parse(pattern).quantity;
+	    const td3 = document.createElement("td");
+            td3.textContent = JSON.parse(pattern).size;
             tableRow.appendChild(td3);
+		
+            const td4 = document.createElement("td");
+            td4.textContent = JSON.parse(pattern).quantity;
+            tableRow.appendChild(td4);
             table.appendChild(tableRow);
             cartItem.querySelector('.theme-cart-item-info').appendChild(table);
         });
