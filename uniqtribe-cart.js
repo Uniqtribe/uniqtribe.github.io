@@ -23,6 +23,33 @@ function generateTemplate(cartElements){
                     item.disabled = true;
                 });
                 cartItem.querySelector('[data-zs-quantity]').disabled = true;
+		    
+	const link = cartItem.querySelector('a');
+	  
+	  if (link && link.textContent.includes('Trial Pack')) {
+	    const liTags = cartItem.querySelectorAll('ul li');
+	
+	    liTags.forEach(li => {
+	      if (li.textContent.trim().toLowerCase().startsWith('source:')) {
+	        try {
+	          const jsonStr = li.querySelector('span').textContent.trim();
+	          const sourceData = JSON.parse(jsonStr);
+	
+	          if (sourceData.url) {
+	            const img = document.createElement('img');
+	            img.src = sourceData.url;
+	            img.style.width = '100px'; // or whatever size
+	            img.style.marginTop = '10px';
+	
+	            item.appendChild(img); // append image below item
+	          }
+	        } catch (e) {
+	          console.error('Invalid JSON in source:', e);
+	        }
+	      }
+	    });
+	  }
+	    
             }
             if(li.textContent.trim().startsWith("target:") || li.textContent.trim().startsWith("selection")){
                 patternList.push(li.querySelector("span").textContent.trim());
@@ -62,7 +89,10 @@ function generateTemplate(cartElements){
             tableRow.appendChild(td4);
             table.appendChild(tableRow);
             cartItem.querySelector('.theme-cart-item-info').appendChild(table);
+
         });
+
+	    
     })
 }
 function createCanvas(pattern, baseImage, source) {
