@@ -36,7 +36,7 @@ function generateTemplate(cartElements){
 	          const sourceData = JSON.parse(jsonStr);
 	
 	          if (sourceData.url) {
-		         const imgContainer = item.parentElement.querySelector('.theme-cart-item-img img');
+		         const imgContainer = cartItem.parentElement.querySelector('.theme-cart-item-img img');
 	            
 	            if (imgContainer) {
 	              imgContainer.src = sourceData.url;
