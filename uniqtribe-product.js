@@ -859,7 +859,6 @@ function loadBasicField() {
 	    obj['quantity'] = 1;
 	    obj['shape'] = '';
 	    obj['variant'] = tar.closest('[data-variant-id]')?.getAttribute('data-variant-id');
-	    obj['url'] = document.querySelector('#image-gallery img[alt^="base-image"]').src; 
 	    tar.value = JSON.stringify(obj);
     })
 	
@@ -868,7 +867,7 @@ function loadBasicField() {
     let object = {};
     object['source'] = basicColor[0].baseColor.map(rgbArrayToHexFromPattern);
 	    object['variant'] = sou.closest('[data-variant-id]')?.getAttribute('data-variant-id');
-	    
+	    object['url'] = document.querySelector('#image-gallery img[alt^="base-image"]').src; 
 	    sou.value = JSON.stringify(object);
     })
 }
