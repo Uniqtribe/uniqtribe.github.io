@@ -1092,7 +1092,7 @@ function createColumnDiv(pattern) {
 
     rowDiv.appendChild(columnDiv1);
     rowDiv.appendChild(columnDiv2);
-    rowDiv.appendChild(columnDiv4);
+  //  rowDiv.appendChild(columnDiv4);
     rowDiv.appendChild(columnDiv3);
 
     return rowDiv;
