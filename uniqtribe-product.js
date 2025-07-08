@@ -1083,7 +1083,6 @@ function createColumnDiv(pattern) {
     columnDiv4.classList.add('narrowColumn');
     columnDiv4.innerHTML = "Shape : " + JSON.parse(JSON.parse(pattern).value).shape;
 
-
     const columnDiv3 = document.createElement('div');
     columnDiv3.classList.add('column');
     columnDiv3.classList.add('quantity-column');
