@@ -36,12 +36,11 @@ function generateTemplate(cartElements){
 	          const sourceData = JSON.parse(jsonStr);
 	
 	          if (sourceData.url) {
-	            const img = document.createElement('img');
-	            img.src = sourceData.url;
-	            img.style.width = '100px'; // or whatever size
-	            img.style.marginTop = '10px';
-	
-	            item.appendChild(img); // append image below item
+		         const imgContainer = item.parentElement.querySelector('.theme-cart-item-img img');
+	            
+	            if (imgContainer) {
+	              imgContainer.src = sourceData.url;
+	            }
 	          }
 	        } catch (e) {
 	          console.error('Invalid JSON in source:', e);
