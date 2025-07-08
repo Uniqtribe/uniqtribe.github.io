@@ -1075,14 +1075,14 @@ function createColumnDiv(pattern) {
     columnDiv2.classList.add('column');
     columnDiv2.classList.add('wideColumn');
 
-    columnDiv2.innerHTML = "Shape : " + JSON.parse(JSON.parse(pattern).value).shape;
-
+    columnDiv2.innerHTML = JSON.parse(JSON.parse(pattern).value).shape + " - " + JSON.parse(JSON.parse(pattern).value).size;
+/*
     const columnDiv4 = document.createElement('div');
     columnDiv4.classList.add('column');
     columnDiv4.classList.add('shape-column');
     columnDiv4.classList.add('narrowColumn');
     columnDiv4.innerHTML = "Shape : " + JSON.parse(JSON.parse(pattern).value).shape;
-
+*/
     const columnDiv3 = document.createElement('div');
     columnDiv3.classList.add('column');
     columnDiv3.classList.add('quantity-column');
