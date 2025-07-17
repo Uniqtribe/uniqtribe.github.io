@@ -94,50 +94,104 @@ function generateTemplate(cartElements){
 	    
     })
 }*/
-
-function generateTemplate(cartElements){
+function generateTemplate(cartElements) {
     cartElements.forEach(cartItem => {
+        // Step 1: Hide <ul>, disable qty
+        const ul = cartItem.querySelector('ul');
+        if (ul) ul.style.display = 'none';
+
+        cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
+            item.disabled = true;
+        });
+        let qtyInput = cartItem.querySelector('[data-zs-quantity]');
+        if (qtyInput) qtyInput.disabled = true;
+
+        // Step 2: Gather li info: source and patternList
         const liElements = cartItem.querySelectorAll("li");
-        let patternList = [];
         let source = '';
+        let sourceObj = null;
+        let patternList = [];
         liElements.forEach(li => {
             if (li.textContent.trim().startsWith("source:")) {
                 source = li.querySelector("span").textContent.trim();
-                cartItem.querySelector('ul').style.display = 'none';
-                cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
-                    item.disabled = true;
-                });
-                cartItem.querySelector('[data-zs-quantity]').disabled = true;
-
-                const link = cartItem.querySelector('.theme-cart-item-info a');
-                if (link && link.textContent.includes('Trial Pack')) {
-                    var sourceLi = Array.from(
-                        cartItem.querySelectorAll('ul li')
-                    ).find(li => li.textContent.trim().startsWith('source:'));
-                    if (!sourceLi) return;
-
-                    var jsonText = sourceLi.querySelector('span').textContent.trim();
-                    var imageUrl = "";
-                    try {
-                        var sourceObj = JSON.parse(jsonText);
-                        imageUrl = sourceObj.url;
-                    } catch(e) {
-                        return;
-                    }
-                    if (!imageUrl) return;
-
-                    var img = cartItem.querySelector('.theme-cart-item-img img');
-                    if (img) img.src = imageUrl;
-                }
+                try {
+                    sourceObj = JSON.parse(source);
+                } catch(e) { sourceObj = null; }
             }
-            if(li.textContent.trim().startsWith("target:") || li.textContent.trim().startsWith("selection")){
+            if (
+                li.textContent.trim().startsWith("target:") || 
+                li.textContent.trim().startsWith("selection")
+            ) {
                 patternList.push(li.querySelector("span").textContent.trim());
             }
         });
-        // rest of your code...
+
+        // Step 3: For Trial Pack, replace <img> src with sourceObj.url
+        const link = cartItem.querySelector('.theme-cart-item-info a');
+        if (link && link.textContent.includes('Trial Pack') && sourceObj && sourceObj.url) {
+            let img = cartItem.querySelector('.theme-cart-item-img img');
+            if (img) img.src = sourceObj.url;
+        }
+
+        // Step 4: Build and insert table (if not already inserted)
+        if (
+            patternList.length > 0 && 
+            !cartItem.querySelector('.theme-cart-item-info table')
+        ) {
+            const table = document.createElement("table");
+            table.border = "1";
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+            ["Pattern", "Shape", "Size", "Qty"].forEach(text => {
+                const th = document.createElement("th");
+                th.textContent = text;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+            patternList.forEach(pattern => {
+                let patternObj;
+                try {
+                    patternObj = JSON.parse(pattern);
+                } catch(e) { patternObj = {}; }
+
+                const tableRow = document.createElement("tr");
+
+                // Pattern cell (replace with createCanvas as needed)
+                const td1 = document.createElement("td");
+                // Example placeholder, replace with your createCanvas:
+                // const canvas = createCanvas(pattern, img.src, source);
+                // td1.appendChild(canvas);
+                td1.textContent = patternObj.selected ? patternObj.selected.join(", ") : 'N/A';
+                tableRow.appendChild(td1);
+
+                const td2 = document.createElement("td");
+                td2.textContent = patternObj.shape || "--";
+                tableRow.appendChild(td2);
+
+                const td3 = document.createElement("td");
+                td3.textContent = patternObj.size || "--";
+                tableRow.appendChild(td3);
+
+                const td4 = document.createElement("td");
+                td4.textContent = patternObj.quantity || "--";
+                tableRow.appendChild(td4);
+
+                tbody.appendChild(tableRow);
+            });
+            table.appendChild(tbody);
+
+            // Append to .theme-cart-item-info
+            const infoDiv = cartItem.querySelector('.theme-cart-item-info');
+            if (infoDiv) infoDiv.appendChild(table);
+        }
+
+        // Optional: log for debugging
+        console.log("source", source);
     });
 }
-
 function createCanvas(pattern, baseImage, source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
