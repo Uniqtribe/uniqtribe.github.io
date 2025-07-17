@@ -385,7 +385,7 @@ if (isProductPage && location.href.includes('trial-pack')) {
 
   object.traverse(child => {
     if (!child.isMesh) return;
-
+console.log("CHILD", child.name);
     // Hide specified meshes by name
     if (meshesToHide.includes(child.name)) {
       child.visible = false;
