@@ -162,9 +162,9 @@ function generateTemplate(cartElements) {
                 // Pattern cell (replace with createCanvas as needed)
                 const td1 = document.createElement("td");
                 // Example placeholder, replace with your createCanvas:
-                // const canvas = createCanvas(pattern, img.src, source);
-                // td1.appendChild(canvas);
-                td1.textContent = patternObj.selected ? patternObj.selected.join(", ") : 'N/A';
+                const canvas = createCanvas(pattern, img.src, source);
+                td1.appendChild(canvas);
+                //td1.textContent = patternObj.selected ? patternObj.selected.join(", ") : 'N/A';
                 tableRow.appendChild(td1);
 
                 const td2 = document.createElement("td");
