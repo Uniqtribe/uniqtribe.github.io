@@ -9,7 +9,7 @@
     else if(checkoutItemElements.length>0){
         generateTemplate(checkoutItemElements);
     }
-
+/*
 function generateTemplate(cartElements){
     cartElements.forEach(cartItem => {
         const liElements = cartItem.querySelectorAll("li");
@@ -93,7 +93,51 @@ function generateTemplate(cartElements){
 
 	    
     })
+}*/
+
+function generateTemplate(cartElements){
+    cartElements.forEach(cartItem => {
+        const liElements = cartItem.querySelectorAll("li");
+        let patternList = [];
+        let source = '';
+        liElements.forEach(li => {
+            if (li.textContent.trim().startsWith("source:")) {
+                source = li.querySelector("span").textContent.trim();
+                cartItem.querySelector('ul').style.display = 'none';
+                cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
+                    item.disabled = true;
+                });
+                cartItem.querySelector('[data-zs-quantity]').disabled = true;
+
+                const link = cartItem.querySelector('.theme-cart-item-info a');
+                if (link && link.textContent.includes('Trial Pack')) {
+                    var sourceLi = Array.from(
+                        cartItem.querySelectorAll('ul li')
+                    ).find(li => li.textContent.trim().startsWith('source:'));
+                    if (!sourceLi) return;
+
+                    var jsonText = sourceLi.querySelector('span').textContent.trim();
+                    var imageUrl = "";
+                    try {
+                        var sourceObj = JSON.parse(jsonText);
+                        imageUrl = sourceObj.url;
+                    } catch(e) {
+                        return;
+                    }
+                    if (!imageUrl) return;
+
+                    var img = cartItem.querySelector('.theme-cart-item-img img');
+                    if (img) img.src = imageUrl;
+                }
+            }
+            if(li.textContent.trim().startsWith("target:") || li.textContent.trim().startsWith("selection")){
+                patternList.push(li.querySelector("span").textContent.trim());
+            }
+        });
+        // rest of your code...
+    });
 }
+
 function createCanvas(pattern, baseImage, source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
