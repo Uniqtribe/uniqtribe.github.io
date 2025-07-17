@@ -497,7 +497,7 @@ if (isProductPage && location.href.includes('trial-pack')) {
     }
   });
 }
-
+/*
     object.traverse(child => {
       if (!child.isMesh) return;
 
