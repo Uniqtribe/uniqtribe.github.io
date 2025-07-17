@@ -372,6 +372,131 @@ const uploadedTexture = textureLoader.load(
     texture.offset.set(0, 0);
 
     const useMultiPattern = configObject?.multipattern === true;
+if (isProductPage && location.href.includes('trial-pack')) {
+  // List all mesh names to hide
+  const meshesToHide = [
+    "Thumb_Nail",
+    "Index_Nail",
+    "Middle_Nail",
+    "Ring_Nail",
+    "Little_Nail",
+    "038F_05SET_04SHOT_3"
+  ];
+
+  object.traverse(child => {
+    if (!child.isMesh) return;
+
+    // Hide specified meshes by name
+    if (meshesToHide.includes(child.name)) {
+      child.visible = false;
+      return; // Skip further processing for hidden meshes
+    }
+
+    let appliedTexture = texture;
+    let materialOptions = null;
+
+    // Explicit texture override
+    const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+
+    if (textureInfo) {
+      appliedTexture = textureInfo.texture;
+      materialOptions = {
+        map: appliedTexture,
+        transparent: textureInfo.transparent,
+        opacity: textureInfo.transparent ? 1 : undefined,
+        depthWrite: !textureInfo.transparent
+      };
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
+    } else {
+      // Attempt to find slice index based on mesh name keywords
+      let matchedSliceIndex = null;
+      const meshName = child.name.toLowerCase();
+
+      for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+        if (keywords.some(keyword => meshName.includes(keyword))) {
+          matchedSliceIndex = parseInt(sliceIdx);
+          break;
+        }
+      }
+
+      // Multi-pattern logic (if required)
+      const isPatterned =
+        useMultiPattern &&
+        configObject.imageInfo.appliedPattern.includes(child.name) &&
+        matchedSliceIndex !== null;
+
+      if (isPatterned) {
+        appliedTexture = texture.clone();
+        appliedTexture.needsUpdate = true;
+        appliedTexture.wrapS = THREE.RepeatWrapping;
+        appliedTexture.wrapT = THREE.RepeatWrapping;
+
+        appliedTexture.repeat.set(1 / totalSlices, 1);
+        appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+
+        console.log(
+          `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
+        );
+
+        child.material.map = appliedTexture;
+        child.material.needsUpdate = true;
+      }
+    }
+  });
+} else {
+  // Default mesh/material/texture logic,
+  // but do NOT hide any meshes
+  object.traverse(child => {
+    if (!child.isMesh) return;
+
+    let appliedTexture = texture;
+    let materialOptions = null;
+
+    // Explicit texture override
+    const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+
+    if (textureInfo) {
+      appliedTexture = textureInfo.texture;
+      materialOptions = {
+        map: appliedTexture,
+        transparent: textureInfo.transparent,
+        opacity: textureInfo.transparent ? 1 : undefined,
+        depthWrite: !textureInfo.transparent
+      };
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
+    } else {
+      // Attempt to find slice index based on mesh name keywords
+      let matchedSliceIndex = null;
+      const meshName = child.name.toLowerCase();
+
+      for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+        if (keywords.some(keyword => meshName.includes(keyword))) {
+          matchedSliceIndex = parseInt(sliceIdx);
+          break;
+        }
+      }
+
+      // Multi-pattern logic (if required)
+      const isPatterned =
+        useMultiPattern &&
+        configObject.imageInfo.appliedPattern.includes(child.name) &&
+        matchedSliceIndex !== null;
+
+      if (isPatterned) {
+        appliedTexture = texture.clone();
+        appliedTexture.needsUpdate = true;
+        appliedTexture.wrapS = THREE.RepeatWrapping;
+        appliedTexture.wrapT = THREE.RepeatWrapping;
+
+        appliedTexture.repeat.set(1 / totalSlices, 1);
+        appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+
+        child.material.map = appliedTexture;
+        child.material.needsUpdate = true;
+      }
+    }
+  });
+}
 
     object.traverse(child => {
       if (!child.isMesh) return;
@@ -444,7 +569,7 @@ const uploadedTexture = textureLoader.load(
     console.log('Finished applying textures and slicing.');
   }
 );
-
+*/
 
         camera.position.set(center.x, center.y, 10);
         camera.lookAt(center);
