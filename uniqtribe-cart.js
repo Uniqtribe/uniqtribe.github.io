@@ -151,6 +151,8 @@ function generateTemplate(cartElements) {
             table.appendChild(thead);
 
             const tbody = document.createElement("tbody");
+		const img = cartItem.querySelector('.theme-cart-item-img img');
+
             patternList.forEach(pattern => {
                 let patternObj;
                 try {
