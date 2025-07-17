@@ -27,26 +27,26 @@ function generateTemplate(cartElements){
 	const link = cartItem.querySelector('.theme-cart-item-info a');
 	  
 	  if (link && link.textContent.includes('Trial Pack')) {
-	    const liTags = cartItem.querySelectorAll('ul li');
-	
-	    liTags.forEach(li => {
-	      if (li.textContent.trim().toLowerCase().startsWith('source:')) {
-	        try {
-	          const jsonStr = li.querySelector('span').textContent.trim();
-	          const sourceData = JSON.parse(jsonStr);
-	
-	          if (sourceData.url) {
-		         const imgContainer = cartItem.parentElement.querySelector('.theme-cart-item-img img');
-	            
-	            if (imgContainer) {
-	              imgContainer.src = sourceData.url;
-	            }
-	          }
-	        } catch (e) {
-	          console.error('Invalid JSON in source:', e);
-	        }
-	      }
-	    });
+		  // Find the 'source' li (hidden) inside the <ul>
+		        var sourceLi = Array.from(
+		            row.querySelectorAll('ul li')
+		        ).find(li => li.textContent.trim().startsWith('source:'));
+		        if (!sourceLi) return;
+		
+		        // Get the JSON inside <span>
+		        var jsonText = sourceLi.querySelector('span').textContent.trim();
+		        var imageUrl = "";
+		        try {
+		            var sourceObj = JSON.parse(jsonText);
+		            imageUrl = sourceObj.url;
+		        } catch(e) {
+		            return; // Invalid JSON, skip
+		        }
+		        if (!imageUrl) return;
+		
+		        // Set image src in the .theme-cart-item-img
+		        var img = row.querySelector('.theme-cart-item-img img');
+		        if (img) img.src = imageUrl;
 	  }
 	    
             }
