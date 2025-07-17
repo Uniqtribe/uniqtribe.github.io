@@ -33,38 +33,6 @@ if (imgEl) {
 		
 //  updateImage(imageUrl);
 }
-	/*
-const pricingContainer = document.querySelector('[data-zs-pricing-container]');
-
-if (pricingContainer) {
-  const observer = new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      if (mutation.type === 'attributes' || mutation.type === 'childList') {
-        console.log('🟢 Price container updated!');
-        // You can fetch the updated price like this:
-        const visibleBlock = pricingContainer.querySelector('[style*="display: block"]');
-		if (visibleBlock) {
-		  variants = visibleBlock.getAttribute('data-zs-variant-id');
-		}
-      }
-    }
-  }); 
-
-  observer.observe(pricingContainer, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['style']
-  });
-
-  console.log('👀 Watching pricing container...');
-} else {
-  console.warn('⚠️ Pricing container not found');
-}
-    console.log("Image is fully loaded. Running script...");
-    // Your script here
-	*/
-
 	const pricingContainer = document.querySelector('[data-zs-pricing-container]');
 
 if (pricingContainer) {
@@ -478,47 +446,6 @@ const uploadedTexture = textureLoader.load(
 );
 
 
-	/*    
-        const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
-            function (texture) {
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                texture.repeat.set(1, 1);
-
-                object.traverse(function (child) {
-                    if (child.isMesh) {
-                        if (child.name === configObject.imageInfo.backgroundPattern) {
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: texture,
-                                transparent: true,
-                                opacity: 1,
-                                depthWrite: false,
-                                emissive: new THREE.Color(0xffffff),
-                                emissiveIntensity: 0.3,
-                                color: new THREE.Color(0xffffff)
-                            });
-                        } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: texture,
-                                transparent: true,
-                                opacity: 1,
-                                depthWrite: false
-                            });
-                        }
-
-                        const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-                        if (textureInfo) {
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: textureInfo.texture,
-                                transparent: textureInfo.transparent
-                            });
-                        }
-
-                        child.material.needsUpdate = true;
-                    }
-                });
-            });
-*/
         camera.position.set(center.x, center.y, 10);
         camera.lookAt(center);
 
@@ -576,16 +503,6 @@ const colorThief = new ColorThief();
         const schemes = generatePalettes(palette);
         generatePaletteStructure(palette);
 
-        /*                palette.forEach((color, index) => {
-                            const colorDiv = document.createElement('div');
-                            colorDiv.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-                            colorDiv.textContent = `RGB(${color[0]}, ${color[1]}, ${color[2]}) - Variance: ${clusterVariances[index]} - Frequency: ${colorFrequency[index].frequency}` ;
-        
-                            colorDiv.style.padding = '10px';
-                            colorDiv.style.margin = '5px';
-                            document.body.appendChild(colorDiv);
-                        });
-        */
 
 
         const paletteValues = Object.values(schemes);  // Get only the color arrays (values)
@@ -709,13 +626,7 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 
 
 function updateTargetValue(newValue) {
-	/*
-    if (target.value) {
-        let obj = JSON.parse(target.value);
-        obj.quantity = newValue;
-        target.value = JSON.stringify(obj);
-    }
-*/
+
 	 let visibleTarget = null;
 	  for (const key in target) {
 	    if (target[key] && target[key].offsetParent !== null) {
