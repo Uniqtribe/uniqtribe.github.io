@@ -2239,6 +2239,7 @@ const nailSliceMap = {
   3: ['ring', 'ring_nail', 'Ring_Finger'],
   4: ['little', 'little_nail', 'Little_Finger']
 };
+const textureLoader = new THREE.TextureLoader();
 
 const uploadedTexture = textureLoader.load(
   document.querySelector('#designCanvas').toDataURL('image/png'),
