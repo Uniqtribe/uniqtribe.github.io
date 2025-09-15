@@ -2242,7 +2242,7 @@ const nailSliceMap = {
   4: ['little', 'little_nail', 'Little_Finger']
 };
 const textureLoader = new THREE.TextureLoader();
-
+/*
 const uploadedTexture = textureLoader.load(
   document.querySelector('#designCanvas').toDataURL('image/png'),
   function (texture) {
@@ -2329,8 +2329,24 @@ const uploadedTexture = textureLoader.load(
     console.log('Finished applying textures and slicing.');
   }
 );
+*/
+const canvas = document.querySelector('#designCanvas');
+const uploadedTexture = new THREE.CanvasTexture(canvas);
 
+// Apply texture to your object
+object.traverse(child => {
+  if (!child.isMesh) return;
 
+  child.material = new THREE.MeshStandardMaterial({
+    map: uploadedTexture,
+    transparent: true,
+    opacity: 1,
+    depthWrite: false
+  });
+  child.material.needsUpdate = true;
+});
+
+console.log('✅ Texture applied from canvas');
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
     selectedElement.click();
