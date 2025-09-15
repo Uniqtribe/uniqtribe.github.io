@@ -2255,6 +2255,7 @@ loader.setMeshoptDecoder(window.MeshoptDecoder);
                 transparent: textureInfo.transparent
             };
         });
+	 }
 const totalSlices = 5;
 
 const nailSliceMap = {
