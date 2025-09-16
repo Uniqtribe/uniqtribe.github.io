@@ -12,6 +12,7 @@ let variants;
 let source = [];
 let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
+let textureLoader = new THREE.TextureLoader();
 
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
@@ -341,7 +342,7 @@ loader.setMeshoptDecoder(window.MeshoptDecoder);
         const box = new THREE.Box3().setFromObject(object);
         const center = box.getCenter(new THREE.Vector3());
         object.position.set(center.x + 1.25, center.y - 0.125, 0);
-        textureLoader = new THREE.TextureLoader();
+        
 
         textures = configObject.imageInfo.textures.map(textureInfo => {
             const texture = textureLoader.load(textureInfo.texturePath);
