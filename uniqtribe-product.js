@@ -2153,17 +2153,24 @@ function changeColor(changeColorArray) {
       if (baseColorParam) {
         try {
           basicColor = JSON.parse(decodeURIComponent(baseColorParam));
+            const dominantColors = Array.isArray(basicColor) ? basicColor : [];
+          const colorHexMap = dominantColors.map(({ r, g, b }) =>
+            `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
+          );
         } catch (e) {
           console.error('Failed to parse baseColor from URL:', e);
           basicColor = undefined; // fallback, let other logic handle it
         }
       }
     }
+    else{
+          const dominantColors = basicColor[0].baseColor;
+          const colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
+          `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
+      );
+    }
 
-    const dominantColors = basicColor[0].baseColor;
-    const colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
-    `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
-);
+   
 
     const colorDiffMap = dominantColors.map(color => ({
         r: Math.abs(255 - color.r),
