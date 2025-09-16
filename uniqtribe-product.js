@@ -2146,8 +2146,8 @@ function changeColor(changeColorArray) {
 
     imgData = designCanvasCtx.getImageData(0, 0, 800, 800);
     data = imgData.data;
-const dominantColors;
-const colorHexMap;
+let dominantColors;
+let colorHexMap;
     if (location.href.includes('trial-pack')) {
       const params = new URLSearchParams(location.search);
       const baseColorParam = params.get('baseColor');
