@@ -13,6 +13,7 @@ let source = [];
 let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 let textureLoader = new THREE.TextureLoader();
+let basicColor = [];
 
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
@@ -191,7 +192,21 @@ console.log("Image is fully loaded. Running script...");
         }
 		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
             basicColorConfig = row.querySelector('span');
+            if (location.href.includes('trial-pack')) {
+            const params = new URLSearchParams(location.search);
+            const baseColorParam = params.get('baseColor');
+            if (baseColorParam) {
+              try {
+                basicColor = JSON.parse(decodeURIComponent(baseColorParam));
+              } catch (e) {
+                console.error('Failed to parse baseColor from URL:', e);
+                basicColor = [];
+              }
+            }
+          } else{
             basicColor = JSON.parse(basicColorConfig.textContent.trim());
+          }
+            
 			row.style.display = 'none'
         }
 		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
