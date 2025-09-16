@@ -2229,7 +2229,7 @@ function changeColor(changeColorArray) {
                 child.material.needsUpdate = true;
             }
         });
-    });*/
+    });
 const totalSlices = 5;
 
 const nailSliceMap = {
@@ -2326,7 +2326,7 @@ const uploadedTexture = textureLoader.load(
     console.log('Finished applying textures and slicing.');
   }
 );
-
+*/
 
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
