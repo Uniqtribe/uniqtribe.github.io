@@ -378,10 +378,10 @@ if (isProductPage && location.href.includes('trial-pack')) {
   const meshesToHide = [
     "Thumb_Nail",
     "Index_Nail",
-    "Middle_Nail",
+    "Middle_Finger",
     "Ring_Nail",
     "Little_Nail",
-    "038F_05SET_04SHOT_3"
+    "038F_05SET_04SHOT_2"
   ];
 
   object.traverse(child => {
