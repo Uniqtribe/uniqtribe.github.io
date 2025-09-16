@@ -192,21 +192,7 @@ console.log("Image is fully loaded. Running script...");
         }
 		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
             basicColorConfig = row.querySelector('span');
-            if (location.href.includes('trial-pack')) {
-            const params = new URLSearchParams(location.search);
-            const baseColorParam = params.get('baseColor');
-            if (baseColorParam) {
-              try {
-                basicColor = JSON.parse(decodeURIComponent(baseColorParam));
-              } catch (e) {
-                console.error('Failed to parse baseColor from URL:', e);
-                basicColor = [];
-              }
-            }
-          } else{
             basicColor = JSON.parse(basicColorConfig.textContent.trim());
-          }
-            
 			row.style.display = 'none'
         }
 		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
@@ -2160,6 +2146,19 @@ function changeColor(changeColorArray) {
 
     imgData = designCanvasCtx.getImageData(0, 0, 800, 800);
     data = imgData.data;
+
+    if (location.href.includes('trial-pack')) {
+      const params = new URLSearchParams(location.search);
+      const baseColorParam = params.get('baseColor');
+      if (baseColorParam) {
+        try {
+          basicColor = JSON.parse(decodeURIComponent(baseColorParam));
+        } catch (e) {
+          console.error('Failed to parse baseColor from URL:', e);
+          basicColor = undefined; // fallback, let other logic handle it
+        }
+      }
+    }
 
     const dominantColors = basicColor[0].baseColor;
     const colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
