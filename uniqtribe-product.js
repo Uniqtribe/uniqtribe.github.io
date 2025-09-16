@@ -373,6 +373,7 @@ const uploadedTexture = textureLoader.load(
 
     const useMultiPattern = configObject?.multipattern === true;
 if (isProductPage && location.href.includes('trial-pack')) {
+	
   // List all mesh names to hide
   const meshesToHide = [
     "Thumb_Nail",
@@ -384,6 +385,7 @@ if (isProductPage && location.href.includes('trial-pack')) {
   ];
 
   object.traverse(child => {
+	  console.log("CHILD", child);
     if (!child.isMesh) return;
 console.log("CHILD", child.name);
     // Hide specified meshes by name
