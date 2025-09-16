@@ -2146,15 +2146,16 @@ function changeColor(changeColorArray) {
 
     imgData = designCanvasCtx.getImageData(0, 0, 800, 800);
     data = imgData.data;
-
+const dominantColors;
+const colorHexMap;
     if (location.href.includes('trial-pack')) {
       const params = new URLSearchParams(location.search);
       const baseColorParam = params.get('baseColor');
       if (baseColorParam) {
         try {
           basicColor = JSON.parse(decodeURIComponent(baseColorParam));
-            const dominantColors = Array.isArray(basicColor) ? basicColor : [];
-          const colorHexMap = dominantColors.map(({ r, g, b }) =>
+            dominantColors = Array.isArray(basicColor) ? basicColor : [];
+            colorHexMap = dominantColors.map(({ r, g, b }) =>
             `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
           );
         } catch (e) {
@@ -2164,8 +2165,8 @@ function changeColor(changeColorArray) {
       }
     }
     else{
-          const dominantColors = basicColor[0].baseColor;
-          const colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
+          dominantColors = basicColor[0].baseColor;
+          colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
           `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
       );
     }
