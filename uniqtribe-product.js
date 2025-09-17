@@ -15,7 +15,6 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 let textureLoader = new THREE.TextureLoader();
 let basicColor = [];
 let object; // or var object;
-let camera;
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
 
@@ -317,7 +316,7 @@ if (inputElement) {
     const cameraWidth = 10; // Width of the camera view
     const cameraHeight = 10; // Height of the camera view
 
-    camera = new THREE.OrthographicCamera(
+    const camera = new THREE.OrthographicCamera(
         -cameraWidth / 2, cameraWidth / 2,
         cameraHeight / 2, -cameraHeight / 2,
         0.1, 1000
@@ -2369,6 +2368,7 @@ const uploadedTexture = textureLoader.load(
     let directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
     directionalLight1.position.set(0, 0, 0).normalize();
     scene.add(directionalLight1);
+    
     const loader = new THREE.GLTFLoader();
     loader.setMeshoptDecoder(window.MeshoptDecoder);
 
