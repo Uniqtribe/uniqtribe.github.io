@@ -2481,6 +2481,7 @@ const selectedElement = document.querySelector('#customSelect div[data-value].se
 if (selectedElement) {
     selectedElement.click();
 }
+    })
 }
 
 function rgbToHex(rgb) {
