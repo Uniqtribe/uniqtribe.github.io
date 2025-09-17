@@ -2357,6 +2357,17 @@ const uploadedTexture = textureLoader.load(
   }
 );
 */
+
+    const scene = new THREE.Scene();
+    scene.add(new THREE.AmbientLight(0x404040));
+    let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(50, 5, 150).normalize();
+    scene.add(directionalLight);
+
+    scene.add(new THREE.AmbientLight(0x404040));
+    let directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight1.position.set(0, 0, 0).normalize();
+    scene.add(directionalLight1);
     const loader = new THREE.GLTFLoader();
     loader.setMeshoptDecoder(window.MeshoptDecoder);
 
@@ -2699,7 +2710,7 @@ const colorThief = new ColorThief();
         console.error('An error occurred while loading the model:', error);
     });
 
-    
+
 const totalSlices = 5;
 
 const nailSliceMap = {
