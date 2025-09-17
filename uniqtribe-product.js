@@ -2357,7 +2357,19 @@ const uploadedTexture = textureLoader.load(
   }
 );
 */
-
+const productImage = document.querySelector(".theme-product-detail-image");
+    designCanvas = document.createElement('canvas')
+    designCanvas.id = 'designCanvas';
+    designCanvas.width = 800;
+    designCanvas.height = 800;
+    designCanvas.style.display = 'none';
+    designCanvasCtx = designCanvas.getContext('2d');
+    imgElement.onload = () => {
+        designCanvasCtx.drawImage(imgElement, 0, 0);
+    };
+    if (imgElement.complete) {
+        imgElement.onload();
+    }
 
     // Initialize Three.js renderer, camera, and scene
     const renderer = new THREE.WebGLRenderer({
