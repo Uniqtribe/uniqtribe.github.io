@@ -12,7 +12,9 @@ let variants;
 let source = [];
 let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
-
+let textureLoader = new THREE.TextureLoader();
+let basicColor = [];
+let object; // or var object;
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
 
@@ -33,38 +35,6 @@ if (imgEl) {
 		
 //  updateImage(imageUrl);
 }
-	/*
-const pricingContainer = document.querySelector('[data-zs-pricing-container]');
-
-if (pricingContainer) {
-  const observer = new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      if (mutation.type === 'attributes' || mutation.type === 'childList') {
-        console.log('🟢 Price container updated!');
-        // You can fetch the updated price like this:
-        const visibleBlock = pricingContainer.querySelector('[style*="display: block"]');
-		if (visibleBlock) {
-		  variants = visibleBlock.getAttribute('data-zs-variant-id');
-		}
-      }
-    }
-  }); 
-
-  observer.observe(pricingContainer, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['style']
-  });
-
-  console.log('👀 Watching pricing container...');
-} else {
-  console.warn('⚠️ Pricing container not found');
-}
-    console.log("Image is fully loaded. Running script...");
-    // Your script here
-	*/
-
 	const pricingContainer = document.querySelector('[data-zs-pricing-container]');
 
 if (pricingContainer) {
@@ -208,27 +178,27 @@ console.log("Image is fully loaded. Running script...");
 	if (label?.textContent.replace("*", "").trim() === 'source') {
             source[j] = row.querySelector('input');
 		j++;
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
         if (label?.textContent.replace("*", "").trim() === 'target') {
             target[k] = row.querySelector('input')
 		k++;
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
         if (label?.textContent.replace("*", "").trim() === 'Config') {
             config = row.querySelector('span');
             configObject = JSON.parse(config.textContent.trim());
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
 		if (label?.textContent.replace("*", "").trim() === 'Basic Color Pattern') {
             basicColorConfig = row.querySelector('span');
             basicColor = JSON.parse(basicColorConfig.textContent.trim());
-			//row.style.display = 'none'
+			row.style.display = 'none'
         }
 		if (label?.textContent.replace("*", "").trim() === 'Alternate Color Pattern') {
             alternateColorConfig = row.querySelector('span');
             alternateColor = JSON.parse(basicColorConfig.textContent.trim());
-			//row.style.display = 'none'
+			row.style.display = 'none'
         }
 
         if (label?.textContent.replace("*", "").trim().toLowerCase().startsWith('selection')) {
@@ -238,7 +208,7 @@ console.log("Image is fully loaded. Running script...");
             obj['field'] = row.querySelector('input').getAttribute('data-custom-field-id');
             patternSelection[i] = JSON.stringify(obj);
             i++;
-		//row.style.display = 'none'
+		row.style.display = 'none'
         }
     })
 	   
@@ -373,7 +343,7 @@ loader.setMeshoptDecoder(window.MeshoptDecoder);
         const box = new THREE.Box3().setFromObject(object);
         const center = box.getCenter(new THREE.Vector3());
         object.position.set(center.x + 1.25, center.y - 0.125, 0);
-        textureLoader = new THREE.TextureLoader();
+        
 
         textures = configObject.imageInfo.textures.map(textureInfo => {
             const texture = textureLoader.load(textureInfo.texturePath);
@@ -404,7 +374,140 @@ const uploadedTexture = textureLoader.load(
     texture.offset.set(0, 0);
 
     const useMultiPattern = configObject?.multipattern === true;
+if (isProductPage && location.href.includes('trial-pack')) {
+	
+  // List all mesh names to hide
+  const meshesToHide = [
+    "Thumb_Nail",
+    "Index_Nail",
+    "Middle_Finger",
+    "Ring_Nail",
+    "Little_Nail",
+    "038F_05SET_04SHOT_2"
+  ];
 
+  object.traverse(child => {
+	  console.log("CHILD", child);
+    if (!child.isMesh) return;
+console.log("CHILD", child.name);
+    // Hide specified meshes by name
+    if (meshesToHide.includes(child.name)) {
+      child.visible = false;
+      return; // Skip further processing for hidden meshes
+    }
+
+    let appliedTexture = texture;
+    let materialOptions = null;
+
+    // Explicit texture override
+    const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+
+    if (textureInfo) {
+      appliedTexture = textureInfo.texture;
+      materialOptions = {
+        map: appliedTexture,
+        transparent: textureInfo.transparent,
+        opacity: textureInfo.transparent ? 1 : undefined,
+        depthWrite: !textureInfo.transparent
+      };
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
+    } else {
+      // Attempt to find slice index based on mesh name keywords
+      let matchedSliceIndex = null;
+      const meshName = child.name.toLowerCase();
+
+      for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+        if (keywords.some(keyword => meshName.includes(keyword))) {
+          matchedSliceIndex = parseInt(sliceIdx);
+          break;
+        }
+      }
+
+      // Multi-pattern logic (if required)
+      const isPatterned =
+        useMultiPattern &&
+        configObject.imageInfo.appliedPattern.includes(child.name) &&
+        matchedSliceIndex !== null;
+
+      if (isPatterned) {
+        appliedTexture = texture.clone();
+        appliedTexture.needsUpdate = true;
+        appliedTexture.wrapS = THREE.RepeatWrapping;
+        appliedTexture.wrapT = THREE.RepeatWrapping;
+
+        appliedTexture.repeat.set(1 / totalSlices, 1);
+        appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+
+        console.log(
+          `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
+        );
+
+        child.material.map = appliedTexture;
+        child.material.needsUpdate = true;
+      }
+    }
+  });
+} else {
+  // Default mesh/material/texture logic,
+object.traverse(child => {
+  if (!child.isMesh) return;
+
+  let appliedTexture = texture;
+  let materialOptions = null;
+
+  // Explicit texture override
+  const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+
+  if (textureInfo) {
+    appliedTexture = textureInfo.texture;
+    materialOptions = {
+      map: appliedTexture,
+      transparent: textureInfo.transparent,
+      opacity: textureInfo.transparent ? 1 : 1,
+      depthWrite: !textureInfo.transparent
+    };
+    child.material = new THREE.MeshStandardMaterial(materialOptions);
+  } else {
+    // Attempt to find slice index based on mesh name keywords
+    let matchedSliceIndex = null;
+    const meshName = child.name.toLowerCase();
+
+    for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+      if (keywords.some(keyword => meshName.includes(keyword))) {
+        matchedSliceIndex = parseInt(sliceIdx);
+        break;
+      }
+    }
+
+    const isPatterned =
+      useMultiPattern &&
+      configObject.imageInfo.appliedPattern.includes(child.name) &&
+      matchedSliceIndex !== null;
+
+    if (isPatterned) {
+      appliedTexture = texture.clone();
+      appliedTexture.needsUpdate = true;
+      appliedTexture.wrapS = THREE.RepeatWrapping;
+      appliedTexture.wrapT = THREE.RepeatWrapping;
+
+      appliedTexture.repeat.set(1 / totalSlices, 1);
+      appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+    }
+
+    // ✅ Always assign a fresh material here
+    child.material = new THREE.MeshStandardMaterial({
+      map: appliedTexture,
+      transparent: true,
+      opacity: 1,
+      depthWrite: false
+    });
+    child.material.needsUpdate = true;
+  }
+});
+
+}
+
+/*
     object.traverse(child => {
       if (!child.isMesh) return;
 
@@ -472,53 +575,12 @@ const uploadedTexture = textureLoader.load(
       child.material = new THREE.MeshStandardMaterial(materialOptions);
       child.material.needsUpdate = true;
     });
-
+*/
     console.log('Finished applying textures and slicing.');
   }
 );
 
 
-	/*    
-        const uploadedTexture = textureLoader.load(document.querySelector('#designCanvas').toDataURL('image/png'),
-            function (texture) {
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                texture.repeat.set(1, 1);
-
-                object.traverse(function (child) {
-                    if (child.isMesh) {
-                        if (child.name === configObject.imageInfo.backgroundPattern) {
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: texture,
-                                transparent: true,
-                                opacity: 1,
-                                depthWrite: false,
-                                emissive: new THREE.Color(0xffffff),
-                                emissiveIntensity: 0.3,
-                                color: new THREE.Color(0xffffff)
-                            });
-                        } else if (configObject.imageInfo.appliedPattern.includes(child.name)) {
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: texture,
-                                transparent: true,
-                                opacity: 1,
-                                depthWrite: false
-                            });
-                        }
-
-                        const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-                        if (textureInfo) {
-                            child.material = new THREE.MeshStandardMaterial({
-                                map: textureInfo.texture,
-                                transparent: textureInfo.transparent
-                            });
-                        }
-
-                        child.material.needsUpdate = true;
-                    }
-                });
-            });
-*/
         camera.position.set(center.x, center.y, 10);
         camera.lookAt(center);
 
@@ -576,16 +638,6 @@ const colorThief = new ColorThief();
         const schemes = generatePalettes(palette);
         generatePaletteStructure(palette);
 
-        /*                palette.forEach((color, index) => {
-                            const colorDiv = document.createElement('div');
-                            colorDiv.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-                            colorDiv.textContent = `RGB(${color[0]}, ${color[1]}, ${color[2]}) - Variance: ${clusterVariances[index]} - Frequency: ${colorFrequency[index].frequency}` ;
-        
-                            colorDiv.style.padding = '10px';
-                            colorDiv.style.margin = '5px';
-                            document.body.appendChild(colorDiv);
-                        });
-        */
 
 
         const paletteValues = Object.values(schemes);  // Get only the color arrays (values)
@@ -709,13 +761,7 @@ if(detectDevice() === 'Mobile' || detectDevice() === 'Tablet' ){
 
 
 function updateTargetValue(newValue) {
-	/*
-    if (target.value) {
-        let obj = JSON.parse(target.value);
-        obj.quantity = newValue;
-        target.value = JSON.stringify(obj);
-    }
-*/
+
 	 let visibleTarget = null;
 	  for (const key in target) {
 	    if (target[key] && target[key].offsetParent !== null) {
@@ -2100,11 +2146,32 @@ function changeColor(changeColorArray) {
 
     imgData = designCanvasCtx.getImageData(0, 0, 800, 800);
     data = imgData.data;
+let dominantColors;
+let colorHexMap;
+    if (location.href.includes('trial-pack')) {
+      const params = new URLSearchParams(location.search);
+      const baseColorParam = params.get('baseColor');
+      if (baseColorParam) {
+        try {
+          basicColor = JSON.parse(decodeURIComponent(baseColorParam));
+            dominantColors = Array.isArray(basicColor) ? basicColor : [];
+            colorHexMap = dominantColors.map(({ r, g, b }) =>
+            `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
+          );
+        } catch (e) {
+          console.error('Failed to parse baseColor from URL:', e);
+          basicColor = undefined; // fallback, let other logic handle it
+        }
+      }
+    }
+    else{
+          dominantColors = basicColor[0].baseColor;
+          colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
+          `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
+      );
+    }
 
-    const dominantColors = basicColor[0].baseColor;
-    const colorHexMap = basicColor[0].baseColor.map(({ r, g, b }) => 
-    `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`
-);
+   
 
     const colorDiffMap = dominantColors.map(color => ({
         r: Math.abs(255 - color.r),
@@ -2192,7 +2259,7 @@ function changeColor(changeColorArray) {
                 child.material.needsUpdate = true;
             }
         });
-    });*/
+    });
 const totalSlices = 5;
 
 const nailSliceMap = {
@@ -2202,7 +2269,104 @@ const nailSliceMap = {
   3: ['ring', 'ring_nail', 'Ring_Finger'],
   4: ['little', 'little_nail', 'Little_Finger']
 };
-/*
+
+const uploadedTexture = textureLoader.load(
+  document.querySelector('#designCanvas').toDataURL('image/png'),
+  function (texture) {
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1, 1);
+    texture.offset.set(0, 0);
+
+    const useMultiPattern = configObject?.multipattern === true;
+
+    object.traverse(child => {
+      if (!child.isMesh) return;
+
+      let appliedTexture = texture;
+      let materialOptions = null;
+
+      // Check for pre-defined texture override
+      const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+      if (textureInfo) {
+        appliedTexture = textureInfo.texture;
+        materialOptions = {
+          map: appliedTexture,
+          transparent: textureInfo.transparent,
+          opacity: textureInfo.transparent ? 1 : undefined,
+          depthWrite: !textureInfo.transparent
+        };
+      } else {
+        // Multi-slice logic only if multipattern and appliedPattern match, AND name includes nail keyword
+        let matchedSliceIndex = null;
+        const meshName = child.name.toLowerCase();
+
+        for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+          if (keywords.some(keyword => meshName.includes(keyword))) {
+            matchedSliceIndex = parseInt(sliceIdx);
+            break;
+          }
+        }
+
+        const isPatterned =
+          useMultiPattern &&
+          configObject.imageInfo.appliedPattern.includes(child.name) &&
+          matchedSliceIndex !== null;
+
+        if (isPatterned) {
+          appliedTexture = texture.clone();
+          appliedTexture.needsUpdate = true;
+          appliedTexture.wrapS = THREE.RepeatWrapping;
+          appliedTexture.wrapT = THREE.RepeatWrapping;
+
+          appliedTexture.repeat.set(1 / totalSlices, 1);
+          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+
+          console.log(
+            `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
+          );
+        }
+
+        // Normal full texture for backgroundPattern or if not multipattern
+        if (child.name === configObject.imageInfo.backgroundPattern || !isPatterned) {
+          appliedTexture = texture;
+          appliedTexture.repeat.set(1, 1);
+          appliedTexture.offset.set(0, 0);
+        }
+
+        materialOptions = {
+          map: appliedTexture,
+          transparent: true,
+          opacity: 1,
+          depthWrite: false
+        };
+      }
+
+      // Special case for background pattern
+      if (child.name === configObject.imageInfo.backgroundPattern) {
+        materialOptions.emissive = new THREE.Color(0xffffff);
+        materialOptions.emissiveIntensity = 0.3;
+        materialOptions.color = new THREE.Color(0xffffff);
+      }
+
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
+      child.material.needsUpdate = true;
+    });
+
+    console.log('Finished applying textures and slicing.');
+  }
+);
+*/
+const totalSlices = 5;
+
+const nailSliceMap = {
+  0: ['thumb', 'thumb_nail', 'Thumb_Finger'],
+  1: ['index', 'index_nail', 'Index_Finger'],
+  2: ['middle', 'middle_nail', 'Middle_Finger'],
+  3: ['ring', 'ring_nail', 'Ring_Finger'],
+  4: ['little', 'little_nail', 'Little_Finger']
+};
+
 const uploadedTexture = textureLoader.load(
   document.querySelector('#designCanvas').toDataURL('image/png'),
   function (texture) {
@@ -2290,11 +2454,10 @@ const uploadedTexture = textureLoader.load(
   }
 );
 
-
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
     selectedElement.click();
-}*/
+}
 }
 
 function rgbToHex(rgb) {
