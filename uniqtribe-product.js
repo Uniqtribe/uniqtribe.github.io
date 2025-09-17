@@ -2358,9 +2358,6 @@ const uploadedTexture = textureLoader.load(
 );
 */
 
-const loader = new THREE.GLTFLoader();
-loader.setMeshoptDecoder(window.MeshoptDecoder);
-
     loader.load(configObject.imageInfo.objectPath, function (gltf) {
         object = gltf.scene;
         scene.add(object);
