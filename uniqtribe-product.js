@@ -15,6 +15,7 @@ let varientContainer = document.querySelector('.theme-product-detail-varients-co
 let textureLoader = new THREE.TextureLoader();
 let basicColor = [];
 let object; // or var object;
+let camera;
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
 
@@ -316,7 +317,7 @@ if (inputElement) {
     const cameraWidth = 10; // Width of the camera view
     const cameraHeight = 10; // Height of the camera view
 
-    const camera = new THREE.OrthographicCamera(
+    camera = new THREE.OrthographicCamera(
         -cameraWidth / 2, cameraWidth / 2,
         cameraHeight / 2, -cameraHeight / 2,
         0.1, 1000
