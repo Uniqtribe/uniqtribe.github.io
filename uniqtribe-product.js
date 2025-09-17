@@ -2202,7 +2202,7 @@ const nailSliceMap = {
   3: ['ring', 'ring_nail', 'Ring_Finger'],
   4: ['little', 'little_nail', 'Little_Finger']
 };
-
+/*
 const uploadedTexture = textureLoader.load(
   document.querySelector('#designCanvas').toDataURL('image/png'),
   function (texture) {
@@ -2294,7 +2294,7 @@ const uploadedTexture = textureLoader.load(
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
     selectedElement.click();
-}
+}*/
 }
 
 function rgbToHex(rgb) {
