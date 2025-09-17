@@ -2358,6 +2358,35 @@ const uploadedTexture = textureLoader.load(
 );
 */
 
+
+    // Initialize Three.js renderer, camera, and scene
+    const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+    });
+    renderer.domElement.id = 'renderedImage';
+    productImage.appendChild(renderer.domElement);
+    productImage.appendChild(designCanvas);
+    const dpr = window.devicePixelRatio || 1;
+
+    renderer.setSize(productImage.clientWidth * dpr, productImage.clientWidth * dpr);
+    renderer.domElement.style.width = productImage.clientWidth + 'px';
+    renderer.domElement.style.height = productImage.clientWidth + 'px';
+
+    renderer.setClearColor(0xffffff);
+    renderedImage = document.querySelector('#renderedImage');
+
+
+    const cameraWidth = 10; // Width of the camera view
+    const cameraHeight = 10; // Height of the camera view
+
+    const camera = new THREE.OrthographicCamera(
+        -cameraWidth / 2, cameraWidth / 2,
+        cameraHeight / 2, -cameraHeight / 2,
+        0.1, 1000
+    );
+
+
     const scene = new THREE.Scene();
     scene.add(new THREE.AmbientLight(0x404040));
     let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -2368,7 +2397,7 @@ const uploadedTexture = textureLoader.load(
     let directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
     directionalLight1.position.set(0, 0, 0).normalize();
     scene.add(directionalLight1);
-    
+
     const loader = new THREE.GLTFLoader();
     loader.setMeshoptDecoder(window.MeshoptDecoder);
 
