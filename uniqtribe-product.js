@@ -2357,6 +2357,29 @@ const uploadedTexture = textureLoader.load(
   }
 );
 */
+
+const loader = new THREE.GLTFLoader();
+loader.setMeshoptDecoder(window.MeshoptDecoder);
+
+    loader.load(configObject.imageInfo.objectPath, function (gltf) {
+        object = gltf.scene;
+        scene.add(object);
+        object.scale.set(0.1, 0.1, 0.1);
+        const box = new THREE.Box3().setFromObject(object);
+        const center = box.getCenter(new THREE.Vector3());
+        object.position.set(center.x + 1.25, center.y - 0.125, 0);
+        
+
+        textures = configObject.imageInfo.textures.map(textureInfo => {
+            const texture = textureLoader.load(textureInfo.texturePath);
+            texture.generateMipmaps = true;
+            texture.minFilter = THREE.LinearMipmapLinearFilter; // Use linear mipmaps for better quality during downscaling
+            return {
+                texture: texture,
+                objects: textureInfo.objects,
+                transparent: textureInfo.transparent
+            };
+        });
 const totalSlices = 5;
 
 const nailSliceMap = {
