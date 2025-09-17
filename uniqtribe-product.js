@@ -334,7 +334,7 @@ if (inputElement) {
     scene.add(directionalLight1);
 
     const loader = new THREE.GLTFLoader();
-loader.setMeshoptDecoder(window.MeshoptDecoder);
+    loader.setMeshoptDecoder(window.MeshoptDecoder);
 
     loader.load(configObject.imageInfo.objectPath, function (gltf) {
         object = gltf.scene;
@@ -2357,7 +2357,349 @@ const uploadedTexture = textureLoader.load(
   }
 );
 */
+    const loader = new THREE.GLTFLoader();
+    loader.setMeshoptDecoder(window.MeshoptDecoder);
 
+    loader.load(configObject.imageInfo.objectPath, function (gltf) {
+        object = gltf.scene;
+        scene.add(object);
+        object.scale.set(0.1, 0.1, 0.1);
+        const box = new THREE.Box3().setFromObject(object);
+        const center = box.getCenter(new THREE.Vector3());
+        object.position.set(center.x + 1.25, center.y - 0.125, 0);
+        
+
+        textures = configObject.imageInfo.textures.map(textureInfo => {
+            const texture = textureLoader.load(textureInfo.texturePath);
+            texture.generateMipmaps = true;
+            texture.minFilter = THREE.LinearMipmapLinearFilter; // Use linear mipmaps for better quality during downscaling
+            return {
+                texture: texture,
+                objects: textureInfo.objects,
+                transparent: textureInfo.transparent
+            };
+        });
+const totalSlices = 5;
+
+const nailSliceMap = {
+  0: ['thumb', 'thumb_nail', 'Thumb_Finger'],
+  1: ['index', 'index_nail', 'Index_Finger'],
+  2: ['middle', 'middle_nail', 'Middle_Finger'],
+  3: ['ring', 'ring_nail', 'Ring_Finger'],
+  4: ['little', 'little_nail', 'Little_Finger']
+};
+
+const uploadedTexture = textureLoader.load(
+  document.querySelector('#designCanvas').toDataURL('image/png'),
+  function (texture) {
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1, 1);
+    texture.offset.set(0, 0);
+
+    const useMultiPattern = configObject?.multipattern === true;
+if (isProductPage && location.href.includes('trial-pack')) {
+	
+  // List all mesh names to hide
+  const meshesToHide = [
+    "Thumb_Nail",
+    "Index_Nail",
+    "Middle_Finger",
+    "Ring_Nail",
+    "Little_Nail",
+    "038F_05SET_04SHOT_2"
+  ];
+
+  object.traverse(child => {
+	  console.log("CHILD", child);
+    if (!child.isMesh) return;
+console.log("CHILD", child.name);
+    // Hide specified meshes by name
+    if (meshesToHide.includes(child.name)) {
+      child.visible = false;
+      return; // Skip further processing for hidden meshes
+    }
+
+    let appliedTexture = texture;
+    let materialOptions = null;
+
+    // Explicit texture override
+    const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+
+    if (textureInfo) {
+      appliedTexture = textureInfo.texture;
+      materialOptions = {
+        map: appliedTexture,
+        transparent: textureInfo.transparent,
+        opacity: textureInfo.transparent ? 1 : undefined,
+        depthWrite: !textureInfo.transparent
+      };
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
+    } else {
+      // Attempt to find slice index based on mesh name keywords
+      let matchedSliceIndex = null;
+      const meshName = child.name.toLowerCase();
+
+      for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+        if (keywords.some(keyword => meshName.includes(keyword))) {
+          matchedSliceIndex = parseInt(sliceIdx);
+          break;
+        }
+      }
+
+      // Multi-pattern logic (if required)
+      const isPatterned =
+        useMultiPattern &&
+        configObject.imageInfo.appliedPattern.includes(child.name) &&
+        matchedSliceIndex !== null;
+
+      if (isPatterned) {
+        appliedTexture = texture.clone();
+        appliedTexture.needsUpdate = true;
+        appliedTexture.wrapS = THREE.RepeatWrapping;
+        appliedTexture.wrapT = THREE.RepeatWrapping;
+
+        appliedTexture.repeat.set(1 / totalSlices, 1);
+        appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+
+        console.log(
+          `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
+        );
+
+        child.material.map = appliedTexture;
+        child.material.needsUpdate = true;
+      }
+    }
+  });
+} else {
+  // Default mesh/material/texture logic,
+object.traverse(child => {
+  if (!child.isMesh) return;
+
+  let appliedTexture = texture;
+  let materialOptions = null;
+
+  // Explicit texture override
+  const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+
+  if (textureInfo) {
+    appliedTexture = textureInfo.texture;
+    materialOptions = {
+      map: appliedTexture,
+      transparent: textureInfo.transparent,
+      opacity: textureInfo.transparent ? 1 : 1,
+      depthWrite: !textureInfo.transparent
+    };
+    child.material = new THREE.MeshStandardMaterial(materialOptions);
+  } else {
+    // Attempt to find slice index based on mesh name keywords
+    let matchedSliceIndex = null;
+    const meshName = child.name.toLowerCase();
+
+    for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+      if (keywords.some(keyword => meshName.includes(keyword))) {
+        matchedSliceIndex = parseInt(sliceIdx);
+        break;
+      }
+    }
+
+    const isPatterned =
+      useMultiPattern &&
+      configObject.imageInfo.appliedPattern.includes(child.name) &&
+      matchedSliceIndex !== null;
+
+    if (isPatterned) {
+      appliedTexture = texture.clone();
+      appliedTexture.needsUpdate = true;
+      appliedTexture.wrapS = THREE.RepeatWrapping;
+      appliedTexture.wrapT = THREE.RepeatWrapping;
+
+      appliedTexture.repeat.set(1 / totalSlices, 1);
+      appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+    }
+
+    // ✅ Always assign a fresh material here
+    child.material = new THREE.MeshStandardMaterial({
+      map: appliedTexture,
+      transparent: true,
+      opacity: 1,
+      depthWrite: false
+    });
+    child.material.needsUpdate = true;
+  }
+});
+
+}
+
+/*
+    object.traverse(child => {
+      if (!child.isMesh) return;
+
+      let appliedTexture = texture;
+      let materialOptions = null;
+
+      // Check if there's an override texture for this mesh
+      const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+
+      if (textureInfo) {
+        appliedTexture = textureInfo.texture;
+        materialOptions = {
+          map: appliedTexture,
+          transparent: textureInfo.transparent,
+          opacity: textureInfo.transparent ? 1 : undefined,
+          depthWrite: !textureInfo.transparent
+        };
+      } else {
+        // Attempt to find slice index based on mesh name keywords
+        let matchedSliceIndex = null;
+        const meshName = child.name.toLowerCase();
+
+        for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+          if (keywords.some(keyword => meshName.includes(keyword))) {
+            matchedSliceIndex = parseInt(sliceIdx);
+            break;
+          }
+        }
+
+        const isPatterned =
+          useMultiPattern &&
+          configObject.imageInfo.appliedPattern.includes(child.name) &&
+          matchedSliceIndex !== null;
+
+        if (isPatterned) {
+          appliedTexture = texture.clone();
+          appliedTexture.needsUpdate = true;
+          appliedTexture.wrapS = THREE.RepeatWrapping;
+          appliedTexture.wrapT = THREE.RepeatWrapping;
+
+          appliedTexture.repeat.set(1 / totalSlices, 1);
+          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+
+          console.log(
+            `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
+          );
+        }
+
+        materialOptions = {
+          map: appliedTexture,
+          transparent: true,
+          opacity: 1,
+          depthWrite: false
+        };
+      }
+
+      // Special styling for background pattern
+      if (child.name === configObject.imageInfo.backgroundPattern) {
+        materialOptions.emissive = new THREE.Color(0xffffff);
+        materialOptions.emissiveIntensity = 0.3;
+        materialOptions.color = new THREE.Color(0xffffff);
+      }
+
+      // Assign final material
+      child.material = new THREE.MeshStandardMaterial(materialOptions);
+      child.material.needsUpdate = true;
+    });
+*/
+    console.log('Finished applying textures and slicing.');
+  }
+);
+
+
+        camera.position.set(center.x, center.y, 10);
+        camera.lookAt(center);
+
+        const animate = function () {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        };
+        animate();
+        
+    const img = document.querySelector('img[alt*="base-image"]');
+    const canvas = document.getElementById('imageCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Draw the image onto the canvas
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = [];
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const r = imageData.data[i];
+        const g = imageData.data[i + 1];
+        const b = imageData.data[i + 2];
+        pixels.push([r, g, b]);
+    }
+
+    // Cluster the palette
+    const { averagedColors, clusterVariances } = simpleClusterColors(palette, pixels);
+    const colorFrequency = calculateColorFrequency(imageData, averagedColors);
+
+    const normalize = (value, min, max) => (value - min) / (max - min);
+
+    // Find min/max for frequency and variance
+    const minFrequency = Math.min(...colorFrequency.map(c => c.frequency));
+    const maxFrequency = Math.max(...colorFrequency.map(c => c.frequency));
+    const minVariance = Math.min(...clusterVariances);
+    const maxVariance = Math.max(...clusterVariances);
+
+    const minFrequencyThreshold = 0.90; // Set threshold for high frequency (can be adjusted)
+    const maxVarianceThreshold = 0.10;  // Set threshold for low variance (can be adjusted)
+
+    const filteredColors = averagedColors.filter((color, index) => {
+
+        const normalizedFrequency = normalize(colorFrequency[index].frequency, minFrequency, maxFrequency);
+        const normalizedVariance = normalize(clusterVariances[index], minVariance, maxVariance);
+
+        return normalizedFrequency >= minFrequencyThreshold || normalizedVariance <= maxVarianceThreshold;
+    });
+    maxPaletteCount = averagedColors.length;
+    recommendedPaletteCount = filteredColors.length;
+const colorThief = new ColorThief();
+    for (let i = recommendedPaletteCount; i <= maxPaletteCount; i++) {
+        palette = colorThief.getPalette(imageData, i); // Extract 10 dominant colors
+
+        const schemes = generatePalettes(palette);
+        generatePaletteStructure(palette);
+
+
+
+        const paletteValues = Object.values(schemes);  // Get only the color arrays (values)
+
+        const uniquePalettes = [];
+        const removedPalettes = [];
+
+        paletteValues.forEach((currentPalette, index) => {
+            // Check if this palette is similar to any existing ones
+            const isSimilar = uniquePalettes.some(existingPalette =>
+                arePalettesSimilar(existingPalette, currentPalette)
+            );
+
+            if (!isSimilar) {
+                uniquePalettes.push(currentPalette);
+            } else {
+                // Log the removed palette
+                const paletteName = Object.keys(palette)[index];
+                removedPalettes.push({ [paletteName]: currentPalette });
+            }
+        });
+
+        // Now uniquePalettes contains only non-similar palettes
+        console.log("Unique Palettes:");
+        console.log(uniquePalettes);
+        const { uniqueColoredPalettes, removedColoredPalettes } = removePalettesWithSimilarColors(uniquePalettes)
+        console.log("Removed Palettes:");
+        console.log(uniqueColoredPalettes);
+        for (let i = 0; i < uniqueColoredPalettes.length; i++) {
+            generatePaletteStructure(uniqueColoredPalettes[i]);
+        }
+
+    }
+    }, undefined, function (error) {
+        console.error('An error occurred while loading the model:', error);
+    });
+
+    
 const totalSlices = 5;
 
 const nailSliceMap = {
