@@ -2366,7 +2366,8 @@ const uploadedTexture = textureLoader.load(
             appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
             appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
             // No need to set repeat/offset for CanvasTexture slices
-            console.log(`🎯 Square slice ${matchedSliceIndex} → "${child.name}"`);
+            // We'll log the material options after assignment below
+            var _pendingLog = { matchedSliceIndex, meshName: child.name };
           }
         }
 
@@ -2389,6 +2390,13 @@ const uploadedTexture = textureLoader.load(
 
         child.material = new THREE.MeshStandardMaterial(materialOptions);
         child.material.needsUpdate = true;
+        // Print debug info for all meshes
+        let logMsg = `🟢 Mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}`;
+        if (typeof _pendingLog !== 'undefined') {
+          logMsg = `🎯 Square slice ${_pendingLog.matchedSliceIndex} → "${_pendingLog.meshName}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}`;
+          _pendingLog = undefined;
+        }
+        console.log(logMsg);
       });
 
       console.log('✅ Finished applying textures and slicing.');
