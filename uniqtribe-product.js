@@ -365,18 +365,14 @@ const nailSliceMap = {
   4: ['little', 'little_nail', 'Little_Finger']
 };
 
-const uploadedTexture = textureLoader.load(
-  document.querySelector('#designCanvas').toDataURL('image/png'),
-  function (texture) {
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(1, 1);
-    texture.offset.set(0, 0);
 
-    const useMultiPattern = configObject?.multipattern === true;
+// ✅ instead of textureLoader.load
+const sourceCanvas = document.querySelector('#designCanvas');
+const sliceTextures = getSquareSlicesFromCanvas(sourceCanvas, totalSlices);
+
+const useMultiPattern = configObject?.multipattern === true;
+
 if (isProductPage && location.href.includes('trial-pack')) {
-	
-  // List all mesh names to hide
   const meshesToHide = [
     "Thumb_Nail",
     "Index_Nail",
@@ -387,32 +383,21 @@ if (isProductPage && location.href.includes('trial-pack')) {
   ];
 
   object.traverse(child => {
-	  console.log("CHILD", child);
     if (!child.isMesh) return;
-console.log("CHILD", child.name);
-    // Hide specified meshes by name
+
     if (meshesToHide.includes(child.name)) {
       child.visible = false;
-      return; // Skip further processing for hidden meshes
+      return;
     }
 
-    let appliedTexture = texture;
-    let materialOptions = null;
+    let appliedTexture = null;
 
-    // Explicit texture override
+    // explicit override
     const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-
     if (textureInfo) {
       appliedTexture = textureInfo.texture;
-      materialOptions = {
-        map: appliedTexture,
-        transparent: textureInfo.transparent,
-        opacity: textureInfo.transparent ? 1 : undefined,
-        depthWrite: !textureInfo.transparent
-      };
-      child.material = new THREE.MeshStandardMaterial(materialOptions);
     } else {
-      // Attempt to find slice index based on mesh name keywords
+      // try nailSliceMap
       let matchedSliceIndex = null;
       const meshName = child.name.toLowerCase();
 
@@ -423,78 +408,21 @@ console.log("CHILD", child.name);
         }
       }
 
-      // Multi-pattern logic (if required)
       const isPatterned =
         useMultiPattern &&
         configObject.imageInfo.appliedPattern.includes(child.name) &&
         matchedSliceIndex !== null;
 
       if (isPatterned) {
-        appliedTexture = texture.clone();
-        appliedTexture.needsUpdate = true;
-        appliedTexture.wrapS = THREE.RepeatWrapping;
-        appliedTexture.wrapT = THREE.RepeatWrapping;
-
-        appliedTexture.repeat.set(1 / totalSlices, 1);
-        appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
-
-        console.log(
-          `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
-        );
-
-        child.material.map = appliedTexture;
-        child.material.needsUpdate = true;
-      }
-    }
-  });
-} else {
-  // Default mesh/material/texture logic,
-object.traverse(child => {
-  if (!child.isMesh) return;
-
-  let appliedTexture = texture;
-  let materialOptions = null;
-
-  // Explicit texture override
-  const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-
-  if (textureInfo) {
-    appliedTexture = textureInfo.texture;
-    materialOptions = {
-      map: appliedTexture,
-      transparent: textureInfo.transparent,
-      opacity: textureInfo.transparent ? 1 : 1,
-      depthWrite: !textureInfo.transparent
-    };
-    child.material = new THREE.MeshStandardMaterial(materialOptions);
-  } else {
-    // Attempt to find slice index based on mesh name keywords
-    let matchedSliceIndex = null;
-    const meshName = child.name.toLowerCase();
-
-    for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
-      if (keywords.some(keyword => meshName.includes(keyword))) {
-        matchedSliceIndex = parseInt(sliceIdx);
-        break;
+        appliedTexture = sliceTextures[matchedSliceIndex]; // 🎯 use square slice
+        console.log(`🎯 Square slice ${matchedSliceIndex} applied to "${child.name}"`);
       }
     }
 
-    const isPatterned =
-      useMultiPattern &&
-      configObject.imageInfo.appliedPattern.includes(child.name) &&
-      matchedSliceIndex !== null;
-
-    if (isPatterned) {
-      appliedTexture = texture.clone();
-      appliedTexture.needsUpdate = true;
-      appliedTexture.wrapS = THREE.RepeatWrapping;
-      appliedTexture.wrapT = THREE.RepeatWrapping;
-
-      appliedTexture.repeat.set(1 / totalSlices, 1);
-      appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+    if (!appliedTexture) {
+      appliedTexture = sliceTextures[0]; // fallback
     }
 
-    // ✅ Always assign a fresh material here
     child.material = new THREE.MeshStandardMaterial({
       map: appliedTexture,
       transparent: true,
@@ -502,11 +430,50 @@ object.traverse(child => {
       depthWrite: false
     });
     child.material.needsUpdate = true;
-  }
-});
+  });
+} else {
+  // Default mode
+  object.traverse(child => {
+    if (!child.isMesh) return;
 
+    let appliedTexture = null;
+
+    const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+    if (textureInfo) {
+      appliedTexture = textureInfo.texture;
+    } else {
+      let matchedSliceIndex = null;
+      const meshName = child.name.toLowerCase();
+
+      for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+        if (keywords.some(keyword => meshName.includes(keyword))) {
+          matchedSliceIndex = parseInt(sliceIdx);
+          break;
+        }
+      }
+
+      if (
+        useMultiPattern &&
+        configObject.imageInfo.appliedPattern.includes(child.name) &&
+        matchedSliceIndex !== null
+      ) {
+        appliedTexture = sliceTextures[matchedSliceIndex]; // 🎯 square slice
+      }
+    }
+
+    if (!appliedTexture) {
+      appliedTexture = sliceTextures[0];
+    }
+
+    child.material = new THREE.MeshStandardMaterial({
+      map: appliedTexture,
+      transparent: true,
+      opacity: 1,
+      depthWrite: false
+    });
+    child.material.needsUpdate = true;
+  });
 }
-
 /*
     object.traverse(child => {
       if (!child.isMesh) return;
@@ -3602,36 +3569,37 @@ function waitForVariantRows(callback, timeout = 5000) {
 }
 
 
+// 👇 helper to create square slices from canvas
+function getSquareSlicesFromCanvas(canvas, totalSlices) {
+  const sliceWidth = canvas.width / totalSlices;
+  const sliceSize = Math.min(sliceWidth, canvas.height); // enforce square
 
-function getSquareSlices(image, totalSlices = 5) {
-  const sliceWidth = image.width / totalSlices;
-  const sliceSize = Math.min(sliceWidth, image.height); // ensures square
-  
   const slices = [];
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = sliceSize;
-  canvas.height = sliceSize;
+  const tempCanvas = document.createElement('canvas');
+  const ctx = tempCanvas.getContext('2d');
+  tempCanvas.width = sliceSize;
+  tempCanvas.height = sliceSize;
 
   for (let i = 0; i < totalSlices; i++) {
     ctx.clearRect(0, 0, sliceSize, sliceSize);
     ctx.drawImage(
-      image,
-      i * sliceWidth,         // srcX
-      0,                      // srcY
-      sliceSize,              // srcW (trim height)
-      sliceSize,              // srcH (square crop)
-      0,                      // destX
-      0,                      // destY
-      sliceSize,              // destW
-      sliceSize               // destH
+      canvas,
+      i * sliceWidth, // srcX
+      0,              // srcY
+      sliceSize,      // srcW
+      sliceSize,      // srcH (square crop)
+      0,
+      0,
+      sliceSize,
+      sliceSize
     );
 
-    const sliceTexture = new THREE.CanvasTexture(canvas);
-    sliceTexture.wrapS = THREE.ClampToEdgeWrapping;
-    sliceTexture.wrapT = THREE.ClampToEdgeWrapping;
-    slices.push(sliceTexture);
-  }
+    const tex = new THREE.CanvasTexture(tempCanvas);
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.needsUpdate = true;
 
+    slices.push(tex);
+  }
   return slices;
 }
