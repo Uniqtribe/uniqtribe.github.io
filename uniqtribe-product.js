@@ -2264,56 +2264,87 @@ const nailSliceMap = {
 const uploadedTexture = textureLoader.load(
   document.querySelector('#designCanvas').toDataURL('image/png'),
   function (texture) {
+    // Base texture setup (optional, for fallback)
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(1, 1);
     texture.offset.set(0, 0);
 
+    // Only generate square slices if multipattern is true
     const useMultiPattern = configObject?.multipattern === true;
     let slices = [texture]; // fallback
-    object.traverse(child => {
-      if (!child.isMesh) return;
 
-      let appliedTexture = texture;
-      let materialOptions = null;
+    if (useMultiPattern) {
+      const baseImage = new Image();
+      baseImage.src = document.querySelector('#designCanvas').toDataURL('image/png');
 
-      // Check for pre-defined texture override
-      const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-      if (textureInfo) {
-        appliedTexture = textureInfo.texture;
-        materialOptions = {
-          map: appliedTexture,
-          transparent: textureInfo.transparent,
-          opacity: textureInfo.transparent ? 1 : undefined,
-          depthWrite: !textureInfo.transparent
-        };
-      } else {
-        // Multi-slice logic only if multipattern and appliedPattern match, AND name includes nail keyword
-        let matchedSliceIndex = null;
-        const meshName = child.name.toLowerCase();
+      baseImage.onload = () => {
+        slices = getSquareSlices(baseImage, totalSlices);
 
-        for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
-          if (keywords.some(keyword => meshName.includes(keyword))) {
-            matchedSliceIndex = parseInt(sliceIdx);
-            break;
-          }
+        applyTextures();
+      };
+    } else {
+      applyTextures();
+    }
+
+    function applyTextures() {
+      const isTrialPack = isProductPage && location.href.includes('trial-pack');
+
+      // Meshes to hide in trial pack
+      const meshesToHide = [
+        "Thumb_Nail",
+        "Index_Nail",
+        "Middle_Finger",
+        "Ring_Nail",
+        "Little_Nail",
+        "038F_05SET_04SHOT_2"
+      ];
+
+      object.traverse(child => {
+        if (!child.isMesh) return;
+
+        // Hide meshes for trial pack
+        if (isTrialPack && meshesToHide.includes(child.name)) {
+          child.visible = false;
+          return;
         }
 
-        const isPatterned =
-          useMultiPattern &&
-          configObject.imageInfo.appliedPattern.includes(child.name) &&
-          matchedSliceIndex !== null;
+        let appliedTexture = slices[0]; // default fallback
+        let materialOptions = null;
 
-       if (isPatterned && slices[matchedSliceIndex]) {
-  appliedTexture = slices[matchedSliceIndex]; // pre-cropped square
-  appliedTexture.needsUpdate = true;
-}
+        // Explicit texture overrides
+        const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+        if (textureInfo) {
+          appliedTexture = textureInfo.texture;
+          materialOptions = {
+            map: appliedTexture,
+            transparent: textureInfo.transparent,
+            opacity: textureInfo.transparent ? 1 : 1,
+            depthWrite: !textureInfo.transparent
+          };
+        } else if (useMultiPattern) {
+          // Try to match slice index
+          let matchedSliceIndex = null;
+          const meshName = child.name.toLowerCase();
 
-        // Normal full texture for backgroundPattern or if not multipattern
-        if (child.name === configObject.imageInfo.backgroundPattern || !isPatterned) {
-          appliedTexture = texture;
-          appliedTexture.repeat.set(1, 1);
-          appliedTexture.offset.set(0, 0);
+          for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+            if (keywords.some(keyword => meshName.includes(keyword))) {
+              matchedSliceIndex = parseInt(sliceIdx);
+              break;
+            }
+          }
+
+          const isPatterned =
+            useMultiPattern &&
+            configObject.imageInfo.appliedPattern.includes(child.name) &&
+            matchedSliceIndex !== null;
+
+          if (isPatterned && slices[matchedSliceIndex]) {
+            appliedTexture = slices[matchedSliceIndex];
+            appliedTexture.needsUpdate = true;
+
+            console.log(`🎯 Square slice ${matchedSliceIndex} → "${child.name}"`);
+          }
         }
 
         materialOptions = {
@@ -2322,23 +2353,25 @@ const uploadedTexture = textureLoader.load(
           opacity: 1,
           depthWrite: false
         };
-      }
 
-      // Special case for background pattern
-      if (child.name === configObject.imageInfo.backgroundPattern) {
-        materialOptions.emissive = new THREE.Color(0xffffff);
-        materialOptions.emissiveIntensity = 0.3;
-        materialOptions.color = new THREE.Color(0xffffff);
-      }
+        // Background styling
+        if (child.name === configObject.imageInfo.backgroundPattern) {
+          materialOptions = {
+            ...materialOptions,
+            emissive: new THREE.Color(0xffffff),
+            emissiveIntensity: 0.3,
+            color: new THREE.Color(0xffffff)
+          };
+        }
 
-      child.material = new THREE.MeshStandardMaterial(materialOptions);
-      child.material.needsUpdate = true;
-    });
+        child.material = new THREE.MeshStandardMaterial(materialOptions);
+        child.material.needsUpdate = true;
+      });
 
-    console.log('Finished applying textures and slicing.');
+      console.log('✅ Finished applying textures and slicing.');
+    }
   }
 );
-
 const selectedElement = document.querySelector('#customSelect div[data-value].selected');
 if (selectedElement) {
     selectedElement.click();
