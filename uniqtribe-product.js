@@ -3600,3 +3600,38 @@ function waitForVariantRows(callback, timeout = 5000) {
   }
   check();
 }
+
+
+
+function getSquareSlices(image, totalSlices = 5) {
+  const sliceWidth = image.width / totalSlices;
+  const sliceSize = Math.min(sliceWidth, image.height); // ensures square
+  
+  const slices = [];
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = sliceSize;
+  canvas.height = sliceSize;
+
+  for (let i = 0; i < totalSlices; i++) {
+    ctx.clearRect(0, 0, sliceSize, sliceSize);
+    ctx.drawImage(
+      image,
+      i * sliceWidth,         // srcX
+      0,                      // srcY
+      sliceSize,              // srcW (trim height)
+      sliceSize,              // srcH (square crop)
+      0,                      // destX
+      0,                      // destY
+      sliceSize,              // destW
+      sliceSize               // destH
+    );
+
+    const sliceTexture = new THREE.CanvasTexture(canvas);
+    sliceTexture.wrapS = THREE.ClampToEdgeWrapping;
+    sliceTexture.wrapT = THREE.ClampToEdgeWrapping;
+    slices.push(sliceTexture);
+  }
+
+  return slices;
+}
