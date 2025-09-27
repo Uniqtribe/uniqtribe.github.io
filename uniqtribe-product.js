@@ -2403,6 +2403,7 @@ const uploadedTexture = textureLoader.load(
         if (/^038F_05SET_04SHOT_/.test(child.name)) {
           child.material.depthWrite = true;
           child.renderOrder = 0;
+          console.log(`🔵 Background mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
         }
         // Nail meshes (Thumb_Nail, Index_Nail, etc.)
         else if ([
@@ -2411,6 +2412,7 @@ const uploadedTexture = textureLoader.load(
         ].includes(child.name)) {
           child.material.depthWrite = false;
           child.renderOrder = 1;
+          console.log(`🟣 Nail mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
         }
       });
 
