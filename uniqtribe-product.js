@@ -2270,7 +2270,7 @@ const uploadedTexture = textureLoader.load(
     texture.offset.set(0, 0);
 
     const useMultiPattern = configObject?.multipattern === true;
-
+    let slices = [texture]; // fallback
     object.traverse(child => {
       if (!child.isMesh) return;
 
