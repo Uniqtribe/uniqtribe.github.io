@@ -2270,6 +2270,11 @@ const uploadedTexture = textureLoader.load(
           child.renderOrder = 0;
           console.log(`🔵 Background mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
         }
+        // Rectangle meshes (Rectangle, Rectangle3) should be behind backgrounds
+        else if (["Rectangle", "Rectangle3"].includes(child.name)) {
+          child.renderOrder = -1;
+          console.log(`🟤 Rectangle mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
+        }
         // Nail meshes (Thumb_Nail, Index_Nail, etc.)
         else if ([
           'Thumb_Nail', 'Index_Nail', 'Middle_Finger', 'Ring_Nail', 'Little_Nail',
