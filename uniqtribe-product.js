@@ -1973,14 +1973,9 @@ function updateImage(directUrl = null) {
           configObject.imageInfo.appliedPattern.includes(child.name) &&
           matchedSliceIndex !== null;
 
-        if (isPatterned) {
-          appliedTexture = texture.clone();
+        if (isPatterned && slices[matchedSliceIndex]) {
+          appliedTexture = slices[matchedSliceIndex]; // pre-cropped square
           appliedTexture.needsUpdate = true;
-          appliedTexture.wrapS = THREE.RepeatWrapping;
-          appliedTexture.wrapT = THREE.RepeatWrapping;
-
-          appliedTexture.repeat.set(1 / totalSlices, 1);
-          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
         }
 
         /* Full image for background pattern or if not multipattern */
@@ -2309,19 +2304,10 @@ const uploadedTexture = textureLoader.load(
           configObject.imageInfo.appliedPattern.includes(child.name) &&
           matchedSliceIndex !== null;
 
-        if (isPatterned) {
-          appliedTexture = texture.clone();
-          appliedTexture.needsUpdate = true;
-          appliedTexture.wrapS = THREE.RepeatWrapping;
-          appliedTexture.wrapT = THREE.RepeatWrapping;
-
-          appliedTexture.repeat.set(1 / totalSlices, 1);
-          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
-
-          console.log(
-            `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
-          );
-        }
+       if (isPatterned && slices[matchedSliceIndex]) {
+  appliedTexture = slices[matchedSliceIndex]; // pre-cropped square
+  appliedTexture.needsUpdate = true;
+}
 
         // Normal full texture for backgroundPattern or if not multipattern
         if (child.name === configObject.imageInfo.backgroundPattern || !isPatterned) {
