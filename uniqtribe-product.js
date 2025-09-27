@@ -2211,13 +2211,13 @@ const uploadedTexture = textureLoader.load(
           matchedSliceIndex !== null;
 
         if (isPatterned) {
-          appliedTexture = texture.clone();
-          appliedTexture.needsUpdate = true;
-          appliedTexture.wrapS = THREE.RepeatWrapping;
-          appliedTexture.wrapT = THREE.RepeatWrapping;
+	  appliedTexture = texture.clone();
+	  appliedTexture.needsUpdate = true;
+	  appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
+	  appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
 
-          appliedTexture.repeat.set(1 / totalSlices, 1);
-          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+	  appliedTexture.repeat.set(1 / totalSlices, 1);
+	  appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
 
           console.log(
             `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
