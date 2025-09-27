@@ -2265,23 +2265,23 @@ const uploadedTexture = textureLoader.load(
 
         // --- Layering fix: set depthWrite and renderOrder for backgrounds and nails ---
         // Background meshes (038F_05SET_04SHOT_*)
-        if (/^038F_05SET_04SHOT_/.test(child.name)) {
+        if (child.name === "Rectangle" || child.name === "Rectangle3") {
+          child.renderOrder = -1;
+          console.log(`🟤 Rectangle mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
+        } else if (child.name === "038F_05SET_04SHOT_2") {
           child.material.depthWrite = true;
           child.renderOrder = 0;
           console.log(`🔵 Background mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
-        }
-        // Rectangle meshes (Rectangle, Rectangle3) should be behind backgrounds
-        else if (["Rectangle", "Rectangle3"].includes(child.name)) {
-          child.renderOrder = -1;
-          console.log(`🟤 Rectangle mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
-        }
-        // Nail meshes (Thumb_Nail, Index_Nail, etc.)
-        else if ([
+        } else if (child.name === "038F_05SET_04SHOT_3") {
+          child.material.depthWrite = true;
+          child.renderOrder = 1;
+          console.log(`🔵 Background mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
+        } else if ([
           'Thumb_Nail', 'Index_Nail', 'Middle_Finger', 'Ring_Nail', 'Little_Nail',
           'Thumb_Nail_1', 'Index_Nail_1', 'Middle_Nail', 'Ring_Nail_1', 'Little_Nail_1'
         ].includes(child.name)) {
           child.material.depthWrite = false;
-          child.renderOrder = 1;
+          child.renderOrder = 2;
           console.log(`🟣 Nail mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
         }
       });
