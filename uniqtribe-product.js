@@ -14,7 +14,7 @@ let target = [];
 let varientContainer = document.querySelector('.theme-product-detail-varients-container');
 let textureLoader = new THREE.TextureLoader();
 let basicColor = [];
-let object; // Ensure object is declared in the global scope
+let object; // or var object;
 const imageUrl = new URLSearchParams(location.search).get('url');
     const isProductPage = window.zs_view === 'product';
 
@@ -444,9 +444,12 @@ const uploadedTexture = textureLoader.load(
             matchedSliceIndex !== null;
 
           if (isPatterned && slices[matchedSliceIndex]) {
-            appliedTexture = slices[matchedSliceIndex];
+            // Clone the texture slice for this mesh to avoid sharing state
+            appliedTexture = slices[matchedSliceIndex].clone();
             appliedTexture.needsUpdate = true;
-
+            appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
+            appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
+            // No need to set repeat/offset for CanvasTexture slices
             console.log(`🎯 Square slice ${matchedSliceIndex} → "${child.name}"`);
           }
         }
@@ -476,6 +479,7 @@ const uploadedTexture = textureLoader.load(
     }
   }
 );
+
 
 
 
@@ -1455,13 +1459,12 @@ function generateCustomSelect() {
     // Insert custom dropdown
     hiddenSelect.parentElement.appendChild(customSelectContainer);
 
-    // Bind click events
-    container.querySelectorAll('.custom-option').forEach(optEl => {
-	    if(name === 'shape'){
-      optEl.addEventListener('click', () => selectShapeOption(optEl));
-	    }else if (name === 'size'){
-		    optEl.addEventListener('click', () => selectSizeOption(optEl));
-	    }
+    // Bind click to each option using your selectOption()
+    const customOptions = customSelectContainer.querySelectorAll('.custom-option');
+    customOptions.forEach(optionEl => {
+      optionEl.addEventListener('click', () => {
+        selectOption(optionEl); // ✅ Use your logic here
+      });
     });
   });
 
@@ -1973,31 +1976,21 @@ function updateImage(directUrl = null) {
           configObject.imageInfo.appliedPattern.includes(child.name) &&
           matchedSliceIndex !== null;
 
-        if (isPatterned) {
-          appliedTexture = texture.clone();
+        if (isPatterned && slices[matchedSliceIndex]) {
+          appliedTexture = slices[matchedSliceIndex]; // pre-cropped square
           appliedTexture.needsUpdate = true;
-          appliedTexture.wrapS = THREE.RepeatWrapping;
-          appliedTexture.wrapT = THREE.RepeatWrapping;
-
-          appliedTexture.repeat.set(1 / totalSlices, 1);
-          appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
-
-          console.log(
-            `🎯 Slice ${matchedSliceIndex} applied to "${child.name}" → offset: (${appliedTexture.offset.x}, ${appliedTexture.offset.y})`
-          );
         }
 
-        // Normal full texture for backgroundPattern or if not multipattern
+        /* Full image for background pattern or if not multipattern */
         if (child.name === configObject.imageInfo.backgroundPattern || !isPatterned) {
-          appliedTexture = texture;
           appliedTexture.repeat.set(1, 1);
           appliedTexture.offset.set(0, 0);
         }
 
         materialOptions = {
-          map: appliedTexture,
+          map:         appliedTexture,
           transparent: true,
-          opacity: 1,
+          opacity:     1,
           depthWrite: false
         };
       }
@@ -2260,6 +2253,7 @@ const uploadedTexture = textureLoader.load(
     console.log('Finished applying textures and slicing.');
   }
 );
+*/
 const totalSlices = 5;
 
 const nailSliceMap = {
@@ -2289,7 +2283,6 @@ const uploadedTexture = textureLoader.load(
 
       baseImage.onload = () => {
         slices = getSquareSlices(baseImage, totalSlices);
-
         applyTextures();
       };
     } else {
@@ -2349,9 +2342,12 @@ const uploadedTexture = textureLoader.load(
             matchedSliceIndex !== null;
 
           if (isPatterned && slices[matchedSliceIndex]) {
-            appliedTexture = slices[matchedSliceIndex];
+            // Clone the texture slice for this mesh to avoid sharing state
+            appliedTexture = slices[matchedSliceIndex].clone();
             appliedTexture.needsUpdate = true;
-
+            appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
+            appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
+            // No need to set repeat/offset for CanvasTexture slices
             console.log(`🎯 Square slice ${matchedSliceIndex} → "${child.name}"`);
           }
         }
@@ -3015,6 +3011,12 @@ palettes.Oceanic.push(hsvToRgb((h + 120) % 360, s, Math.min(v + 0.3, 1)));
     // Fire Palette: Reds, oranges, and yellows, inspired by flames.
     const fireHues = [0, 30, 60]; // Reds, oranges, yellows
     palettes.Fire.push(hsvToRgb(fireHues[i % 3], s, v));
+
+    // Jewel Tone Palette: Rich, saturated colors like emerald, ruby, sapphire, and amethyst.
+    const jewelHues = [120, 0, 240, 270]; // Emerald, ruby, sapphire, amethyst
+    palettes.JewelTone.push(hsvToRgb(jewelHues[i % 4], 1, 1));
+
+    // Vintage Cinema Palette: Sepia tones, faded blacks, and muted whites.
     palettes.VintageCinema.push(hsvToRgb(h, s * 0.5, v * 0.6));
 
     // Futuristic Palette: Neon greens, silvers, and bold contrasts for a tech-inspired look.
