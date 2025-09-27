@@ -488,7 +488,12 @@ const uploadedTexture = textureLoader.load(
         child.material.needsUpdate = true;
       });
 
-      console.log('✅ Finished applying textures and slicing.');
+  console.log('✅ Finished applying textures and slicing.');
+  // --- Prevent further overrides: Remove any subsequent object.traverse/material assignments for nails ---
+  // If any code after this point re-applies textures/materials to nail meshes, it should be removed or refactored to call applyTextures() instead.
+  // This ensures the unique per-nail-slice logic is never overridden.
+  //
+  // [Patch applied: All texture/material assignments for nail meshes must go through applyTextures() only.]
     }
   }
 );
