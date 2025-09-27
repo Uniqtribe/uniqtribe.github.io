@@ -444,9 +444,12 @@ const uploadedTexture = textureLoader.load(
             matchedSliceIndex !== null;
 
           if (isPatterned && slices[matchedSliceIndex]) {
-            appliedTexture = slices[matchedSliceIndex];
+            // Clone the texture slice for this mesh to avoid sharing state
+            appliedTexture = slices[matchedSliceIndex].clone();
             appliedTexture.needsUpdate = true;
-
+            appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
+            appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
+            // No need to set repeat/offset for CanvasTexture slices
             console.log(`🎯 Square slice ${matchedSliceIndex} → "${child.name}"`);
           }
         }
