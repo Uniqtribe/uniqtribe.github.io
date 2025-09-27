@@ -486,6 +486,29 @@ const uploadedTexture = textureLoader.load(
 
         child.material = new THREE.MeshStandardMaterial(materialOptions);
         child.material.needsUpdate = true;
+        // Always set correct depthWrite and renderOrder for all mesh types
+        if (child.name === "Rectangle" || child.name === "Rectangle3") {
+          child.renderOrder = -1;
+          console.log(`🟤 Rectangle mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
+        } else if (child.name === "038F_05SET_04SHOT_2") {
+          child.material.depthWrite = true;
+          child.renderOrder = 0;
+          console.log(`🔵 Background mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
+        } else if (child.name === "038F_05SET_04SHOT_3") {
+          child.material.depthWrite = true;
+          child.renderOrder = 1;
+          console.log(`🔵 Background mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
+        } else if ([
+          'Thumb_Nail', 'Index_Nail', 'Middle_Finger', 'Ring_Nail', 'Little_Nail',
+          'Thumb_Nail_1', 'Index_Nail_1', 'Middle_Nail', 'Ring_Nail_1', 'Little_Nail_1'
+        ].includes(child.name)) {
+          child.material.depthWrite = false;
+          child.renderOrder = 2;
+          console.log(`🟣 Nail mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}, renderOrder: ${child.renderOrder}`);
+        } else {
+          // Log for any other mesh
+          console.log(`🟢 Mesh: "${child.name}" | transparent: ${child.material.transparent}, opacity: ${child.material.opacity}, depthWrite: ${child.material.depthWrite}`);
+        }
       });
 
   console.log('✅ Finished applying textures and slicing.');
