@@ -2397,6 +2397,21 @@ const uploadedTexture = textureLoader.load(
           _pendingLog = undefined;
         }
         console.log(logMsg);
+
+        // --- Layering fix: set depthWrite and renderOrder for backgrounds and nails ---
+        // Background meshes (038F_05SET_04SHOT_*)
+        if (/^038F_05SET_04SHOT_/.test(child.name)) {
+          child.material.depthWrite = true;
+          child.renderOrder = 0;
+        }
+        // Nail meshes (Thumb_Nail, Index_Nail, etc.)
+        else if ([
+          'Thumb_Nail', 'Index_Nail', 'Middle_Finger', 'Ring_Nail', 'Little_Nail',
+          'Thumb_Nail_1', 'Index_Nail_1', 'Middle_Nail', 'Ring_Nail_1', 'Little_Nail_1'
+        ].includes(child.name)) {
+          child.material.depthWrite = false;
+          child.renderOrder = 1;
+        }
       });
 
       console.log('✅ Finished applying textures and slicing.');
