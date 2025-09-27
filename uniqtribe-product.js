@@ -378,10 +378,37 @@ const uploadedTexture = textureLoader.load(
     const useMultiPattern = configObject?.multipattern === true;
     let slices = [texture]; // fallback
 
-    // For multipattern, use the full texture strip and set repeat/offset per mesh
-    applyTextures();
+    // For multipattern, auto-crop each vertical slice to a square before applying
+    if (useMultiPattern) {
+      const baseImage = new window.Image();
+      baseImage.src = document.querySelector('#designCanvas').toDataURL('image/png');
+      baseImage.onload = () => {
+        // Calculate slice width
+        const sliceWidth = baseImage.width / totalSlices;
+        const sliceSize = Math.min(sliceWidth, baseImage.height); // square size
+        // Create square slices
+        const slices = [];
+        for (let i = 0; i < totalSlices; i++) {
+          const canvas = document.createElement('canvas');
+          canvas.width = sliceSize;
+          canvas.height = sliceSize;
+          const ctx = canvas.getContext('2d');
+          // Center crop: take the middle square from each vertical slice
+          const srcX = i * sliceWidth;
+          const srcY = (baseImage.height - sliceSize) / 2;
+          ctx.drawImage(baseImage, srcX, srcY, sliceSize, sliceSize, 0, 0, sliceSize, sliceSize);
+          const tex = new THREE.CanvasTexture(canvas);
+          tex.wrapS = THREE.ClampToEdgeWrapping;
+          tex.wrapT = THREE.ClampToEdgeWrapping;
+          slices.push(tex);
+        }
+        applyTextures(slices);
+      };
+    } else {
+      applyTextures();
+    }
 
-    function applyTextures() {
+  function applyTextures(slices) {
       const isTrialPack = isProductPage && location.href.includes('trial-pack');
 
       // Meshes to hide in trial pack
@@ -416,7 +443,7 @@ const uploadedTexture = textureLoader.load(
 	    opacity: textureInfo.transparent ? 1 : 1,
 	    depthWrite: !textureInfo.transparent
 	  };
-	} else if (useMultiPattern) {
+	} else if (useMultiPattern && slices) {
 	  // Try to match slice index
 	  let matchedSliceIndex = null;
 	  const meshName = child.name.toLowerCase();
@@ -433,14 +460,10 @@ const uploadedTexture = textureLoader.load(
 	    configObject.imageInfo.appliedPattern.includes(child.name) &&
 	    matchedSliceIndex !== null;
 
-	  if (isPatterned) {
-	    appliedTexture = texture.clone();
+	  if (isPatterned && slices[matchedSliceIndex]) {
+	    appliedTexture = slices[matchedSliceIndex];
 	    appliedTexture.needsUpdate = true;
-	    appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
-	    appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
-	    appliedTexture.repeat.set(1 / totalSlices, 1);
-	    appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
-	    console.log(`🎯 Strip slice ${matchedSliceIndex} → "${child.name}"`);
+	    console.log(`🎯 Cropped square slice ${matchedSliceIndex} → "${child.name}"`);
 	  }
 	}
 
