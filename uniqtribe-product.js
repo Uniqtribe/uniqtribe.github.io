@@ -378,18 +378,8 @@ const uploadedTexture = textureLoader.load(
     const useMultiPattern = configObject?.multipattern === true;
     let slices = [texture]; // fallback
 
-    if (useMultiPattern) {
-      const baseImage = new Image();
-      baseImage.src = document.querySelector('#designCanvas').toDataURL('image/png');
-
-      baseImage.onload = () => {
-        slices = getSquareSlices(baseImage, totalSlices);
-
-        applyTextures();
-      };
-    } else {
-      applyTextures();
-    }
+    // For multipattern, use the full texture strip and set repeat/offset per mesh
+    applyTextures();
 
     function applyTextures() {
       const isTrialPack = isProductPage && location.href.includes('trial-pack');
@@ -413,53 +403,53 @@ const uploadedTexture = textureLoader.load(
           return;
         }
 
-        let appliedTexture = slices[0]; // default fallback
-        let materialOptions = null;
+	let appliedTexture = texture;
+	let materialOptions = null;
 
-        // Explicit texture overrides
-        const textureInfo = textures.find(tex => tex.objects.includes(child.name));
-        if (textureInfo) {
-          appliedTexture = textureInfo.texture;
-          materialOptions = {
-            map: appliedTexture,
-            transparent: textureInfo.transparent,
-            opacity: textureInfo.transparent ? 1 : 1,
-            depthWrite: !textureInfo.transparent
-          };
-        } else if (useMultiPattern) {
-          // Try to match slice index
-          let matchedSliceIndex = null;
-          const meshName = child.name.toLowerCase();
+	// Explicit texture overrides
+	const textureInfo = textures.find(tex => tex.objects.includes(child.name));
+	if (textureInfo) {
+	  appliedTexture = textureInfo.texture;
+	  materialOptions = {
+	    map: appliedTexture,
+	    transparent: textureInfo.transparent,
+	    opacity: textureInfo.transparent ? 1 : 1,
+	    depthWrite: !textureInfo.transparent
+	  };
+	} else if (useMultiPattern) {
+	  // Try to match slice index
+	  let matchedSliceIndex = null;
+	  const meshName = child.name.toLowerCase();
 
-          for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
-            if (keywords.some(keyword => meshName.includes(keyword))) {
-              matchedSliceIndex = parseInt(sliceIdx);
-              break;
-            }
-          }
+	  for (const [sliceIdx, keywords] of Object.entries(nailSliceMap)) {
+	    if (keywords.some(keyword => meshName.includes(keyword))) {
+	      matchedSliceIndex = parseInt(sliceIdx);
+	      break;
+	    }
+	  }
 
-          const isPatterned =
-            useMultiPattern &&
-            configObject.imageInfo.appliedPattern.includes(child.name) &&
-            matchedSliceIndex !== null;
+	  const isPatterned =
+	    useMultiPattern &&
+	    configObject.imageInfo.appliedPattern.includes(child.name) &&
+	    matchedSliceIndex !== null;
 
-          if (isPatterned && slices[matchedSliceIndex]) {
-            // Clone the texture slice for this mesh to avoid sharing state
-            appliedTexture = slices[matchedSliceIndex].clone();
-            appliedTexture.needsUpdate = true;
-            appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
-            appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
-            // No need to set repeat/offset for CanvasTexture slices
-            console.log(`🎯 Square slice ${matchedSliceIndex} → "${child.name}"`);
-          }
-        }
+	  if (isPatterned) {
+	    appliedTexture = texture.clone();
+	    appliedTexture.needsUpdate = true;
+	    appliedTexture.wrapS = THREE.ClampToEdgeWrapping;
+	    appliedTexture.wrapT = THREE.ClampToEdgeWrapping;
+	    appliedTexture.repeat.set(1 / totalSlices, 1);
+	    appliedTexture.offset.set(matchedSliceIndex / totalSlices, 0);
+	    console.log(`🎯 Strip slice ${matchedSliceIndex} → "${child.name}"`);
+	  }
+	}
 
-        materialOptions = {
-          map: appliedTexture,
-          transparent: true,
-          opacity: 1,
-          depthWrite: false
-        };
+	materialOptions = {
+	  map: appliedTexture,
+	  transparent: true,
+	  opacity: 1,
+	  depthWrite: false
+	};
 
         // Background styling
         if (child.name === configObject.imageInfo.backgroundPattern) {
