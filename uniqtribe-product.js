@@ -3562,10 +3562,13 @@ function getCentralCrop_1to5_exact(image, totalSlices = 5) {
     ctx.clearRect(0, 0, sliceWidth, sliceHeight);
 
     // Center crop vertically from original image
+    //const srcX = i * sliceWidth;
+    //const srcY = Math.max((image.height - sliceHeight) / 2, 0);
+    //const srcH = Math.min(sliceHeight, image.height);
+    const cropHeight = Math.min(sliceHeight, image.height);
+    const cropY = (image.height - cropHeight) / 2;
     const srcX = i * sliceWidth;
-    const srcY = Math.max((image.height - sliceHeight) / 2, 0);
-    const srcH = Math.min(sliceHeight, image.height);
-
+	  
     ctx.drawImage(
       image,
       srcX, srcY, sliceWidth, srcH,
