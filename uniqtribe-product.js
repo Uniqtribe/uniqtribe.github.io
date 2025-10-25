@@ -414,26 +414,29 @@ if (useMultiPattern) {
   baseImage.onload = () => {
     const slices = [];
     const totalSlices = 5;
-    const ratio = 5; // height = width * 5
+    const ratio = 5; // height = width * ratio
     const sliceWidth = baseImage.width / totalSlices;
 
     for (let i = 0; i < totalSlices; i++) {
-      // Calculate slice width to match 1:5 ratio using full height
-           const sliceHeight = sliceWidth * ratio; // height based on width
+      // Desired slice height based on width
+      const sliceHeight = sliceWidth * ratio;
+
+      // Trim height if source is shorter
+      const cropHeight = Math.min(sliceHeight, baseImage.height);
 
       const canvas = document.createElement('canvas');
       canvas.width = sliceWidth;
-      canvas.height = sliceHeight;
+      canvas.height = cropHeight; // trimmed height
       const ctx = canvas.getContext('2d');
 
-      // Crop horizontally for this slice
+      // Center crop vertically
       const srcX = i * sliceWidth;
-      const srcY = 0;
+      const srcY = (baseImage.height - cropHeight) / 2;
 
       ctx.drawImage(
         baseImage,
-        srcX, srcY, sliceWidth, sliceHeight, // source
-        0, 0, sliceWidth, sliceHeight        // destination
+        srcX, srcY, sliceWidth, cropHeight, // source
+        0, 0, sliceWidth, cropHeight        // destination
       );
 
       const tex = new THREE.CanvasTexture(canvas);
