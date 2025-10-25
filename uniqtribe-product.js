@@ -3510,7 +3510,7 @@ function getSquareSlices(image, totalSlices = 5) {
   return slices;
 }
 function getCentralCrop_1to3(image) {
-  const aspectRatio = 1 / 3; // width : height ratio
+  const aspectRatio = 1 / 5; // width : height ratio
   const imgAspect = image.width / image.height;
   let cropWidth, cropHeight;
 
