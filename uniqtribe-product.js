@@ -407,8 +407,7 @@ const uploadedTexture = textureLoader.load(
     } else {
       applyTextures();
     }*/
-
-	  if (useMultiPattern) {
+if (useMultiPattern) {
   const baseImage = new window.Image();
   baseImage.src = document.querySelector('#designCanvas').toDataURL('image/png');
 
@@ -424,14 +423,15 @@ const uploadedTexture = textureLoader.load(
       canvas.height = sliceHeight;
       const ctx = canvas.getContext('2d');
 
-      // Center crop vertically
+      // Center crop vertically (trim top/bottom if needed)
       const srcX = i * sliceWidth;
-      const srcY = (baseImage.height - sliceHeight) / 2;
+      const cropHeight = Math.min(sliceHeight, baseImage.height);
+      const srcY = (baseImage.height - cropHeight) / 2;
 
       ctx.drawImage(
         baseImage,
-        srcX, srcY, sliceWidth, sliceHeight,
-        0, 0, sliceWidth, sliceHeight
+        srcX, srcY, sliceWidth, cropHeight,  // source
+        0, 0, sliceWidth, sliceHeight        // destination
       );
 
       const tex = new THREE.CanvasTexture(canvas);
