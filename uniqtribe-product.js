@@ -413,24 +413,26 @@ if (useMultiPattern) {
 
   baseImage.onload = () => {
     const slices = [];
-    const sliceWidth = baseImage.width / totalSlices;
+    const totalSlices = 5;
     const ratio = 5; // height = width * 5
 
     for (let i = 0; i < totalSlices; i++) {
-      const sliceHeight = sliceWidth * ratio;
+      // Calculate slice width to match 1:5 ratio using full height
+      const sliceHeight = baseImage.height;
+      const sliceWidth = sliceHeight / ratio;
+
       const canvas = document.createElement('canvas');
       canvas.width = sliceWidth;
       canvas.height = sliceHeight;
       const ctx = canvas.getContext('2d');
 
-      // Center crop vertically (trim top/bottom if needed)
+      // Crop horizontally for this slice
       const srcX = i * sliceWidth;
-      const cropHeight = Math.min(sliceHeight, baseImage.height);
-      const srcY = (baseImage.height - cropHeight) / 2;
+      const srcY = 0;
 
       ctx.drawImage(
         baseImage,
-        srcX, srcY, sliceWidth, cropHeight,  // source
+        srcX, srcY, sliceWidth, sliceHeight, // source
         0, 0, sliceWidth, sliceHeight        // destination
       );
 
@@ -445,6 +447,7 @@ if (useMultiPattern) {
 } else {
   applyTextures();
 }
+
 
 
   function applyTextures(slices) {
