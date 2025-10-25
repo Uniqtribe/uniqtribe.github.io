@@ -3509,23 +3509,28 @@ function getSquareSlices(image, totalSlices = 5) {
 
   return slices;
 }
-function getCentralCrop_1to5(image) {
-  const aspectRatio = 1 / 5; // width : height ratio
-  const cropWidth = Math.min(image.width, image.height * aspectRatio);
-  const cropHeight = cropWidth / aspectRatio;
+function getCentralCrop_1to5_exact(image) {
+  const aspectRatio = 1 / 5; // width : height
+  const outputHeight = image.height;          // you can choose fixed height
+  const outputWidth = outputHeight * aspectRatio;
 
+  // Center crop coordinates from original image
+  const cropWidth = Math.min(image.width, outputWidth);
+  const cropHeight = Math.min(image.height, outputHeight);
   const cropX = (image.width - cropWidth) / 2;
   const cropY = (image.height - cropHeight) / 2;
 
+  // Create canvas of exact output size
   const canvas = document.createElement('canvas');
-  canvas.width = cropWidth;
-  canvas.height = cropHeight;
+  canvas.width = outputWidth;
+  canvas.height = outputHeight;
   const ctx = canvas.getContext('2d');
 
+  // Draw cropped portion scaled to exact output size
   ctx.drawImage(
     image,
-    cropX, cropY, cropWidth, cropHeight,
-    0, 0, cropWidth, cropHeight
+    cropX, cropY, cropWidth, cropHeight,  // source
+    0, 0, outputWidth, outputHeight       // destination scaled to exact ratio
   );
 
   const cropped = new Image();
