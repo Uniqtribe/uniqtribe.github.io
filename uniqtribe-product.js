@@ -2200,7 +2200,7 @@ if (useMultiPattern) {
 
   baseImage.onload = () => {
     // Instead of slicing into squares, crop to central 1:3 piece
-    const croppedImage = getCentralCrop_1to3(baseImage);
+    const croppedImage = getCentralCrop_1to5(baseImage);
 
     // If your pipeline expects an array (like 'slices'), wrap it:
     slices = [croppedImage];
@@ -3509,26 +3509,14 @@ function getSquareSlices(image, totalSlices = 5) {
 
   return slices;
 }
-function getCentralCrop_1to3(image) {
+function getCentralCrop_1to5(image) {
   const aspectRatio = 1 / 5; // width : height ratio
-  const imgAspect = image.width / image.height;
-  let cropWidth, cropHeight;
+  const cropWidth = Math.min(image.width, image.height * aspectRatio);
+  const cropHeight = cropWidth / aspectRatio;
 
-  if (imgAspect > aspectRatio) {
-    // Image is wider than 1:3 — limit by height
-    cropHeight = image.height;
-    cropWidth = cropHeight * aspectRatio;
-  } else {
-    // Image is taller than 1:3 — limit by width
-    cropWidth = image.width;
-    cropHeight = cropWidth / aspectRatio;
-  }
-
-  // Center crop coordinates
   const cropX = (image.width - cropWidth) / 2;
   const cropY = (image.height - cropHeight) / 2;
 
-  // Create cropped canvas
   const canvas = document.createElement('canvas');
   canvas.width = cropWidth;
   canvas.height = cropHeight;
@@ -3536,8 +3524,8 @@ function getCentralCrop_1to3(image) {
 
   ctx.drawImage(
     image,
-    cropX, cropY, cropWidth, cropHeight,  // source (central region)
-    0, 0, cropWidth, cropHeight           // destination (no scaling)
+    cropX, cropY, cropWidth, cropHeight,
+    0, 0, cropWidth, cropHeight
   );
 
   const cropped = new Image();
