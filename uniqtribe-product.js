@@ -415,11 +415,11 @@ if (useMultiPattern) {
     const slices = [];
     const totalSlices = 5;
     const ratio = 5; // height = width * 5
+    const sliceWidth = baseImage.width / totalSlices;
 
     for (let i = 0; i < totalSlices; i++) {
       // Calculate slice width to match 1:5 ratio using full height
-      const sliceHeight = baseImage.height;
-      const sliceWidth = sliceHeight / ratio;
+           const sliceHeight = sliceWidth * ratio; // height based on width
 
       const canvas = document.createElement('canvas');
       canvas.width = sliceWidth;
