@@ -3548,31 +3548,35 @@ function getSquareSlices(image, totalSlices = 5) {
 
   return slices;
 }
-function getCentralCrop_1to5_exact(image) {
-  const aspectRatio = 1 / 0.5; // width : height
-  const outputHeight = image.height;          // you can choose fixed height
-  const outputWidth = outputHeight * aspectRatio;
-
-  // Center crop coordinates from original image
-  const cropWidth = Math.min(image.width, outputWidth);
-  const cropHeight = Math.min(image.height, outputHeight);
-  const cropX = (image.width - cropWidth) / 2;
-  const cropY = (image.height - cropHeight) / 2;
-
-  // Create canvas of exact output size
+function getCentralCrop_1to5_exact(image, totalSlices = 5) {
+  const slices = [];
+  const sliceWidth = image.width / totalSlices;
+  const ratio = 5; // height = width * ratio
   const canvas = document.createElement('canvas');
-  canvas.width = outputWidth;
-  canvas.height = outputHeight;
   const ctx = canvas.getContext('2d');
 
-  // Draw cropped portion scaled to exact output size
-  ctx.drawImage(
-    image,
-    cropX, cropY, cropWidth, cropHeight,  // source
-    0, 0, outputWidth, outputHeight       // destination scaled to exact ratio
-  );
+  for (let i = 0; i < totalSlices; i++) {
+    const sliceHeight = sliceWidth * ratio;
+    canvas.width = sliceWidth;
+    canvas.height = sliceHeight;
+    ctx.clearRect(0, 0, sliceWidth, sliceHeight);
 
-  const cropped = new Image();
-  cropped.src = canvas.toDataURL('image/png');
-  return cropped;
+    // Center crop vertically from original image
+    const srcX = i * sliceWidth;
+    const srcY = Math.max((image.height - sliceHeight) / 2, 0);
+    const srcH = Math.min(sliceHeight, image.height);
+
+    ctx.drawImage(
+      image,
+      srcX, srcY, sliceWidth, srcH,
+      0, 0, sliceWidth, sliceHeight
+    );
+
+    const sliceTexture = new THREE.CanvasTexture(canvas);
+    sliceTexture.wrapS = THREE.ClampToEdgeWrapping;
+    sliceTexture.wrapT = THREE.ClampToEdgeWrapping;
+    slices.push(sliceTexture);
+  }
+
+  return slices;
 }
