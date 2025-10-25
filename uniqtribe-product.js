@@ -2182,7 +2182,7 @@ const uploadedTexture = textureLoader.load(
     // Only generate square slices if multipattern is true
     const useMultiPattern = configObject?.multipattern === true;
     let slices = [texture]; // fallback
-
+/*
     if (useMultiPattern) {
       const baseImage = new Image();
       baseImage.src = document.querySelector('#designCanvas').toDataURL('image/png');
@@ -2193,8 +2193,23 @@ const uploadedTexture = textureLoader.load(
       };
     } else {
       applyTextures();
-    }
+    }*/
+if (useMultiPattern) {
+  const baseImage = new Image();
+  baseImage.src = document.querySelector('#designCanvas').toDataURL('image/png');
 
+  baseImage.onload = () => {
+    // Instead of slicing into squares, crop to central 1:3 piece
+    const croppedImage = getCentralCrop_1to3(baseImage);
+
+    // If your pipeline expects an array (like 'slices'), wrap it:
+    slices = [croppedImage];
+
+    applyTextures();
+  };
+} else {
+  applyTextures();
+}
     function applyTextures() {
       const isTrialPack = isProductPage && location.href.includes('trial-pack');
 
@@ -3493,4 +3508,39 @@ function getSquareSlices(image, totalSlices = 5) {
   }
 
   return slices;
+}
+function getCentralCrop_1to3(image) {
+  const aspectRatio = 1 / 3; // width : height ratio
+  const imgAspect = image.width / image.height;
+  let cropWidth, cropHeight;
+
+  if (imgAspect > aspectRatio) {
+    // Image is wider than 1:3 — limit by height
+    cropHeight = image.height;
+    cropWidth = cropHeight * aspectRatio;
+  } else {
+    // Image is taller than 1:3 — limit by width
+    cropWidth = image.width;
+    cropHeight = cropWidth / aspectRatio;
+  }
+
+  // Center crop coordinates
+  const cropX = (image.width - cropWidth) / 2;
+  const cropY = (image.height - cropHeight) / 2;
+
+  // Create cropped canvas
+  const canvas = document.createElement('canvas');
+  canvas.width = cropWidth;
+  canvas.height = cropHeight;
+  const ctx = canvas.getContext('2d');
+
+  ctx.drawImage(
+    image,
+    cropX, cropY, cropWidth, cropHeight,  // source (central region)
+    0, 0, cropWidth, cropHeight           // destination (no scaling)
+  );
+
+  const cropped = new Image();
+  cropped.src = canvas.toDataURL('image/png');
+  return cropped;
 }
