@@ -3510,7 +3510,7 @@ function getSquareSlices(image, totalSlices = 5) {
   return slices;
 }
 function getCentralCrop_1to5_exact(image) {
-  const aspectRatio = 1 / 5; // width : height
+  const aspectRatio = 1 / 25; // width : height
   const outputHeight = image.height;          // you can choose fixed height
   const outputWidth = outputHeight * aspectRatio;
 
