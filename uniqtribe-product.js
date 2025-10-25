@@ -414,7 +414,7 @@ if (useMultiPattern) {
   baseImage.onload = () => {
     const slices = [];
     const totalSlices = 5;
-    const ratio = 5; // height = width * ratio
+    const ratio = 3; // height = width * ratio
     const sliceWidth = baseImage.width / totalSlices;
 
     for (let i = 0; i < totalSlices; i++) {
