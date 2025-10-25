@@ -377,7 +377,7 @@ const uploadedTexture = textureLoader.load(
     // Only generate square slices if multipattern is true
     const useMultiPattern = configObject?.multipattern === true;
     let slices = [texture]; // fallback
-
+/*
     // For multipattern, auto-crop each vertical slice to a square before applying
     if (useMultiPattern) {
       const baseImage = new window.Image();
@@ -406,7 +406,46 @@ const uploadedTexture = textureLoader.load(
       };
     } else {
       applyTextures();
+    }*/
+
+	  if (useMultiPattern) {
+  const baseImage = new window.Image();
+  baseImage.src = document.querySelector('#designCanvas').toDataURL('image/png');
+
+  baseImage.onload = () => {
+    const slices = [];
+    const sliceWidth = baseImage.width / totalSlices;
+    const ratio = 5; // height = width * 5
+
+    for (let i = 0; i < totalSlices; i++) {
+      const sliceHeight = sliceWidth * ratio;
+      const canvas = document.createElement('canvas');
+      canvas.width = sliceWidth;
+      canvas.height = sliceHeight;
+      const ctx = canvas.getContext('2d');
+
+      // Center crop vertically
+      const srcX = i * sliceWidth;
+      const srcY = (baseImage.height - sliceHeight) / 2;
+
+      ctx.drawImage(
+        baseImage,
+        srcX, srcY, sliceWidth, sliceHeight,
+        0, 0, sliceWidth, sliceHeight
+      );
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = THREE.ClampToEdgeWrapping;
+      tex.wrapT = THREE.ClampToEdgeWrapping;
+      slices.push(tex);
     }
+
+    applyTextures(slices);
+  };
+} else {
+  applyTextures();
+}
+
 
   function applyTextures(slices) {
       const isTrialPack = isProductPage && location.href.includes('trial-pack');
