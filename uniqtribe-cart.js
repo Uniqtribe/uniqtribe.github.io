@@ -1,199 +1,117 @@
-    const cartItemElements = document.querySelectorAll('[data-cart-item]');
-    const checkoutItemElements = document.querySelectorAll('[data-zs-checkout-cart-item]');
+const cartItemElements = document.querySelectorAll('[data-cart-item]');
+const checkoutItemElements = document.querySelectorAll('[data-zs-checkout-cart-item]');
 
-    
 
-    if (cartItemElements.length>0) {
-        generateTemplate(cartItemElements);
-    }
-    else if(checkoutItemElements.length>0){
-        generateTemplate(checkoutItemElements);
-    }
-/*
-function generateTemplate(cartElements){
-    cartElements.forEach(cartItem => {
-        const liElements = cartItem.querySelectorAll("li");
-        let patternList = [];
-        let source = '';
-        liElements.forEach(li => {
-            if (li.textContent.trim().startsWith("source:")) {
-                source = li.querySelector("span").textContent.trim();
-                cartItem.querySelector('ul').style.display = 'none';
-                cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
-                    item.disabled = true;
-                });
-                cartItem.querySelector('[data-zs-quantity]').disabled = true;
-		    
-	const link = cartItem.querySelector('.theme-cart-item-info a');
-	  
-	  if (link && link.textContent.includes('Trial Pack')) {
-		  // Find the 'source' li (hidden) inside the <ul>
-		        var sourceLi = Array.from(
-		            row.querySelectorAll('ul li')
-		        ).find(li => li.textContent.trim().startsWith('source:'));
-		        if (!sourceLi) return;
-		
-		        // Get the JSON inside <span>
-		        var jsonText = sourceLi.querySelector('span').textContent.trim();
-		        var imageUrl = "";
-		        try {
-		            var sourceObj = JSON.parse(jsonText);
-		            imageUrl = sourceObj.url;
-		        } catch(e) {
-		            return; // Invalid JSON, skip
-		        }
-		        if (!imageUrl) return;
-		
-		        // Set image src in the .theme-cart-item-img
-		        var img = row.querySelector('.theme-cart-item-img img');
-		        if (img) img.src = imageUrl;
-	  }
-	    
-            }
-            if(li.textContent.trim().startsWith("target:") || li.textContent.trim().startsWith("selection")){
-                patternList.push(li.querySelector("span").textContent.trim());
-            }
-        });
-        console.log("source", source);
-        const table = document.createElement("table");
-            table.border = "1"; // Add border for visibility
-            const thead = document.createElement("thead");
-            const headerRow = document.createElement("tr");
-            // Column names
-            ["Pattern", "Shape", "Size", "Qty"].forEach(text => {
-                const th = document.createElement("th");
-                th.textContent = text;
-                headerRow.appendChild(th);
-            });
 
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-            
+if (cartItemElements.length > 0) {
+    generateTemplate(cartItemElements);
+}
+else if (checkoutItemElements.length > 0) {
+    generateTemplate(checkoutItemElements);
+}
 
-        patternList.forEach(pattern => {
-            const canvas = createCanvas(pattern, cartItem.querySelector('img').src, source);
-            const tableRow = document.createElement("tr");
-            const td1 = document.createElement("td");
-            td1.appendChild(canvas);
-            tableRow.appendChild(td1);
-            const td2 = document.createElement("td");
-            td2.textContent = JSON.parse(pattern).shape;
-            tableRow.appendChild(td2);
-	    const td3 = document.createElement("td");
-            td3.textContent = JSON.parse(pattern).size;
-            tableRow.appendChild(td3);
-		
-            const td4 = document.createElement("td");
-            td4.textContent = JSON.parse(pattern).quantity;
-            tableRow.appendChild(td4);
-            table.appendChild(tableRow);
-            cartItem.querySelector('.theme-cart-item-info').appendChild(table);
-
-        });
-
-	    
-    })
-}*/
 function generateTemplate(cartElements) {
     cartElements.forEach(cartItem => {
-        // Step 1: Hide <ul>, disable qty
+
+        /* -------------------------------
+           1. Hide raw data + disable qty
+        -------------------------------- */
         const ul = cartItem.querySelector('ul');
         if (ul) ul.style.display = 'none';
 
-        cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(item => {
-            item.disabled = true;
+        cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(btn => {
+            btn.disabled = true;
         });
-        let qtyInput = cartItem.querySelector('[data-zs-quantity]');
+
+        const qtyInput = cartItem.querySelector('[data-zs-quantity]');
         if (qtyInput) qtyInput.disabled = true;
 
-        // Step 2: Gather li info: source and patternList
-        const liElements = cartItem.querySelectorAll("li");
-        let source = '';
-        let sourceObj = null;
+        /* -------------------------------
+           2. Extract source + patterns
+        -------------------------------- */
+        const liElements = cartItem.querySelectorAll('li');
+        let source = null;
         let patternList = [];
+
         liElements.forEach(li => {
-            if (li.textContent.trim().startsWith("source:")) {
-                source = li.querySelector("span").textContent.trim();
+            const text = li.textContent.trim();
+
+            if (text.startsWith('source:')) {
                 try {
-                    sourceObj = JSON.parse(source);
-                } catch(e) { sourceObj = null; }
+                    source = JSON.parse(li.querySelector('span').textContent.trim());
+                } catch (e) {
+                    source = null;
+                }
             }
-            if (
-                li.textContent.trim().startsWith("target:") || 
-                li.textContent.trim().startsWith("selection")
-            ) {
-                patternList.push(li.querySelector("span").textContent.trim());
+
+            if (text.startsWith('selection')) {
+                patternList.push(li.querySelector('span').textContent.trim());
             }
         });
 
-        // Step 3: For Trial Pack, replace <img> src with sourceObj.url
+        if (!source || patternList.length === 0) return;
+
+        /* -------------------------------
+           3. Trial pack image override
+        -------------------------------- */
         const link = cartItem.querySelector('.theme-cart-item-info a');
-        if (link && link.textContent.includes('Trial Pack') && sourceObj && sourceObj.url) {
-            let img = cartItem.querySelector('.theme-cart-item-img img');
-            if (img) img.src = sourceObj.url;
+        if (link && link.textContent.includes('Trial Pack') && source.url) {
+            const img = cartItem.querySelector('.theme-cart-item-img img');
+            if (img) img.src = source.url;
         }
 
-        // Step 4: Build and insert table (if not already inserted)
-        if (
-            patternList.length > 0 && 
-            !cartItem.querySelector('.theme-cart-item-info table')
-        ) {
-            const table = document.createElement("table");
-            table.border = "1";
-            const thead = document.createElement("thead");
-            const headerRow = document.createElement("tr");
-            ["Pattern", "Shape", "Size", "Qty"].forEach(text => {
-                const th = document.createElement("th");
-                th.textContent = text;
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
+        /* -------------------------------
+           4. Prevent duplicate rendering
+        -------------------------------- */
+        if (cartItem.querySelector('.custom-pattern-strip')) return;
 
-            const tbody = document.createElement("tbody");
-		const img = cartItem.querySelector('.theme-cart-item-img img');
+        /* -------------------------------
+           5. Create STRIP container
+        -------------------------------- */
+        const strip = document.createElement('div');
+        strip.className = 'custom-pattern-strip';
+        strip.style.display = 'flex';
+        strip.style.gap = '8px';
+        strip.style.marginTop = '10px';
+        strip.style.flexWrap = 'nowrap';
+        strip.style.overflowX = 'auto';
 
-            patternList.forEach(pattern => {
-                let patternObj;
-                try {
-                    patternObj = JSON.parse(pattern);
-                } catch(e) { patternObj = {}; }
+        const baseImg = cartItem.querySelector('.theme-cart-item-img img')?.src;
 
-                const tableRow = document.createElement("tr");
+        /* -------------------------------
+           6. Render ONE canvas per pattern
+        -------------------------------- */
+        patternList.forEach(pattern => {
+            const canvas = createCanvas(pattern, baseImg, JSON.stringify(source));
+            canvas.style.borderRadius = '6px';
+            canvas.style.border = '1px solid #ddd';
+            strip.appendChild(canvas);
+        });
 
-                // Pattern cell (replace with createCanvas as needed)
-                const td1 = document.createElement("td");
-                // Example placeholder, replace with your createCanvas:
-                const canvas = createCanvas(pattern, img.src, source);
-                td1.appendChild(canvas);
-                //td1.textContent = patternObj.selected ? patternObj.selected.join(", ") : 'N/A';
-                tableRow.appendChild(td1);
+        /* -------------------------------
+           7. Add summary text
+        -------------------------------- */
+        const summary = document.createElement('div');
+        summary.style.marginTop = '6px';
+        summary.style.fontSize = '13px';
+        summary.style.color = '#555';
+        summary.innerHTML = `
+            <strong>Custom Nail Set</strong><br>
+            ${patternList.length} press-on nails included
+        `;
 
-                const td2 = document.createElement("td");
-                td2.textContent = patternObj.shape || "--";
-                tableRow.appendChild(td2);
-
-                const td3 = document.createElement("td");
-                td3.textContent = patternObj.size || "--";
-                tableRow.appendChild(td3);
-
-                const td4 = document.createElement("td");
-                td4.textContent = patternObj.quantity || "--";
-                tableRow.appendChild(td4);
-
-                tbody.appendChild(tableRow);
-            });
-            table.appendChild(tbody);
-
-            // Append to .theme-cart-item-info
-            const infoDiv = cartItem.querySelector('.theme-cart-item-info');
-            if (infoDiv) infoDiv.appendChild(table);
+        /* -------------------------------
+           8. Inject into cart UI
+        -------------------------------- */
+        const infoDiv = cartItem.querySelector('.theme-cart-item-info');
+        if (infoDiv) {
+            infoDiv.appendChild(strip);
+            infoDiv.appendChild(summary);
         }
-
-        // Optional: log for debugging
-        console.log("source", source);
     });
 }
+
+
 function createCanvas(pattern, baseImage, source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -202,7 +120,7 @@ function createCanvas(pattern, baseImage, source) {
 
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high"; // You can use "low", "medium", or "high"
-	
+
     const img = new Image();
     img.src = baseImage;
     img.onload = function () {
@@ -212,7 +130,7 @@ function createCanvas(pattern, baseImage, source) {
     return canvas;
 }
 
-function processImageData(context, pattern,source) {
+function processImageData(context, pattern, source) {
     const imgData = context.getImageData(0, 0, context.canvas.width, context.canvas.height);
     const data = imgData.data;
     const dominantColor = convertHexArrayToRgbArray(JSON.parse(source).source);
