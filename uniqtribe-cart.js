@@ -1,15 +1,27 @@
 /* =========================================================
    CART CUSTOM NAIL RENDERER (FINAL)
    ========================================================= */
+window.addEventListener("load", () => {
+  // Zoho injects cart HTML AFTER load
+  setTimeout(() => {
 
-const cartItemElements = document.querySelectorAll('[data-cart-item]');
-const checkoutItemElements = document.querySelectorAll('[data-zs-checkout-cart-item]');
+    const cartItemElements =
+      document.querySelectorAll('[data-cart-item]');
+    const checkoutItemElements =
+      document.querySelectorAll('[data-zs-checkout-cart-item]');
 
-if (cartItemElements.length > 0) {
-  generateTemplate(cartItemElements);
-} else if (checkoutItemElements.length > 0) {
-  generateTemplate(checkoutItemElements);
-}
+    console.log("🛒 Cart items found:", cartItemElements.length);
+
+    if (cartItemElements.length > 0) {
+      generateTemplate(cartItemElements);
+    } else if (checkoutItemElements.length > 0) {
+      generateTemplate(checkoutItemElements);
+    } else {
+      console.warn("❌ No cart items found");
+    }
+
+  }, 800); // 🔑 THIS DELAY IS CRITICAL
+});
 
 function generateTemplate(cartElements) {
   cartElements.forEach(cartItem => {
