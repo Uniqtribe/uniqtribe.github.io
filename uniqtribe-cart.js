@@ -1,230 +1,239 @@
 /* =========================================================
-   CART CUSTOM NAIL RENDERER (FINAL)
+   CART CUSTOM NAIL RENDERER — FINAL STABLE VERSION
    ========================================================= */
-window.addEventListener("load", () => {
-  // Zoho injects cart HTML AFTER load
-  setTimeout(() => {
 
-    const cartItemElements =
-      document.querySelectorAll('[data-cart-item]');
-    const checkoutItemElements =
-      document.querySelectorAll('[data-zs-checkout-cart-item]');
+(function () {
 
-    console.log("🛒 Cart items found:", cartItemElements.length);
+  /* ---------------------------------------------------------
+     1️⃣ WAIT FOR ZOHO CART DOM (POLLING – REQUIRED)
+  --------------------------------------------------------- */
+  window.addEventListener("load", () => {
+    let attempts = 0;
 
-    if (cartItemElements.length > 0) {
-      generateTemplate(cartItemElements);
-    } else if (checkoutItemElements.length > 0) {
-      generateTemplate(checkoutItemElements);
-    } else {
-      console.warn("❌ No cart items found");
-    }
+    const timer = setInterval(() => {
+      attempts++;
 
-  }, 800); // 🔑 THIS DELAY IS CRITICAL
-});
+      const cartItems = document.querySelectorAll(
+        '[data-cart-items] .theme-cart-table-row[data-zs-product-id]'
+      );
 
-function generateTemplate(cartElements) {
-  cartElements.forEach(cartItem => {
+      console.log("🛒 Cart poll", attempts, "items:", cartItems.length);
 
-    /* --------------------------------
-       1. Hide raw custom fields
-    -------------------------------- */
-    const ul = cartItem.querySelector('ul');
-    if (ul) ul.style.display = 'none';
+      if (cartItems.length > 0) {
+        clearInterval(timer);
+        generateTemplate(cartItems);
+      }
 
-    cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(btn => {
-      btn.disabled = true;
-    });
+      if (attempts > 25) {
+        clearInterval(timer);
+        console.error("❌ Cart items never appeared");
+      }
+    }, 300);
+  });
 
-    const qtyInput = cartItem.querySelector('[data-zs-quantity]');
-    if (qtyInput) qtyInput.disabled = true;
+  /* ---------------------------------------------------------
+     2️⃣ MAIN RENDER FUNCTION
+  --------------------------------------------------------- */
+  function generateTemplate(cartElements) {
+    console.log("🔥 generateTemplate running on", cartElements.length, "items");
 
-    /* --------------------------------
-       2. Extract selections
-    -------------------------------- */
-    const liElements = cartItem.querySelectorAll('li');
-    const patterns = [];
+    cartElements.forEach(cartItem => {
 
-    liElements.forEach(li => {
-      const text = li.textContent.trim();
-      if (!text.startsWith('selection')) return;
+      /* Hide raw custom data */
+      const ul = cartItem.querySelector('ul');
+      if (ul) ul.style.display = 'none';
 
-      try {
-        const json = JSON.parse(li.querySelector('span').textContent.trim());
-        patterns.push(json);
-      } catch (e) {
-        console.warn('Invalid selection JSON', e);
+      cartItem.querySelectorAll('.theme-cart-qty-inc-dec').forEach(btn => {
+        btn.disabled = true;
+      });
+
+      const qtyInput = cartItem.querySelector('[data-zs-quantity]');
+      if (qtyInput) qtyInput.disabled = true;
+
+      /* --------------------------------
+         Extract selection JSON
+      -------------------------------- */
+      const liElements = cartItem.querySelectorAll('li');
+      const patterns = [];
+
+      liElements.forEach(li => {
+        const text = li.textContent.trim();
+        if (!text.startsWith('selection')) return;
+
+        try {
+          const obj = JSON.parse(li.querySelector('span').textContent.trim());
+          patterns.push(obj);
+        } catch (e) {
+          console.error("❌ Invalid JSON", e);
+        }
+      });
+
+      if (!patterns.length) {
+        console.warn("⚠️ No patterns found");
+        return;
+      }
+
+      /* Prevent duplicate render */
+      if (cartItem.querySelector('.custom-pattern-strip')) return;
+
+      /* --------------------------------
+         Create strip
+      -------------------------------- */
+      const strip = document.createElement('div');
+      strip.className = 'custom-pattern-strip';
+      strip.style.display = 'flex';
+      strip.style.gap = '8px';
+      strip.style.marginTop = '10px';
+      strip.style.overflowX = 'auto';
+      strip.style.flexWrap = 'nowrap';
+
+      /* --------------------------------
+         Render canvases
+      -------------------------------- */
+      patterns
+        .sort((a, b) => a.slot - b.slot)
+        .forEach(pattern => {
+          const canvas = createNailCanvas(pattern);
+          strip.appendChild(canvas);
+        });
+
+      /* --------------------------------
+         Summary
+      -------------------------------- */
+      const summary = document.createElement('div');
+      summary.style.marginTop = '6px';
+      summary.style.fontSize = '13px';
+      summary.style.color = '#555';
+      summary.innerHTML = `
+        <strong>Custom Nail Set</strong><br>
+        ${patterns.length} press-on nails included
+      `;
+
+      const infoDiv = cartItem.querySelector('.theme-cart-item-info');
+      if (infoDiv) {
+        infoDiv.appendChild(strip);
+        infoDiv.appendChild(summary);
       }
     });
-
-    if (!patterns.length) return;
-
-    /* --------------------------------
-       3. Prevent duplicate rendering
-    -------------------------------- */
-    if (cartItem.querySelector('.custom-pattern-strip')) return;
-
-    /* --------------------------------
-       4. Create strip container
-    -------------------------------- */
-    const strip = document.createElement('div');
-    strip.className = 'custom-pattern-strip';
-    strip.style.display = 'flex';
-    strip.style.gap = '8px';
-    strip.style.marginTop = '10px';
-    strip.style.flexWrap = 'nowrap';
-    strip.style.overflowX = 'auto';
-
-    /* --------------------------------
-       5. Render canvases
-    -------------------------------- */
-    patterns.forEach(pattern => {
-      const canvas = createNailCanvas(pattern);
-      strip.appendChild(canvas);
-    });
-
-    /* --------------------------------
-       6. Summary text
-    -------------------------------- */
-    const summary = document.createElement('div');
-    summary.style.marginTop = '6px';
-    summary.style.fontSize = '13px';
-    summary.style.color = '#555';
-    summary.innerHTML = `
-      <strong>Custom Nail Set</strong><br>
-      ${patterns.length} press-on nails included
-    `;
-
-    /* --------------------------------
-       7. Inject into cart UI
-    -------------------------------- */
-    const infoDiv = cartItem.querySelector('.theme-cart-item-info');
-    if (infoDiv) {
-      infoDiv.appendChild(strip);
-      infoDiv.appendChild(summary);
-    }
-  });
-}
-
-/* =========================================================
-   CANVAS RENDERING
-   ========================================================= */
-
-function createNailCanvas(pattern) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-
-  canvas.width = 75;
-  canvas.height = 75;
-
-  // background so canvas isn't transparent
-  ctx.fillStyle = '#f5f5f5';
-  ctx.fillRect(0, 0, 75, 75);
-
-  if (!pattern.textureId) return canvas;
-
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-
-  img.onload = () => {
-    ctx.clearRect(0, 0, 75, 75);
-    ctx.drawImage(img, 0, 0, 75, 75);
-
-    if (typeof pattern.hue === 'number') {
-      applyHueShift(ctx, pattern.hue);
-    }
-  };
-
-  img.onerror = (e) => {
-    console.error("❌ Pattern load failed:", pattern.textureId, e);
-  };
-
-  // 🔑 src MUST be last
-  img.src = pattern.textureId;
-
-  return canvas;
-}
-
-
-/* =========================================================
-   HUE SHIFT (SAME LOGIC AS STUDIO)
-   ========================================================= */
-
-function applyHueShift(ctx, hueDeg) {
-  const imgData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-  const data = imgData.data;
-
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i] / 255;
-    const g = data[i + 1] / 255;
-    const b = data[i + 2] / 255;
-
-    const hsl = rgbToHsl(r, g, b);
-
-    // preserve whites / highlights
-    if (hsl.l > 0.9 && hsl.s < 0.15) continue;
-
-    hsl.h = hueDeg / 360;
-    hsl.s = 0.9;
-
-    const rgb = hslToRgb(hsl.h, hsl.s, hsl.l);
-
-    data[i]     = rgb.r * 255;
-    data[i + 1] = rgb.g * 255;
-    data[i + 2] = rgb.b * 255;
   }
 
-  ctx.putImageData(imgData, 0, 0);
-}
+  /* ---------------------------------------------------------
+     3️⃣ CANVAS RENDERER
+  --------------------------------------------------------- */
+  function createNailCanvas(pattern) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
-/* ---------- COLOR HELPERS ---------- */
+    canvas.width = 75;
+    canvas.height = 75;
 
-function rgbToHsl(r, g, b) {
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
+    // placeholder
+    ctx.fillStyle = '#f2f2f2';
+    ctx.fillRect(0, 0, 75, 75);
 
-  if (max === min) {
-    h = s = 0;
-  } else {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    console.log("🎨 Pattern:", pattern);
 
-    switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
-    }
+    if (!pattern.textureId) return canvas;
 
-    h /= 6;
-  }
+    const img = new Image();
+    img.crossOrigin = "anonymous";
 
-  return { h, s, l };
-}
+    img.onload = () => {
+      console.log("✅ IMAGE LOADED:", img.src);
+      ctx.clearRect(0, 0, 75, 75);
+      ctx.drawImage(img, 0, 0, 75, 75);
 
-function hslToRgb(h, s, l) {
-  let r, g, b;
-
-  if (s === 0) {
-    r = g = b = l;
-  } else {
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-      return p;
+      if (typeof pattern.hue === 'number') {
+        applyHueShift(ctx, pattern.hue);
+      }
     };
 
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
+    img.onerror = e => {
+      console.error("❌ IMAGE FAILED:", pattern.textureId, e);
+    };
 
-    r = hue2rgb(p, q, h + 1/3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1/3);
+    console.log("🌐 setting src:", pattern.textureId);
+    img.src = pattern.textureId;
+
+    return canvas;
   }
 
-  return { r, g, b };
-}
+  /* ---------------------------------------------------------
+     4️⃣ PURE CANVAS HUE SHIFT
+  --------------------------------------------------------- */
+  function applyHueShift(ctx, hueDeg) {
+    const imgData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const data = imgData.data;
 
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i] / 255;
+      const g = data[i + 1] / 255;
+      const b = data[i + 2] / 255;
+
+      const hsl = rgbToHsl(r, g, b);
+
+      if (hsl.l > 0.9 && hsl.s < 0.15) continue;
+
+      hsl.h = hueDeg / 360;
+      hsl.s = 0.9;
+
+      const rgb = hslToRgb(hsl.h, hsl.s, hsl.l);
+
+      data[i]     = rgb.r * 255;
+      data[i + 1] = rgb.g * 255;
+      data[i + 2] = rgb.b * 255;
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+  }
+
+  function rgbToHsl(r, g, b) {
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0;
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+
+      h /= 6;
+    }
+
+    return { h, s, l };
+  }
+
+  function hslToRgb(h, s, l) {
+    let r, g, b;
+
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+
+      r = hue2rgb(p, q, h + 1/3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return { r, g, b };
+  }
+
+})();
