@@ -105,17 +105,17 @@ function createNailCanvas(pattern) {
   canvas.width = 75;
   canvas.height = 75;
 
-  // fallback background
+  // background so canvas isn't transparent
   ctx.fillStyle = '#f5f5f5';
   ctx.fillRect(0, 0, 75, 75);
 
   if (!pattern.textureId) return canvas;
 
   const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.src = pattern.textureId;
+  img.crossOrigin = "anonymous";
 
   img.onload = () => {
+    ctx.clearRect(0, 0, 75, 75);
     ctx.drawImage(img, 0, 0, 75, 75);
 
     if (typeof pattern.hue === 'number') {
@@ -123,8 +123,16 @@ function createNailCanvas(pattern) {
     }
   };
 
+  img.onerror = (e) => {
+    console.error("❌ Pattern load failed:", pattern.textureId, e);
+  };
+
+  // 🔑 src MUST be last
+  img.src = pattern.textureId;
+
   return canvas;
 }
+
 
 /* =========================================================
    HUE SHIFT (SAME LOGIC AS STUDIO)
