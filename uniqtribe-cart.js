@@ -1,12 +1,12 @@
 
 <style>
-/* ------------------------------
-   GLOBAL
------------------------------- */
+/* ===========================
+   PAGE LAYOUT
+=========================== */
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  background: #f7f7f7;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
 }
 
 .cart-wrapper {
@@ -16,18 +16,19 @@ body {
   background: #fff;
 }
 
-/* ------------------------------
+/* ===========================
    DESKTOP CART LAYOUT
------------------------------- */
+=========================== */
 .theme-cart-table-row {
-  display: grid;
-  grid-template-columns: 90px 1fr 120px 120px;
+  display: grid !important;
+  grid-template-columns: 90px 1fr 130px 120px;
   gap: 15px;
+  align-items: start;
   padding: 18px 0;
   border-bottom: 1px solid #eee;
-  align-items: start;
 }
 
+/* product image */
 .theme-cart-item-image img {
   width: 80px;
   border-radius: 6px;
@@ -40,12 +41,19 @@ body {
   gap: 6px;
 }
 
+/* title */
 .theme-cart-item-title {
   font-weight: 600;
 }
 
+/* price text */
 .theme-cart-item-price {
   color: #555;
+}
+
+/* pattern preview strip */
+.custom-pattern-strip {
+  margin-top: 6px;
 }
 
 /* remove button */
@@ -64,29 +72,21 @@ body {
   align-items: center;
 }
 
-/* amount */
+/* amount column */
 .theme-cart-item-amount {
   text-align: right;
   font-weight: bold;
   font-size: 16px;
 }
 
-/* pattern preview */
-.custom-pattern-strip {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  margin-top: 6px;
-}
-
-.custom-pattern-strip canvas {
-  border-radius: 4px;
-}
-
-/* ------------------------------
-   MOBILE RESPONSIVE
------------------------------- */
+/* ===========================
+   MOBILE LAYOUT
+=========================== */
 @media (max-width: 768px) {
+
+  .cart-wrapper {
+    padding: 12px;
+  }
 
   .theme-cart-table-row {
     grid-template-columns: 70px 1fr;
@@ -94,28 +94,35 @@ body {
     gap: 10px;
   }
 
+  .theme-cart-item-image img {
+    width: 65px;
+  }
+
+  /* stack qty + amount */
+  .theme-cart-item-qty,
   .theme-cart-item-amount {
+    justify-content: flex-start;
     text-align: left;
   }
 
-  .theme-cart-item-qty {
-    justify-content: flex-start;
-  }
-
-  .theme-cart-item-remove {
-    width: fit-content;
+  .custom-pattern-strip canvas {
+    width: 55px;
+    height: 55px;
   }
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="cart-wrapper">
-  <!-- Zoho injects cart items here -->
-  <div data-cart-items></div>
-</div>
 
+  <!-- Zoho cart injects items here -->
+  <div data-cart-items></div>
+
+</div>
+</body>
 <script>
 /* =========================================================
    CUSTOM PATTERN RENDERER
