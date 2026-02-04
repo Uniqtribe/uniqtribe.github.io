@@ -1,7 +1,7 @@
 {
   "patterns": {
     "soft Girl": ["pattern-1.png","pattern-2.png","pattern-3.png","pattern-4.png","pattern-5.png","pattern-6.png","pattern-7.png","pattern-8.png"],
-    "glitter": [""],
-    "marble": [""]
+    "glitter": ["pattern-1.png"],
+    "marble": ["pattern-1.png"]
   }
 }
