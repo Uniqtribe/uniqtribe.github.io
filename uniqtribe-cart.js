@@ -37,9 +37,15 @@ if (location.pathname === "/cart") {
     review.style.setProperty("display", "none", "important");
   }
 
+  function fixActiveBarWidth() {
+  document.querySelectorAll('.theme-active-bar').forEach(bar => {
+    bar.style.setProperty('width', '100px', 'important');
+  });
+}
   function applyAll() {
     renameToMakePayment();
     hideReviewOrder();
+    fixActiveBarWidth();
   }
 
   // Initial run
