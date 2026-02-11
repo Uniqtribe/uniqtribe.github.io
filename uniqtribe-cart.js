@@ -4,12 +4,14 @@ if (location.pathname === "/cart") {
 
 
  if (location.pathname === "/checkout") {
+ function isolateMakePaymentButton() {
+    const review = document.getElementById("zs-checkout-review-order");
+    if (!review) return;
 
-  function applyMakePaymentOnlyView() {
-    const reviewContainer = document.getElementById("zs-checkout-review-order");
-    if (!reviewContainer) return;
+    const buttonWrap = review.querySelector(".theme-continue-btn");
+    if (!buttonWrap) return;
 
-    /* 1️⃣ Rename all titles */
+    // 1️⃣ Rename text everywhere
     document.querySelectorAll(
       '.theme-checkout-steps a[data-zs-checkout-nav-order-review], \
        .theme-checkout-steps a.active, \
@@ -20,32 +22,23 @@ if (location.pathname === "/cart") {
       }
     });
 
-    /* 2️⃣ Hide EVERYTHING except Make Payment button */
-    reviewContainer.querySelectorAll(`
-      .order-review,
-      .theme-cart-view-wrap,
-      [review_order_before_section],
-      [review_order_after_section],
-      [payment_option_section],
-      [payment_method_section],
-      [review_order_afterend_section],
-      [review_order_bottom_section],
-      .theme-order-review-address-area
-    `).forEach(el => {
-      el.style.display = "none";
-    });
+    // 2️⃣ Move button OUTSIDE review container (only once)
+    if (!document.getElementById("make-payment-floating")) {
+      const wrapper = document.createElement("div");
+      wrapper.id = "make-payment-floating";
+      wrapper.appendChild(buttonWrap);
+      review.parentElement.insertBefore(wrapper, review);
+    }
 
-    /* 3️⃣ Ensure button container stays visible */
-    const btnWrap = reviewContainer.querySelector(".theme-continue-btn");
-    if (btnWrap) btnWrap.style.display = "block";
+    // 3️⃣ Hide entire review section
+    review.style.display = "none";
   }
 
-  /* Zoho renders late → retry until found */
-  let tries = 0;
-  const timer = setInterval(() => {
-    applyMakePaymentOnlyView();
-    tries++;
-    if (tries > 15) clearInterval(timer);
+  // Zoho renders async → retry
+  let attempts = 0;
+  const interval = setInterval(() => {
+    isolateMakePaymentButton();
+    attempts++;
+    if (attempts > 15) clearInterval(interval);
   }, 300);
-
  }
