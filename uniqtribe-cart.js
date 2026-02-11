@@ -1,16 +1,18 @@
+/* CART REDIRECT */
 if (location.pathname === "/cart") {
   location.replace("/my-cart");
 }
 
 
- if (location.pathname === "/checkout") {
+/* CHECKOUT CUSTOMIZATION */
+(function () {
   if (!location.pathname.includes("checkout")) return;
 
   function hideReviewOrder() {
     const review = document.getElementById("zs-checkout-review-order");
     if (!review) return;
 
-    // Move Make Payment button out (once)
+    // Move Make Payment button out (only once)
     const buttonWrap = review.querySelector(".theme-continue-btn");
     if (buttonWrap && !document.getElementById("make-payment-isolated")) {
       const holder = document.createElement("div");
@@ -19,14 +21,12 @@ if (location.pathname === "/cart") {
       review.parentNode.insertBefore(holder, review);
     }
 
-    // HARD hide
+    // Force hide review section
     review.style.setProperty("display", "none", "important");
   }
 
-  // Initial attempt
   hideReviewOrder();
 
-  // 🔥 Watch for Zoho re-render
   const observer = new MutationObserver(() => {
     hideReviewOrder();
   });
@@ -35,4 +35,4 @@ if (location.pathname === "/cart") {
     childList: true,
     subtree: true
   });
- }
+})();
