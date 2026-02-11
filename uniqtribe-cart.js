@@ -19,7 +19,20 @@ if (location.pathname === "/cart") {
       }
     });
   }
+function fixDuplicateMakePaymentButtons() {
+  const isMobile = window.innerWidth <= 768;
 
+  const isolated = document.getElementById("make-payment-isolated");
+  const mobileBtn = document.getElementById("zs-mobile-make-payment-button");
+
+  if (isMobile) {
+    if (isolated) isolated.style.display = "none";
+    if (mobileBtn) mobileBtn.style.display = "inline-flex";
+  } else {
+    if (isolated) isolated.style.display = "block";
+    if (mobileBtn) mobileBtn.style.display = "none";
+  }
+}
   function hideReviewOrder() {
     const review = document.getElementById("zs-checkout-review-order");
     if (!review) return;
@@ -46,6 +59,7 @@ if (location.pathname === "/cart") {
     renameToMakePayment();
     hideReviewOrder();
     fixActiveBarWidth();
+    fixDuplicateMakePaymentButtons();
   }
 
   // Initial run
